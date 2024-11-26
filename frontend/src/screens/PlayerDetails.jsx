@@ -17,7 +17,20 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { Chart } from "react-google-charts";
 import players from "../players";
+
+const gaugeOptions = {
+  width: 200,
+  height: 200,
+  redFrom: 30,
+  redTo: 50,
+  yellowFrom: 50,
+  yellowTo: 70,
+  greenFrom: 70,
+  greenTo: 100,
+  minorTicks: 5,
+};
 
 export default function PlayerDetails() {
   const { id: playerId } = useParams();
@@ -69,161 +82,127 @@ export default function PlayerDetails() {
     { name: "Mental", value: (player.vision + player.composure + player.reactions + player.aggression) / 4 },
   ];
 
+  // Gauge chart data
+  const pacData = [["Label", "Value"], ["PAC", player.sprint_speed]];
+  const shoData = [["Label", "Value"], ["SHO", player.finishing]];
+  const pasData = [["Label", "Value"], ["PAS", player.short_passing]];
+  const driData = [["Label", "Value"], ["DRI", player.dribbling]];
+  const defData = [["Label", "Value"], ["DEF", player.interceptions]];
+  const phyData = [["Label", "Value"], ["PHY", player.strength]];
+
   return (
     <div className="container mx-auto p-4">
       <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">
-        <Button> Return to Players List </Button>
+        <Button className="return-button"> Return to Players List </Button>
       </Link>
 
+      {/* Player Profile and Details Section */}
       <Row className="mb-6">
-  <Col md={6}>
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        maxWidth: "350px",
-        margin: "0 auto",
-        background: "linear-gradient(135deg, #1a202c, #2d3748)", // Dark FIFA-like gradient
-        borderRadius: "20px",
-        padding: "20px",
-        textAlign: "center",
-        boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.5)", // Strong shadow for depth
-        color: "white",
-        fontFamily: "'Oswald', sans-serif", // FIFA-like font
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: "-50px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "90px",
-          height: "80px",
-          background: "linear-gradient(135deg, #ffcc00, #ff9900)", // FIFA-style badge background
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
-        }}
-      >
-        <h3 style={{ color: "white", fontSize: "1 rem", margin: 0 }}>
-          {player.overall_rating}
-        </h3>
-      </div>
-      <img
-        src={player.image}
-        alt={player.name}
-        style={{
-          width: "100%",
-          maxWidth: "200px",
-          height: "200px",
-          objectFit: "cover",
-          borderRadius: "15px",
-          margin: "30px auto 10px",
-          border: "5px solid rgba(255, 255, 255, 0.2)", // Subtle border
-        }}
-      />
-      <h2
-        style={{
-          fontSize: "1.8rem",
-          fontWeight: "700",
-          textTransform: "uppercase",
-          margin: "10px 0",
-        }}
-      >
-        {player.name}
-      </h2>
-      <p
-        style={{
-          fontSize: "1rem",
-          color: "rgba(255, 255, 255, 0.8)",
-          margin: "5px 0 20px",
-        }}
-      >
-        {player.positions} | {player.nationality}
-      </p>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "10px",
-        }}
-      >
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "0.9rem", fontWeight: "bold", margin: 0 }}>
-            PAC
-          </p>
-          <p style={{ fontSize: "1rem", margin: 0 }}>{player.sprint_speed}</p>
-        </div>
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "0.9rem", fontWeight: "bold", margin: 0 }}>
-            SHO
-          </p>
-          <p style={{ fontSize: "1rem", margin: 0 }}>{player.finishing}</p>
-        </div>
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "0.9rem", fontWeight: "bold", margin: 0 }}>
-            PAS
-          </p>
-          <p style={{ fontSize: "1rem", margin: 0 }}>{player.short_passing}</p>
-        </div>
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "0.9rem", fontWeight: "bold", margin: 0 }}>
-            DRI
-          </p>
-          <p style={{ fontSize: "1rem", margin: 0 }}>{player.dribbling}</p>
-        </div>
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "0.9rem", fontWeight: "bold", margin: 0 }}>
-            DEF
-          </p>
-          <p style={{ fontSize: "1rem", margin: 0 }}>{player.interceptions}</p>
-        </div>
-        <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "0.9rem", fontWeight: "bold", margin: 0 }}>
-            PHY
-          </p>
-          <p style={{ fontSize: "1rem", margin: 0 }}>{player.strength}</p>
-        </div>
-      </div>
-    </div>
-  </Col>
+        <Col md={6}>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "350px",
+              margin: "0 auto",
+              background: "linear-gradient(135deg, #1a202c, #2d3748)",
+              borderRadius: "20px",
+              padding: "20px",
+              textAlign: "center",
+              boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.5)",
+              color: "white",
+              fontFamily: "'Oswald', sans-serif",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "-50px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "90px",
+                height: "80px",
+                background: "linear-gradient(135deg, #ffcc00, #ff9900)",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              <h3 style={{ color: "white", fontSize: "1rem", margin: 0 }}>
+                {player.overall_rating}
+              </h3>
+            </div>
+            <img
+              src={player.image}
+              alt={player.name}
+              style={{
+                width: "100%",
+                maxWidth: "200px",
+                height: "200px",
+                objectFit: "cover",
+                borderRadius: "15px",
+                margin: "30px auto 10px",
+                border: "5px solid rgba(255, 255, 255, 0.2)",
+              }}
+            />
+            <h2
+              style={{
+                fontSize: "1.8rem",
+                fontWeight: "700",
+                textTransform: "uppercase",
+                margin: "10px 0",
+              }}
+            >
+              {player.name}
+            </h2>
+            <p
+              style={{
+                fontSize: "1rem",
+                color: "rgba(255, 255, 255, 0.8)",
+                margin: "5px 0 20px",
+              }}
+            >
+              {player.positions} | {player.nationality}
+            </p>
+          </div>
+        </Col>
 
-  <Col md={6}>
-    <div
-      style={{
-        background: "#ffffff",
-        borderRadius: "20px",
-        padding: "20px",
-        boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.2)",
-      }}
-    >
-      <h3
-        style={{
-          fontSize: "1.5rem",
-          fontWeight: "600",
-          marginBottom: "20px",
-        }}
-      >
-        Player Details
-      </h3>
-      <dl className="row">
-        <dt className="col-sm-4">Age</dt>
-        <dd className="col-sm-8">{player.age}</dd>
-        <dt className="col-sm-4">Nationality</dt>
-        <dd className="col-sm-8">{player.nationality}</dd>
-        <dt className="col-sm-4">Position</dt>
-        <dd className="col-sm-8">{player.positions}</dd>
-        <dt className="col-sm-4">Overall Rating</dt>
-        <dd className="col-sm-8">{player.overall_rating}</dd>
-      </dl>
-    </div>
-  </Col>
-</Row>
+        <Col md={6}>
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "20px",
+              padding: "20px",
+              boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <h3
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: "600",
+                marginBottom: "20px",
+              }}
+            >
+              Player Details
+            </h3>
+            <dl className="row">
+              <dt className="col-sm-4">Age</dt>
+              <dd className="col-sm-8">{player.age}</dd>
+              <dt className="col-sm-4">Nationality</dt>
+              <dd className="col-sm-8">{player.nationality}</dd>
+              <dt className="col-sm-4">Position</dt>
+              <dd className="col-sm-8">{player.positions}</dd>
+              <dt className="col-sm-4">Overall Rating</dt>
+              <dd className="col-sm-8">{player.overall_rating}</dd>
+            </dl>
+          </div>
+        </Col>
+      </Row>
 
-
+      {/* Existing Graphs */}
+      {/* Physical Attributes */}
       <div className="mt-5">
         <h3>Physical Attributes</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -237,6 +216,7 @@ export default function PlayerDetails() {
         </ResponsiveContainer>
       </div>
 
+      {/* Technical Attributes */}
       <div className="mt-5">
         <h3>Technical Attributes</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -244,12 +224,19 @@ export default function PlayerDetails() {
             <PolarGrid />
             <PolarAngleAxis dataKey="name" />
             <PolarRadiusAxis angle={30} domain={[0, 100]} />
-            <Radar name={player.name} dataKey="value" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+            <Radar
+              name={player.name}
+              dataKey="value"
+              stroke="#82ca9d"
+              fill="#82ca9d"
+              fillOpacity={0.6}
+            />
             <Tooltip />
           </RadarChart>
         </ResponsiveContainer>
       </div>
 
+      {/* Mental Attributes */}
       <div className="mt-5">
         <h3>Mental Attributes</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -263,6 +250,7 @@ export default function PlayerDetails() {
         </ResponsiveContainer>
       </div>
 
+      {/* Skill Comparison */}
       <div className="mt-5">
         <h3>Skill Comparison</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -277,6 +265,7 @@ export default function PlayerDetails() {
         </ResponsiveContainer>
       </div>
 
+      {/* Overall Attributes Radar Chart */}
       <div className="mt-5">
         <h3>Overall Attribute Comparison (Radar Chart)</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -294,6 +283,31 @@ export default function PlayerDetails() {
             <Tooltip />
           </RadarChart>
         </ResponsiveContainer>
+      </div>
+
+      {/* Gauge Charts Section */}
+      <div className="mt-5">
+        <h3>Key Stats (Gauge Charts)</h3>
+        <Row>
+          <Col xs={6} className="d-flex justify-content-center">
+            <Chart chartType="Gauge" data={pacData} options={gaugeOptions} />
+          </Col>
+          <Col xs={6} className="d-flex justify-content-center">
+            <Chart chartType="Gauge" data={shoData} options={gaugeOptions} />
+          </Col>
+          <Col xs={6} className="d-flex justify-content-center">
+            <Chart chartType="Gauge" data={pasData} options={gaugeOptions} />
+          </Col>
+          <Col xs={6} className="d-flex justify-content-center">
+            <Chart chartType="Gauge" data={driData} options={gaugeOptions} />
+          </Col>
+          <Col xs={6} className="d-flex justify-content-center">
+            <Chart chartType="Gauge" data={defData} options={gaugeOptions} />
+          </Col>
+          <Col xs={6} className="d-flex justify-content-center">
+            <Chart chartType="Gauge" data={phyData} options={gaugeOptions} />
+          </Col>
+        </Row>
       </div>
     </div>
   );

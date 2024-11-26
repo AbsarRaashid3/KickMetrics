@@ -59,3 +59,29 @@ table th {
   object-fit: cover; /* Ensures images maintain aspect ratio and don't distort */
 }
 
+
+.return-button-container {
+  display: flex;
+  justify-content: flex-start; /* Aligns the button to the left */
+  align-items: center; /* Centers the button vertically */
+  margin-bottom: 20px; /* Adds spacing below the button */
+}
+
+.return-button-container a {
+  text-decoration: none; /* Removes underline from the link */
+}
+
+.return-button {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.return-button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
