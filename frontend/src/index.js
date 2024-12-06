@@ -15,6 +15,10 @@ import AuthForm from './screens/authScreen';
 import ResetPassword from './screens/ResetPassScreen';
 import store from "./redux/stores/Store";
 import Dashboard from './screens/Dashboard';
+import PlayerPerformanceAnalysis from './screens/PlayerPerformanceAnalysis';
+import MarketValue from './screens/MarketValue';
+import MarketValuePrediction from './screens/MarketValuePrediction';
+import WhatIf from './screens/WhatIfSimulator';
 
 // Wrapper Component for Protected Routes
 const ProtectedRoute = ({ children }) => {
@@ -27,7 +31,10 @@ const router = createBrowserRouter(
 
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<HomeScreen />} />
+      <Route path='playersAll' element={<HomeScreen />} />
       <Route path='player/:id' element={<PlayerDetails />} />
+
+      
       {/* <Route path='/player' element={<HomeScreen />} /> */}
       <Route path='/signIn' element={<AuthForm />} />
       <Route path='/forgot-password' element={<ResetPassword />} />
@@ -35,8 +42,10 @@ const router = createBrowserRouter(
         element={
           <ProtectedRoute>
             <Dashboard/>
+          
           </ProtectedRoute>
         } />
+
 
     </Route>
   )
