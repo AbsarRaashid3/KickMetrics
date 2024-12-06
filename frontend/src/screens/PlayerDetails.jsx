@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Accordion } from "react-bootstrap";
 import {
   BarChart,
   RadarChart,
@@ -91,7 +91,7 @@ export default function PlayerDetails() {
   const phyData = [["Label", "Value"], ["PHY", player.strength]];
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-2">
       <Link to="/" className="text-blue-500 hover:underline mb-4 inline-block">
         <Button className="return-button"> Return to Players List </Button>
       </Link>
@@ -201,114 +201,117 @@ export default function PlayerDetails() {
         </Col>
       </Row>
 
-      {/* Existing Graphs */}
-      {/* Physical Attributes */}
-      <div className="mt-5">
-        <h3>Physical Attributes</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={physicalAttributes}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="value" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Technical Attributes */}
-      <div className="mt-5">
-        <h3>Technical Attributes</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <RadarChart data={technicalAttributes}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="name" />
-            <PolarRadiusAxis angle={30} domain={[0, 100]} />
-            <Radar
-              name={player.name}
-              dataKey="value"
-              stroke="#82ca9d"
-              fill="#82ca9d"
-              fillOpacity={0.6}
-            />
-            <Tooltip />
-          </RadarChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Mental Attributes */}
-      <div className="mt-5">
-        <h3>Mental Attributes</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={mentalAttributes}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Skill Comparison */}
-      <div className="mt-5">
-        <h3>Skill Comparison</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={skillComparison}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="player" fill="#8884d8" />
-            <Bar dataKey="average" fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Overall Attributes Radar Chart */}
-      <div className="mt-5">
-        <h3>Overall Attribute Comparison (Radar Chart)</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <RadarChart data={combinedAttributes}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="name" />
-            <PolarRadiusAxis angle={30} domain={[0, 100]} />
-            <Radar
-              name={player.name}
-              dataKey="value"
-              stroke="#ff7300"
-              fill="#ff7300"
-              fillOpacity={0.6}
-            />
-            <Tooltip />
-          </RadarChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Gauge Charts Section */}
-      <div className="mt-5">
-        <h3>Key Stats (Gauge Charts)</h3>
-        <Row>
-          <Col xs={6} className="d-flex justify-content-center">
-            <Chart chartType="Gauge" data={pacData} options={gaugeOptions} />
-          </Col>
-          <Col xs={6} className="d-flex justify-content-center">
-            <Chart chartType="Gauge" data={shoData} options={gaugeOptions} />
-          </Col>
-          <Col xs={6} className="d-flex justify-content-center">
-            <Chart chartType="Gauge" data={pasData} options={gaugeOptions} />
-          </Col>
-          <Col xs={6} className="d-flex justify-content-center">
-            <Chart chartType="Gauge" data={driData} options={gaugeOptions} />
-          </Col>
-          <Col xs={6} className="d-flex justify-content-center">
-            <Chart chartType="Gauge" data={defData} options={gaugeOptions} />
-          </Col>
-          <Col xs={6} className="d-flex justify-content-center">
-            <Chart chartType="Gauge" data={phyData} options={gaugeOptions} />
-          </Col>
-        </Row>
-      </div>
+      {/* Graphs Section */}
+      <Accordion defaultActiveKey="0">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Physical Attributes</Accordion.Header>
+          <Accordion.Body>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={physicalAttributes}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>Technical Attributes</Accordion.Header>
+          <Accordion.Body>
+            <ResponsiveContainer width="100%" height={300}>
+              <RadarChart data={technicalAttributes}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="name" />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                <Radar
+                  name={player.name}
+                  dataKey="value"
+                  stroke="#82ca9d"
+                  fill="#82ca9d"
+                  fillOpacity={0.6}
+                />
+                <Tooltip />
+              </RadarChart>
+            </ResponsiveContainer>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>Mental Attributes</Accordion.Header>
+          <Accordion.Body>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={mentalAttributes}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="value" stroke="#8884d8" />
+              </LineChart>
+            </ResponsiveContainer>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="3">
+          <Accordion.Header>Skill Comparison</Accordion.Header>
+          <Accordion.Body>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={skillComparison}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="player" fill="#8884d8" />
+                <Bar dataKey="average" fill="#82ca9d" />
+              </BarChart>
+            </ResponsiveContainer>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="4">
+          <Accordion.Header>Overall Attributes (Radar Chart)</Accordion.Header>
+          <Accordion.Body>
+            <ResponsiveContainer width="100%" height={300}>
+              <RadarChart data={combinedAttributes}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="name" />
+                <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                <Radar
+                  name={player.name}
+                  dataKey="value"
+                  stroke="#ff7300"
+                  fill="#ff7300"
+                  fillOpacity={0.6}
+                />
+                <Tooltip />
+              </RadarChart>
+            </ResponsiveContainer>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="5">
+          <Accordion.Header>Gauge Charts</Accordion.Header>
+          <Accordion.Body>
+            <Row>
+              <Col xs={6} className="d-flex justify-content-center">
+                <Chart chartType="Gauge" data={pacData} options={gaugeOptions} />
+              </Col>
+              <Col xs={6} className="d-flex justify-content-center">
+                <Chart chartType="Gauge" data={shoData} options={gaugeOptions} />
+              </Col>
+              <Col xs={6} className="d-flex justify-content-center">
+                <Chart chartType="Gauge" data={pasData} options={gaugeOptions} />
+              </Col>
+              <Col xs={6} className="d-flex justify-content-center">
+                <Chart chartType="Gauge" data={driData} options={gaugeOptions} />
+              </Col>
+              <Col xs={6} className="d-flex justify-content-center">
+                <Chart chartType="Gauge" data={defData} options={gaugeOptions} />
+              </Col>
+              <Col xs={6} className="d-flex justify-content-center">
+                <Chart chartType="Gauge" data={phyData} options={gaugeOptions} />
+              </Col>
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
     </div>
   );
 }

@@ -72,16 +72,16 @@ table th {
 }
 
 .return-button {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #757677;
+  border-color: #757677;
   color: white;
-  padding: 10px 20px;
+  padding: 5px 18px;
   font-size: 16px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
 .return-button:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: #757677;
+  border-color: #757677;
 }
