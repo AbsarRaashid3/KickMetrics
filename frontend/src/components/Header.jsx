@@ -25,17 +25,41 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
-              <LinkContainer to='/players'>
+             
+              <LinkContainer to='/playersAll'>
               <Nav.Link >
                  <FaFutbol /> Players
               </Nav.Link>
               </LinkContainer>
+
+              <LinkContainer to='/performance-analysis'>
+              <Nav.Link >
+                 <FaFutbol />Performance Analysis
+              </Nav.Link>
+              </LinkContainer>
+
+              <LinkContainer to='/market-value'>
+              <Nav.Link >
+                 <FaFutbol />Market Value
+              </Nav.Link>
+              </LinkContainer>
+              <LinkContainer to='/whatif'>
+              <Nav.Link >
+                 <FaFutbol />What-If Simulator
+              </Nav.Link>
+              </LinkContainer>
+
 
               <LinkContainer to='/login'>
               <Nav.Link>
                 <FaUser /> Sign In
               </Nav.Link>
               </LinkContainer>
+
+
+
+         ;
+            
             </Nav>
           </Navbar.Collapse>
         </Container>
