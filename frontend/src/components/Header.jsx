@@ -36,11 +36,38 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
 
+              <LinkContainer to='/performance-analysis'>
+              <Nav.Link >
+                 <FaFutbol />Performance Analysis
+              </Nav.Link>
+              </LinkContainer>
+
+              <LinkContainer to='/teamC'>
+              <Nav.Link >
+                 <FaFutbol />Team Composition
+              </Nav.Link>
+              </LinkContainer>
+
+              <LinkContainer to='/whatif'>
+              <Nav.Link >
+                 <FaFutbol />What-If Simulator
+              </Nav.Link>
+              </LinkContainer>
+
+              <LinkContainer to='/market-value'>
+              <Nav.Link >
+                 <FaFutbol />Market Value
+              </Nav.Link>
+              </LinkContainer>
+
+
               <LinkContainer to='/login'>
                 <Nav.Link>
                   <FaUser /> Sign In
                 </Nav.Link>
               </LinkContainer>
+
+
             </Nav>
           </Navbar.Collapse>
         </Container>
