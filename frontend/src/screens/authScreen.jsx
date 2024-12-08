@@ -6,7 +6,8 @@ import { login } from '../redux/slices/authSlice';
 import '../assets/styles/authScreen.css';
 
 /*Use useDispatch to dispatch actions like login or logout.
-Use useSelector to read from the Redux store.*/
+Use useSelector to read from the Redux store.
+useState triggers re-rendering. it is used to store/manage  the dynamic data in component */
 
 function AuthScreen() {
     const [signIn, toggle] = useState(true);       // Initially, SignIn page is active

@@ -36,12 +36,12 @@ const Header = () => {
 
               {isAuthenticated ? (
                 <>
-                <NavItem>
+                {/* <NavItem>
                 <form class="d-flex ">        
                     <input placeholder="Search" type="search" class="form-control"/>
                     </form>
                 </NavItem>
-              
+               */}
                   <LinkContainer to='/players'>
                     <Nav.Link >
                       <FaFutbol /> Players
@@ -50,19 +50,19 @@ const Header = () => {
 
                   <LinkContainer to='/performance-analysis'>
                     <Nav.Link >
-                      <FaFutbol /> Performance Analysis
+                       Performance Analysis
                     </Nav.Link>
                   </LinkContainer>
                   
                   <LinkContainer to='/market-value'>
                     <Nav.Link >
-                      <FaFutbol /> Market Value
+                       Market Value
                     </Nav.Link>
                   </LinkContainer>
 
                   <LinkContainer to='/what-if-simulator'>
                     <Nav.Link >
-                      <FaFutbol /> What-if Simulator
+                       What-if Simulator
                     </Nav.Link>
                   </LinkContainer>
 

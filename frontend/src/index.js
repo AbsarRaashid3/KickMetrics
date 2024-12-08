@@ -19,7 +19,8 @@ import PlayerPerformanceAnalysis from './screens/PlayerPerformanceAnalysis';
 import MarketValue from './screens/MarketValue';
 import MarketValuePrediction from './screens/MarketValuePrediction';
 import WhatIf from './screens/WhatIfSimulator';
-
+import RoleDecision from './screens/RoleDecision';
+import AdminPanel from './screens/AdminPanel';
 // Wrapper Component for Protected Routes
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -30,22 +31,48 @@ const router = createBrowserRouter(
   createRoutesFromElements(
 
     <Route path='/' element={<App />}>
-      <Route index={true} path='/' element={<HomeScreen />} />
-      <Route path='playersAll' element={<HomeScreen />} />
+      <Route index={true} path='/' element={<RoleDecision />} />
+      <Route path='players' element={<HomeScreen />} />
       <Route path='player/:id' element={<PlayerDetails />} />
-
-      
       {/* <Route path='/player' element={<HomeScreen />} /> */}
+      <Route path='/AdminPanel' element={<AdminPanel />} />
       <Route path='/signIn' element={<AuthForm />} />
+
       <Route path='/forgot-password' element={<ResetPassword />} />
       <Route path='/dashboard'
         element={
           <ProtectedRoute>
-            <Dashboard/>
-          
+            <Dashboard />
           </ProtectedRoute>
         } />
 
+      <Route path='performance-analysis'
+        element={
+          <ProtectedRoute>
+            <PlayerPerformanceAnalysis />
+          </ProtectedRoute>
+        } />
+
+      <Route path='market-value'
+        element={
+          <ProtectedRoute>
+            <MarketValue />
+          </ProtectedRoute>
+        } />
+
+      <Route path='/prediction/:playerId'
+        element={
+          <ProtectedRoute>
+            <MarketValuePrediction />
+          </ProtectedRoute>
+        } />
+
+      <Route path='/whatif'
+        element={
+          <ProtectedRoute>
+            <WhatIf />
+          </ProtectedRoute>
+        } />
 
     </Route>
   )

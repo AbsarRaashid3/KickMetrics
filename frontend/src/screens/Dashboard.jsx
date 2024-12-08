@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Table, Row, Col } from "react-bootstrap";
 import { FaHeartBroken,FaHeart } from 'react-icons/fa'; // Importing heart icon from FontAwesome (part of React Icons)
 import { Button } from 'react-bootstrap'; // React Bootstrap button
-import "./../assets/styles/Dashboard.css"; // For any additional custom styles
+//import "./../assets/styles/Dashboard.css"; // For any additional custom styles
 import players from "../players";
 import Player from '../components/Players';
 // import HomeScreen from "./HomeScreen"
