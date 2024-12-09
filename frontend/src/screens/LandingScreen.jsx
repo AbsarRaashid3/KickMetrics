@@ -147,11 +147,16 @@ const LandingScreen = () => {
             </Col>
           </Row>
           <Row>
-            <Col md={12} style={styles.imageContainer}>
+          <Col md={12} style={styles.imageContainer}>
               <img
-                src="/images/player-graphic.jpg" // Updated path
+                src="/images/player-graphic.png" // Updated path
                 alt="Football Analytics"
-                style={styles.image}
+                style={{
+                  ...styles.image, // Retain existing styles
+                  maxWidth: "100%", // Ensure it does not overflow the container
+                  height: "auto", // Maintain aspect ratio
+                  width: "300px", // Specify the desired width (adjust as needed)
+                }}
                 onMouseEnter={(e) =>
                   (e.target.style.transform = "scale(1.05)")
                 }
@@ -160,6 +165,7 @@ const LandingScreen = () => {
                 }
               />
             </Col>
+
           </Row>
           <Row>
             <Col>

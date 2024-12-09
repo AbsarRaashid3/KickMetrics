@@ -21,7 +21,7 @@ const PlayerCard = ({ player, onClick }) => {
         className="card-background"
         style={{ backgroundImage: `url(${player.image})` }}
       >
-        <div className="overlay"></div>
+        <div className="overlay1"></div>
         <div className="card-content">
           <div className="player-ranking">#{player.rank}</div>
           <h2 className="player-name">{player.name}</h2>

@@ -1,9 +1,18 @@
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown, NavItem } from 'react-bootstrap';
 import { FaFutbol, FaUser } from 'react-icons/fa';
-import { LinkContainer } from 'react-router-bootstrap'; 
+import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/logo.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/slices/authSlice'; // Import the logout action
+import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout()); // Ensure this is only called on events like onClick
+  };
+
   return (
     <header>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
@@ -20,16 +29,24 @@ const Header = () => {
               KICK METRICS
             </Navbar.Brand>
           </LinkContainer>
+
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
-              <LinkContainer to='/players'>
+
+              {isAuthenticated ? (
+                <>
+                {/* <NavItem>
+                <form class="d-flex ">        
+                    <input placeholder="Search" type="search" class="form-control"/>
+                    </form>
+                </NavItem>
+               */}
+                  <LinkContainer to='/players'>
                 <Nav.Link>
                   <FaFutbol /> Players
                 </Nav.Link>
               </LinkContainer>
-
-              {/* Added Player Comparison Link */}
               <LinkContainer to='/compare'>
                 <Nav.Link>
                   <FaFutbol /> Compare Players
@@ -61,12 +78,57 @@ const Header = () => {
               </LinkContainer>
 
 
-              <LinkContainer to='/login'>
-                <Nav.Link>
-                  <FaUser /> Sign In
-                </Nav.Link>
-              </LinkContainer>
 
+                  <LinkContainer to='/dashboard'>
+                    <Nav.Link >
+                      Dashboard
+                    </Nav.Link>
+                  </LinkContainer>
+                  
+                    <Nav.Link >
+                      <ThemeToggle/>
+                    </Nav.Link>
+                    
+                  <NavDropdown
+                    title={
+                      <img
+                        src={user?.profilePhoto || '/images/L. Messi.jpg' } //it will be coming from DB
+                        alt='Profile'
+                        style={{
+                          width: '30px',
+                          height: '30px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                        }}
+                      />
+                    }
+                    id='basic-nav-dropdown'
+                    align='end'
+                  >
+
+                    <NavDropdown.Item href='#action/3.1'>
+                    Edit Profile
+                    <Nav.Link >
+                      {/* <ThemeToggle/> */}
+                    </Nav.Link>
+                    </NavDropdown.Item>
+
+                    <NavDropdown.Item onClick={handleLogout}>
+                      Logout
+                    </NavDropdown.Item>
+
+                  </NavDropdown>
+
+                 
+                </>
+              ) : (
+
+                <LinkContainer to='/signIn'>
+                  <Nav.Link>
+                    <FaUser /> Sign In
+                  </Nav.Link>
+                </LinkContainer>
+              )}
 
             </Nav>
           </Navbar.Collapse>

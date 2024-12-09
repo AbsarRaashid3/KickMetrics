@@ -210,7 +210,7 @@ table th {
   background-position: center;
 }
 
-.overlay {
+.overlay1 {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -690,3 +690,333 @@ input[type="range"] {
   background: #165118;
   color: white;
 }
+
+
+.dashboard-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* General Styling for User Dashboard */
+.user-dashboard {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+/* FIFA Card */
+.fifa-card {
+  max-width: 350px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background: linear-gradient(135deg, #f9f9f9, #eaeaea);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.fifa-card .player-image {
+  max-width: 120px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.fifa-card .player-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.fifa-card .player-stats p,
+.fifa-card .player-insights p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.fifa-card .player-insights h4 {
+  font-size: 1.2rem;
+  margin-top: 15px;
+}
+
+/* Favorite Players Section */
+.favorites-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.favorite-card {
+  width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 15px;
+  background: #ffffff;
+  animation: scaleUp 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.favorite-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+.favorite-image {
+  max-width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.favorite-details h4 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Add Favorite Player Dropdown */
+.add-favorite-dropdown {
+  margin-top: 15px;
+  max-width: 300px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+
+/* General Styling for Coach Dashboard */
+.coach-dashboard {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+/* Player Analysis Section */
+.player-analysis {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* Chart Containers */
+.chart-container {
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* Favorite Players Section */
+.favorites-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.favorite-card {
+  width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 15px;
+  background: #ffffff;
+  animation: scaleUp 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.favorite-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+.favorite-image {
+  max-width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.favorite-details h4 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Notes Section */
+.notes-section {
+  margin-top: 20px;
+}
+
+.notes-list {
+  margin-top: 10px;
+}
+
+.note-item {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* General Styling for Scout Dashboard */
+.scout-dashboard {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+/* Favorite Players Section */
+.favorites-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.favorite-card {
+  width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 15px;
+  background: #ffffff;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.favorite-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+.favorite-image {
+  max-width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.favorite-details h4 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Notes Section */
+.notes-section {
+  margin-top: 20px;
+}
+
+.notes-list {
+  margin-top: 10px;
+}
+
+.note-item {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* Footer Styling */
+.footer-container {
+  background-color: #1a1a1a;
+  color: #f8f9fa;
+  font-family: "Arial", sans-serif;
+}
+
+.footer-top {
+  border-bottom: 1px solid #444;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.footer-about h5,
+.footer-links h5,
+.footer-social h5 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #f8f9fa;
+}
+
+.footer-about p {
+  font-size: 0.9rem;
+  color: #d1d1d1;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+  color: #f8f9fa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+  color: #007bff;
+}
+
+.footer-social .social-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footer-social .social-icons a {
+  font-size: 1.2rem;
+  color: #f8f9fa;
+  transition: color 0.3s ease;
+}
+
+.footer-social .social-icons a:hover {
+  color: #007bff;
+}
+
+.footer-bottom {
+  font-size: 0.85rem;
+  color: #d1d1d1;
+}
+
+.footer-bottom a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+

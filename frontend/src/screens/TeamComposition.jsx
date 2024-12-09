@@ -16,15 +16,15 @@ const TeamComposition = () => {
   const positions = [
     { id: "GK", name: "Goalkeeper", top: "85%", left: "45%" },
     { id: "LB", name: "Left Back", top: "65%", left: "10%" },
-    { id: "CB1", name: "Center Back 1", top: "65%", left: "35%" },
-    { id: "CB2", name: "Center Back 2", top: "65%", left: "55%" },
+    { id: "CB", name: "Center Back ", top: "65%", left: "35%" },
+    { id: "CB", name: "Center Back ", top: "65%", left: "55%" },
     { id: "RB", name: "Right Back", top: "65%", left: "90%" },
     { id: "LM", name: "Left Midfielder", top: "40%", left: "10%" },
-    { id: "CM1", name: "Center Midfielder 1", top: "40%", left: "35%" },
-    { id: "CM2", name: "Center Midfielder 2", top: "40%", left: "55%" },
+    { id: "CM", name: "Center Midfielder ", top: "40%", left: "35%" },
+    { id: "CM", name: "Center Midfielder ", top: "40%", left: "55%" },
     { id: "RM", name: "Right Midfielder", top: "40%", left: "90%" },
-    { id: "ST1", name: "Striker 1", top: "20%", left: "35%" },
-    { id: "ST2", name: "Striker 2", top: "20%", left: "55%" },
+    { id: "ST", name: "Striker ", top: "20%", left: "35%" },
+    { id: "ST", name: "Striker ", top: "20%", left: "55%" },
   ];
 
   const handlePositionClick = (position) => {
