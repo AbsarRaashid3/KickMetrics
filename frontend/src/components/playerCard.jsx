@@ -8,7 +8,7 @@ const PlayerCard = ({ player, onClick }) => {
     return `${x},${y}`;
   });
 
-  // Add bottom points for the shaded area (x-axis)
+  // Add bottom points for the shaded area (x-axis) x axis
   const shadedPoints = [
     `0,100`, // Start at bottom-left
     ...svgPoints,
