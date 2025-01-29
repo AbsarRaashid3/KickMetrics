@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { validateEmail, validatePassword, validateUsername } from "../FormValidation";
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +10,7 @@ import '../assets/styles/authScreen.css';
 Use useSelector to read from the Redux store.
 useState triggers re-rendering. it is used to store/manage  the dynamic data in component */
 
+
 function AuthScreen() {
     const [signIn, toggle] = useState(true);       // Initially, SignIn page is active
     const [email, setEmail] = useState('');
@@ -18,101 +20,73 @@ function AuthScreen() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+    const isAdmin=useSelector((state) => state.auth.user?.isAdmin);
 
     const SignInHandler = (e) => {
         e.preventDefault();
-    
-        // Use state variables for email and password input
-        const emailError = validateEmail(email);
-        if (emailError) {
-            setError(emailError);
-            return;
-        }
-    
-        const passwordError = validatePassword(password);
-        if (passwordError) {
-            setError(passwordError);
-            return;
-        }
-    
-        // Retrieve users from localStorage
+        const emailError = validateEmail(email); if (emailError) { setError(emailError); return; }
+        const passwordError = validatePassword(password); if (passwordError) { setError(passwordError); return; }
         const users = JSON.parse(localStorage.getItem('users')) || {};
-    
-        // Check if email exists
-        if (!users[email]) {
-            setError("No account found with this email.");
-            return;
-        }
-    
-        // Validate the password
-        if (users[email].password !== password) {
-            setError("Invalid password.");
-            return;
-        }
-    
-        // Simulate token and log in
-        const token = "jwt-token"; // This would be from a backend in a real scenario
-        dispatch(login({ user: users[email] })); // Dispatch login action
-    
-        // Clear errors and reset form
+
+        if (!users[email]) { setError("No account found with this email."); return; }
+        if (users[email].password !== password) { setError("Invalid password."); return; }
+        const token = "jwt-token";
+        users[email] = {
+            ...users[email],  // Preserve the previous data (in case it exists)
+            email: email,
+            password: password,
+            username: username,
+            authToken: token,
+           
+          };
+        // Store the updated users collection back in localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+
+       
+        dispatch(login({ user: users[email] }));
         setError('');
-        navigate('/dashboard'); // Redirect to the dashboard
     };
-    
 
     const SignUpHandler = (e) => {
         e.preventDefault();
-    
-        const emailError = validateEmail(email);
-        if (emailError) {
-            setError(emailError);
-            return;
-        }
-    
-        const passwordError = validatePassword(password);
-        if (passwordError) {
-            setError(passwordError);
-            return;
-        }
-    
-        const userNameError = validateUsername(username);
-        if (userNameError) {
-            setError(userNameError);
-            return;
-        }
-    
-        // Retrieve existing users from localStorage
+        const emailError = validateEmail(email); if (emailError) { setError(emailError); return; }
+        const passwordError = validatePassword(password); if (passwordError) { setError(passwordError); return; }
+        const userNameError = validateUsername(username); if (userNameError) { setError(userNameError); return; }
+
         const users = JSON.parse(localStorage.getItem('users')) || {};
-    
-        // Check if user already exists
-        if (users[email]) {
-            setError("User already exists with this email.");
-            return;
-        }
-    
-        // Save new user to localStorage
-        users[email] = {
-            email,
-            password,
-            username,
-            authToken: "simulated-jwt-token", // Simulated token
-        };
-        localStorage.setItem('users', JSON.stringify(users));
-    
-        // Dispatch login action and redirect
-        dispatch(login({ user: users[email] }));
+        if (users[email]) { setError("User already exists with this email."); return; }
         setError('');
-        navigate('/dashboard'); // Redirect to dashboard
+        const token = "jwt-token";          // In a real app, this would come from the backend and is stored in HTTP-only cookies that is not possible without backend
+        const isAdmin=false;
+
+        setTimeout(() => {                   // Use a timeout to ensure the state is updated before triggering the alert
+        users[email] = {
+            ...users[email],  // Preserve the previous data (in case it exists)
+            email: email,
+            password: password,
+            username: username,
+            authToken: token,
+            isAdmin:isAdmin
+          };
+        localStorage.setItem('users', JSON.stringify(users));
+
+      
+            dispatch(login({ user: users[email] }));
+        }, 100);
     };
-    
 
-    // Redirect to dashboard if authenticated
-    React.useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/dashboard'); // Redirect to Dashboard
+    // navigatiosn after signIn/signUp
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/signIn'); // Redirect to sign-in if not authenticated
         }
-    }, [isAuthenticated, navigate]);
+        else if (isAdmin) {
+            navigate('/AdminPanel'); // Redirect to Admin Panel for admins
+        }else {
+            navigate('/dashboard'); // Redirect to user Dashboard for non-admins
+        }
 
+    }, [isAuthenticated, isAdmin, navigate]);
 
     return (
         <div className="authForm-container">

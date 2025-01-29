@@ -10,6 +10,7 @@ const App = () => {
 
   return (
     <>
+
       <Header />  
       <main className='py-3'>
         {isAuthPage || isResetPassPage ? (

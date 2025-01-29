@@ -1,8 +1,35 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+const createAdmin = () => {
+    
+  const users = JSON.parse(localStorage.getItem('users')) || {};
+  const email = "admin@gmail.com";
+  if (users[email]) { 
+      return false; //don't create the admin if present
+  }
+
+  users[email] = {
+      ...users[email],  // Preserve the previous data (in case it exists)
+      email: email,
+      password: "admin@123",
+      username: "admin",
+      authToken: "jwt-token",
+      isAdmin: true
+    };
+
+  // Store the admin collection back in localStorage
+  localStorage.setItem('users', JSON.stringify(users));
+
+};
+
 const LandingScreen = () => {
+  useEffect(() => {
+    // Ensure the admin is created once when the component mounts
+    createAdmin();
+}, []);
+
   const styles = {
     landingScreen: {
       backgroundImage: "url('/images/landing-background.png')", // Path to the background image
