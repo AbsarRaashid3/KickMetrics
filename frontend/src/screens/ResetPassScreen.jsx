@@ -2,7 +2,7 @@ import { useState } from 'react'; // to manage state
 import { Row, Col, Form, Button, FormGroup, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom'; // react-router component for navigation without reloading the site
 import './../assets/styles/authScreen.css';
-import { validateEmail, validatePassword } from "../FormValidations";
+import { validateEmail, validatePassword } from "../FormValidation";
 
 const ResetPassScreen = () => {
     const [email, setEmail] = useState('');
@@ -54,7 +54,7 @@ const ResetPassScreen = () => {
                 
                 <Row className="py-3">
                     <Col className="text-center">
-                        <Link to="/login" className='anchor'>Back to SignIn?</Link>
+                        <Link to="/signIn" className='anchor'>Back to SignIn?</Link>
                     </Col>
                 </Row>
             </div>

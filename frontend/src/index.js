@@ -14,35 +14,59 @@ import PlayerDetails from './screens/PlayerDetails';
 import AuthForm from './screens/authScreen';
 import ResetPassword from './screens/ResetPassScreen';
 import store from "./redux/stores/Store";
-import Dashboard from './screens/Dashboard';
+import DashboardScreen from "./screens/DashboardScreen";
+import UserDashboard from "./screens/UserDashboard";
+import CoachDashboard from "./screens/CoachDashboard";
+import ScoutDashboard from "./screens/ScoutDashboard";
 import PlayerPerformanceAnalysis from './screens/PlayerPerformanceAnalysis';
 import MarketValue from './screens/MarketValue';
 import MarketValuePrediction from './screens/MarketValuePrediction';
 import WhatIf from './screens/WhatIfSimulator';
-import RoleDecision from './screens/RoleDecision';
 import AdminPanel from './screens/AdminPanel';
+import LandingScreen from "./screens/LandingScreen";
+import TeamC from './screens/TeamComposition';
+import ComparePlayersScreen from "./screens/ComparePlayersScreen";
+import EditUserProfile from './components/EditUserProfile';
+
 // Wrapper Component for Protected Routes
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, adminOnly = false }) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  return isAuthenticated ? children : <Navigate to="/signIn" />;
+  const isAdmin = useSelector((state) => state.auth.user?.isAdmin);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/signIn" />;
+  }
+
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
 };
+
 //add routes there
 const router = createBrowserRouter(
   createRoutesFromElements(
 
     <Route path='/' element={<App />}>
-      <Route index={true} path='/' element={<RoleDecision />} />
+      <Route index={true} path='/' element={<LandingScreen />} />
       <Route path='players' element={<HomeScreen />} />
       <Route path='player/:id' element={<PlayerDetails />} />
       {/* <Route path='/player' element={<HomeScreen />} /> */}
-      <Route path='/AdminPanel' element={<AdminPanel />} />
       <Route path='/signIn' element={<AuthForm />} />
-
       <Route path='/forgot-password' element={<ResetPassword />} />
+
+      <Route path='/AdminPanel'
+        element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminPanel />
+          </ProtectedRoute>
+        } />
+
       <Route path='/dashboard'
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashboardScreen />
           </ProtectedRoute>
         } />
 
@@ -50,6 +74,43 @@ const router = createBrowserRouter(
         element={
           <ProtectedRoute>
             <PlayerPerformanceAnalysis />
+          </ProtectedRoute>
+        } />
+
+      <Route path='/dashboard/users'
+        element={
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
+        } />
+
+
+      <Route path='/dashboard/coaches'
+        element={
+          <ProtectedRoute>
+            <CoachDashboard />
+          </ProtectedRoute>
+        } />
+
+
+      <Route path='/dashboard/scouts'
+        element={
+          <ProtectedRoute>
+            <ScoutDashboard />
+          </ProtectedRoute>
+        } />
+
+      <Route path='compare'
+        element={
+          <ProtectedRoute>
+            <ComparePlayersScreen />
+          </ProtectedRoute>
+        } />
+
+      <Route path='/teamC'
+        element={
+          <ProtectedRoute>
+            <TeamC />
           </ProtectedRoute>
         } />
 
@@ -73,24 +134,17 @@ const router = createBrowserRouter(
             <WhatIf />
           </ProtectedRoute>
         } />
+      <Route path='/edit-user-profile'
+        element={
+          <ProtectedRoute>
+            <EditUserProfile />
+          </ProtectedRoute>
+        } />
 
     </Route>
   )
 );
 
-// const router = createBrowserRouter(
-//   createRoutesFromElements(
-//     <Route path='/' element={<App />}>
-//       <Route index={true} path='/' element={<HomeScreen />} />
-//       <Route path='playersAll' element={<HomeScreen />} />
-//       <Route path='player/:id' element={<PlayerDetails />} />
-//       <Route path="performance-analysis" element={<PlayerPerformanceAnalysis />} />
-//       <Route path="market-value" element={<MarketValue/>} />
-//       <Route path="/prediction/:playerId" element={<MarketValuePrediction />} />
-//       <Route path="/whatif" element={<WhatIf />} />
-//     </Route>
-//   )
-// );
 
 //router
 const root = ReactDOM.createRoot(document.getElementById('root'));

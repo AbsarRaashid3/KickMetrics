@@ -179,11 +179,11 @@ const WhatIfSimulator = () => {
       {/* Metric Selector */}
       <div className="metric-selector">
         <h3>Select Metrics to Adjust (5 Max):</h3>
-        <div className="metric-buttons">
+        <div className="metric-buttons  ">
           {allMetrics.map((metric) => (
             <button
               key={metric}
-              className={`metric-btn ${
+              className={`metric-btn  ${
                 selectedMetrics.includes(metric) ? "selected" : ""
               }`}
               onClick={() => handleMetricSelection(metric)}

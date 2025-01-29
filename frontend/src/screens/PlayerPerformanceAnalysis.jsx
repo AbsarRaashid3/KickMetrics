@@ -157,7 +157,7 @@ const PlayerPerformanceAnalysis = () => {
         </Row>
 
         {/* Graphical Insights Button */}
-        <Button variant="primary" onClick={toggleGraphs}>
+        <Button variant="primary" onClick={toggleGraphs} className="football-button">
           Graphical Insights
         </Button>
 
@@ -165,14 +165,14 @@ const PlayerPerformanceAnalysis = () => {
         {showGraphs && (
           <div>
             <div className="mb-5">
-              <h3 className="text-center">Performance Metrics (Comparison)</h3>
+              <h3 className="text-center black">Performance Metrics (Comparison)</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={performanceMetrics}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid stroke="#333333" strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#82ca9d" />
+                  <Line type="monotone" dataKey="value" stroke="#000000" />
                   <Line type="monotone" dataKey="industryStandards" stroke="#8884d8" />
                 </LineChart>
               </ResponsiveContainer>

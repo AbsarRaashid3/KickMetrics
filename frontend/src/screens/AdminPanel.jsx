@@ -1,5 +1,4 @@
-
-import { Navbar, Nav, NavDropdown, Button, Container } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown, Button, Container } from 'react-bootstrap';
 import { Link } from 'react-scroll';
 import React, { useState, useEffect } from 'react';
 import PlayerTable from '../components/ViewPlayers';
@@ -7,10 +6,18 @@ import AddPlayerForm from '../components/AddPlayerForm';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import playersData from '../players'
-import { validatePlayerInput } from '../FormValidations'
+import { validatePlayerInput } from '../FormValidation'
+import EditPlayerForm from '../components/EditPlayerForm';
+import { FaFutbol, FaUsers,FaInbox } from 'react-icons/fa';
 
 
 const AdminPanel = () => {
+
+    const totUsers = JSON.parse(localStorage.getItem('users')) || {};
+    const totUsersCount = (Object.keys(totUsers).length) > 0 ? (Object.keys(totUsers).length) - 1 : 0;
+    const [showPlayers, setShowPlayers] = useState(true);
+    const [showAddPlayers, setShowAddPlayers] = useState(false);
+    const [showEditPlayers, setShowEditPlayers] = useState(false);
     const [errors, setErrors] = useState('');
     const [players, setPlayers] = useState(playersData);
     const [editPlayer, setEditPlayer] = useState(null);
@@ -26,7 +33,6 @@ const AdminPanel = () => {
         nationality: '',
         overall_rating: '',
         potential: '',
-        long_shots: '',
         dribbling: '',
         crossing: '',
         finishing: '',
@@ -58,87 +64,72 @@ const AdminPanel = () => {
         sliding_tackle: ''
     });
 
-    const convertDate = (e) => {
-        let d = e.target.value;
-        d = d.split('-'); 
-        d = d[1]+"/"+d[2]+"/"+d[0];
-        return d;
-    };
-
-    // Handle input change for both adding and editing
-    const handleInputChange = (name, value) => {
-        setErrors((prevErrors) => ({ ...prevErrors, [name]: '' })); // Clear errors when typing
-
-        if (name === 'image' && value instanceof File) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setPreviewImage(reader.result);
-                if (editPlayer) {
-                    setEditPlayer({ ...editPlayer, image: reader.result });
-                } else {
-                    setNewPlayer({ ...newPlayer, image: reader.result });
-                }
-            };
-            reader.readAsDataURL(value); // Update the preview when an image is selected
+    function changeMenu(type) {
+        if (type === "addPlayers") {
+            setShowAddPlayers(true);
+            setShowPlayers(false);
+            setShowEditPlayers(false);
         }
-        else {
-            if (editPlayer) {
-                setEditPlayer({ ...editPlayer, [name]: value });
-            } else {
-                setNewPlayer({ ...newPlayer, [name]: value });
-            }
+        if (type === "viewPlayers") {
+            setShowAddPlayers(false);
+            setShowPlayers(true);
+            setShowEditPlayers(false);
+
         }
     };
-
-
 
     //remove player
-
     const removePlayer = (id) => {
         const updatedPlayers = players.filter((player) => player._id !== id);
         setPlayers(updatedPlayers);
         toast.success('Player removed successfully!');
     };
 
+    const handleInputChange = (e) => {
+        const { name, value, files } = e.target;
+        if (name === "image" && files) {
+            const file = files[0];
+            const fieldError = validatePlayerInput(name, file, newPlayer); // Pass the file object for validation
+            setErrors((prevErrors) => ({ ...prevErrors, ...fieldError }));
 
-    // const handleAddPlayerSubmit = (e) => {
-    //     e.preventDefault();
+            if (!fieldError.image) {  // Only update the preview if validation passes
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // Save the Base64 string of the image
+                    setPreviewImage(reader.result);
+                    setNewPlayer({ ...newPlayer, [name]: reader.result });  // Set the Base64 string in newPlayer state
+                };
+                reader.readAsDataURL(file); // Read the file as a Data URL (Base64)
+            }
+        }
+        else {
+            const fieldError = validatePlayerInput(name, value, newPlayer);
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: fieldError[name] || null, // If no error, set to null to clear previous error
+            }));
+            setNewPlayer({ ...newPlayer, [name]: value });
+        }
+    };
 
-    //     const validationErrors = Object.keys(newPlayer).reduce((acc, key) => {
-    //         const error = validatePlayerInput(key, newPlayer[key], newPlayer);
-    //         if (Object.keys(error).length > 0) {
-    //             acc[key] = error[key];
-    //         }
-    //         return acc;
-    //     }, {});
-
-    //     if (Object.keys(validationErrors).length > 0) {
-    //         setErrors(validationErrors);
-    //         return;
-    //     }
-
-    //     const playerWithId = { ...newPlayer, _id: players.length + 1 };
-    //     setPlayers([...players, playerWithId]);
-    //     setNewPlayer({});  // Reset the form state
-    //     setPreviewImage('');  // Reset the image preview
-    // };
-    const handleAddPlayerSubmit = (e) => {
+    const addPlayer = (e) => {
         e.preventDefault();
-        const validationErrors = Object.keys(newPlayer).reduce((acc, key) => {
+        // Run a final validation pass before adding
+        const validationErrors = {};
+        Object.keys(newPlayer).forEach((key) => {
             const error = validatePlayerInput(key, newPlayer[key], newPlayer);
             if (Object.keys(error).length > 0) {
-                acc[key] = error[key];
+                validationErrors[key] = error[key];
             }
-            return acc;
-        }, {});
-    
+        });
+
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
+
         const playerWithId = { ...newPlayer, _id: players.length + 1 };
         setPlayers([...players, playerWithId]);
-        // Reset states
         setNewPlayer({
             image: '',
             full_name: '',
@@ -150,13 +141,12 @@ const AdminPanel = () => {
             nationality: '',
             overall_rating: '',
             potential: '',
-            long_shots: '',
-            dribbling: '',
             crossing: '',
             finishing: '',
             heading_accuracy: '',
             short_passing: '',
             volleys: '',
+            dribbling: '',
             curve: '',
             freekick_accuracy: '',
             long_passing: '',
@@ -181,145 +171,194 @@ const AdminPanel = () => {
             sliding_tackle: ''
         });
         setPreviewImage('');
-        setErrors({});
-        toast.success('Player added successfully!');
+        setShowAddPlayers(false); // Hide the add player form
+        toast.success('Player added successfully!'); // Add success notification
     };
-    
-    const handleEditPlayerSubmit = (e) => {
+
+    // Handle image and form input changes for editing a player
+    const handleEditInputChange = (e) => {
+        const { name, value, files } = e.target;
+
+        if (name === "image" && files) {
+            const file = files[0];
+            const fieldError = validatePlayerInput(name, file, editPlayer);
+            setErrors((prevErrors) => ({ ...prevErrors, ...fieldError }));
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result);
+                setEditPlayer({ ...editPlayer, image: reader.result });
+            };
+            reader.readAsDataURL(file);
+        } else {
+            const fieldError = validatePlayerInput(name, value, editPlayer);
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: fieldError[name] || null,
+            }));
+            setEditPlayer({ ...editPlayer, [name]: value });
+        }
+    };
+
+    // Handle form submit for editing a player
+    const handleEditSubmit = (e) => {
         e.preventDefault();
-    
-        const validationErrors = Object.keys(editPlayer).reduce((acc, key) => {
+        const validationErrors = {};
+
+        // Validate all fields before updating player
+        Object.keys(editPlayer).forEach((key) => {
             const error = validatePlayerInput(key, editPlayer[key], editPlayer);
             if (Object.keys(error).length > 0) {
-                acc[key] = error[key];
+                validationErrors[key] = error[key];
             }
-            return acc;
-        }, {});
-    
+        });
+
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
-    
+
         const updatedPlayers = players.map((player) =>
             player._id === editPlayer._id ? editPlayer : player
         );
         setPlayers(updatedPlayers);
-    
-        // Reset states
         setEditPlayer(null);
-        setNewPlayer({
-            image: '',
-            full_name: '',
-            birth_date: '',
-            age: '',
-            height_cm: '',
-            weight_kgs: '',
-            positions: '',
-            nationality: '',
-            overall_rating: '',
-            potential: '',
-            long_shots: '',
-            dribbling: '',
-            crossing: '',
-            finishing: '',
-            heading_accuracy: '',
-            short_passing: '',
-            volleys: '',
-            curve: '',
-            freekick_accuracy: '',
-            long_passing: '',
-            ball_control: '',
-            acceleration: '',
-            sprint_speed: '',
-            agility: '',
-            reactions: '',
-            balance: '',
-            shot_power: '',
-            jumping: '',
-            stamina: '',
-            strength: '',
-            aggression: '',
-            interceptions: '',
-            positioning: '',
-            vision: '',
-            penalties: '',
-            composure: '',
-            marking: '',
-            standing_tackle: '',
-            sliding_tackle: ''
-        });
-        setPreviewImage('');
-        setErrors({});
+        setPreviewImage(null); // Set image preview on edit
+        setShowEditPlayers(false);
         toast.success('Player updated successfully!');
     };
 
-        const handleEditClick = (player) => {
+    const handleEditClick = (player) => {
+        // Hide/Show cards 
+        setShowEditPlayers(true);
+        setShowAddPlayers(false);
+        setShowPlayers(false);
+        // ==============
+
         setEditPlayer(player);
-        setNewPlayer(player);  // Populate form fields for editing
+        setPreviewImage(player.image); // Set image preview on edit
     };
 
     return (
         <Container>
             <ToastContainer />
-            <Navbar expand="lg" className="navbar">
-                <Nav className="navbar-nav">
-                    <Nav.Item>
+            <Navbar expand="lg" className="navbar" >
+                <Nav className="navbar-nav mx-auto">
+                    <Dropdown>
+                        {/* Custom Hamburger Toggler */}
+                        <Dropdown.Toggle as="div" id="dropdown-basic" className="hamburgerToggleStyle custom-dropdown-toggle">
+                            <span className="hamburgerLineStyle"></span>
+                            <span className="hamburgerLineStyle"></span>
+                            <span className="hamburgerLineStyle"></span>
+                        </Dropdown.Toggle>
 
-                        <NavDropdown aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigation" >
-                            <button className="navbar-toggler" type="button" aria-label="Toggle navigation">
-                                <span className="navbar-toggler-icon"></span>
-                            </button>
-
-                            <NavDropdown.Item>
-                                <Link to="addSection" smooth={true} duration={300}>
+                        {/* Dropdown Menu */}
+                        <Dropdown.Menu className="custom-dropdown-menu"  >
+                            <Dropdown.Item >
+                                <Link to="addSection"
+                                    smooth={true}
+                                    duration={300}
+                                    onClick={() => changeMenu('addPlayers')}>
                                     <i className="lnr-inbox" /> Add Players
                                 </Link>
-                            </NavDropdown.Item>
-                            <NavDropdown.Item>
-                                <Link to="viewSection" smooth={true} duration={300}>
+                            </Dropdown.Item>
+                            <Dropdown.Item >
+                                <Link to="viewSection"
+                                    smooth={true}
+                                    duration={300}
+                                    onClick={() => changeMenu('viewPlayers')}>
                                     <i className="lnr-book" /> View Players
                                 </Link>
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <div className="p-3 text-right">
-                                <Button variant="link">Settings</Button>
-                            </div>
-                        </NavDropdown>
-
-                    </Nav.Item>
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Nav>
             </Navbar>
 
+            <Container className='mb-5 mt-3'>
+                <div className="row">
+                    <div className="col-lg-4 col-sm-6">
+                        <div className="card" style={gradient1}>
+                            <div className="card-body text-center">
+                                <h3 className="card-title text-white">Total Players</h3>
+                                <h2 className="text-white ">{players.length}</h2>
+                                <FaFutbol fontSize={35} color='white' />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-4 col-sm-6">
+                        <div className="card" style={gradient2}>
+                            <div className="card-body text-center">
+                                <h3 className="card-title text-white">Total Users</h3>
+                                <h2 className="text-white">{totUsersCount}</h2>
+                                <FaUsers fontSize={35} color='white' />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-4 col-sm-6">
+                        <div className="card" style={gradient3}>
+                            <div className="card-body text-center">
+                                <h3 className="card-title text-white">Total Enquiries</h3>
+                                <h2 className="text-white">...</h2>
+                                <FaInbox fontSize={35} color='white' />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Container>
 
             <Container>
-                <Container id="viewSection" className="box">
-                    <h4>-- View Players --</h4>
-                    <PlayerTable
-                        players={players}
-                        removePlayer={removePlayer}
-                        handleEditClick={handleEditClick}
-                    />
-                </Container>
-                <Container id="addSection" className="box">
-                    <h4>{editPlayer ? '-- Edit Player --' : '-- Add Player --'}</h4>
+                {showPlayers && (
+                    <Container id="viewSection" className="box">
+                        <h4>-- Players --</h4>
+                        <PlayerTable
+                            players={players}
+                            removePlayer={removePlayer}
+                            handleEditClick={handleEditClick}
+                        />
+                    </Container>
+                )}
+                {showAddPlayers && (
+                    <Container id="addSection" className="box">
+                        <h4>-- Add Players --</h4>
+                        <AddPlayerForm
+                            newPlayer={newPlayer}
+                            handleInputChange={handleInputChange}
+                            addPlayer={addPlayer}
+                            errors={errors} // Pass the errors object as a prop
+                            previewImage={previewImage}
+                        />
+                    </Container>
+                )}
 
-                    <AddPlayerForm
-                        key={editPlayer ? `edit-${editPlayer._id}` : `add-${JSON.stringify(newPlayer)}`}
-                        player={editPlayer || newPlayer}
-                        handleSubmit={editPlayer ? handleEditPlayerSubmit : handleAddPlayerSubmit}
-                        errors={errors}
-                        handleInputChange={handleInputChange}
-                        previewImage={previewImage}
-                    />
-
-
-                </Container>
-
+                {(showEditPlayers && editPlayer) && (
+                    <Container id="editSection" className="box">
+                        <h4>-- Edit Player --</h4>
+                        <EditPlayerForm
+                            editPlayer={editPlayer}
+                            handleEditInputChange={handleEditInputChange}
+                            handleEditSubmit={handleEditSubmit}
+                            errors={errors} // Pass the errors object as a prop
+                            previewImage={previewImage}
+                        />
+                    </Container>
+                )}
 
             </Container>
+
         </Container>
     );
+};
+
+
+const gradient1 = {
+    backgroundImage: "linear-gradient(230deg,rgb(103, 166, 168),rgb(154, 185, 172))"
+};
+
+const gradient2 = {
+    backgroundImage: "linear-gradient(230deg,rgb(71, 136, 71), #fbaaa2)"
+};
+const gradient3 = {
+    backgroundImage: "linear-gradient(230deg,rgb(143, 204, 176), #fbaaa2)"
 };
 
 export default AdminPanel;

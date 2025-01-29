@@ -8,7 +8,7 @@ const PlayerCard = ({ player, onClick }) => {
     return `${x},${y}`;
   });
 
-  // Add bottom points for the shaded area (x-axis)
+  // Add bottom points for the shaded area (x-axis) x axis
   const shadedPoints = [
     `0,100`, // Start at bottom-left
     ...svgPoints,
@@ -21,7 +21,7 @@ const PlayerCard = ({ player, onClick }) => {
         className="card-background"
         style={{ backgroundImage: `url(${player.image})` }}
       >
-        <div className="overlay"></div>
+        <div className="overlay1"></div>
         <div className="card-content">
           <div className="player-ranking">#{player.rank}</div>
           <h2 className="player-name">{player.name}</h2>

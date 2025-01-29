@@ -2,6 +2,17 @@ main {
   min-height: 80vh;
 }
 
+
+body {
+  background-image: url('../IMG_0590.JPG');
+
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Avoid repeating the image */
+  background-attachment: fixed; /* Keep the image fixed while scrolling */
+  color:black /* Adjust text color for contrast if needed */
+}
+
 .rating span {
   margin: 0.1rem;
 }
@@ -72,18 +83,18 @@ table th {
 }
 
 .return-button {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #757677;
+  border-color: #757677;
   color: white;
-  padding: 10px 20px;
+  padding: 5px 18px;
   font-size: 16px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
 
 .return-button:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: #757677;
+  border-color: #757677;
 }
 
 .market-value-container {
@@ -199,7 +210,7 @@ table th {
   background-position: center;
 }
 
-.overlay {
+.overlay1 {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -411,19 +422,7 @@ h2, h3 {
   display: block;
 }
 
-.metric-buttons button {
-  margin: 5px;
-  padding: 10px;
-  border: none;
-  background: #eee;
-  cursor: pointer;
-  border-radius: 4px;
-}
 
-.metric-buttons button.selected {
-  background: #4caf50;
-  color: white;
-}
 
 .sliders .slider {
   margin-bottom: 10px;
@@ -483,20 +482,582 @@ input[type="range"] {
   border-radius: 5px;
   transition: width 0.3s;
 }
-/* dashboard.css */
-.box {
-  background-color: rgba(80, 136, 173, 0.2); /* Semi-transparent background */
-  border-radius: 10px; /* Rounded corners */
+
+.team-composition {
+  font-family: Arial, sans-serif;
+  text-align: center;
   padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin-bottom: 20px;
+}
+
+.field {
+   /* Adjust the path if needed */
+  background-size: cover;
+  background-position: center;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  max-width: 600px;
+  height: 800px;
+  margin: 20px auto;
+  background: url('./IMG_0571.JPG') no-repeat center center;
+  background-size: cover;
+  border: 2px solid #333;
+  border-radius: 10px;
+}
+
+.position {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
-table th, table td {
-  text-align: left; 
-  padding: 10px; 
-  color: #000; 
+.position .player-icon {
+  font-size: 30px;
+  color:  #eaeaea;
+}
+
+.position span {
+  font-size: 12px;
+  color: white;
+  text-shadow: 0px 0px 5px #000;
+}
+
+.position.active .player-icon {
+  color: #127d12;
+}
+
+.player-selection ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.player-selection li {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.player-selection li:hover {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.sticky-note {
+  margin: 20px auto;
+  width: 300px;
+  height: 200px;
+  background: #fffa8c;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  position: relative;
+}
+
+.sticky-note::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 20px;
+  background: #ffcd4c;
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+}
+
+.sticky-note textarea {
+  width: 100%;
+  height: 100%;
+  background: transparent;
   border: none;
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  padding: 5px;
 }
 
+
+.alert-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-content {
+  background: #285e20;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.football-icon {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.close-button {
+  background-color: #090908;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.close-button:hover {
+  background-color: #739c6d;
+}
+.player-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.player-item {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.3s ease;
+}
+
+.player-item:hover {
+  background-color: #5a845f87; /* Highlight on hover */
+  color: #fff;
+}
+
+.football-button {
+  background-color: #000000;
+  color: white;
+  border: 2px solid #0e4a2a;
+  border-radius: 25px;
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.football-button:hover {
+  background-color: white;
+  color: #000000;
+  transform: scale(1.05);
+}
+
+.close-button {
+  margin-top: 15px;
+}
+
+.metric-buttons button {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #000000;
+  color: white;
+  border: 2px solid #0e4a2a;
+  border-radius: 25px;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.metric-buttons button.selected {
+  background: #165118;
+  color: white;
+}
+
+
+.dashboard-card {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* General Styling for User Dashboard */
+.user-dashboard {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+/* FIFA Card */
+.fifa-card {
+  max-width: 350px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background: linear-gradient(135deg, #f9f9f9, #eaeaea);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.fifa-card .player-image {
+  max-width: 120px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.fifa-card .player-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.fifa-card .player-stats p,
+.fifa-card .player-insights p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.fifa-card .player-insights h4 {
+  font-size: 1.2rem;
+  margin-top: 15px;
+}
+
+/* Favorite Players Section */
+.favorites-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.favorite-card {
+  width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 15px;
+  background: #ffffff;
+  animation: scaleUp 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.favorite-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+.favorite-image {
+  max-width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.favorite-details h4 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Add Favorite Player Dropdown */
+.add-favorite-dropdown {
+  margin-top: 15px;
+  max-width: 300px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+
+/* General Styling for Coach Dashboard */
+.coach-dashboard {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+/* Player Analysis Section */
+.player-analysis {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* Chart Containers */
+.chart-container {
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* Favorite Players Section */
+.favorites-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.favorite-card {
+  width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 15px;
+  background: #ffffff;
+  animation: scaleUp 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.favorite-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+.favorite-image {
+  max-width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.favorite-details h4 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Notes Section */
+.notes-section {
+  margin-top: 20px;
+}
+
+.notes-list {
+  margin-top: 10px;
+}
+
+.note-item {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* General Styling for Scout Dashboard */
+.scout-dashboard {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+/* Favorite Players Section */
+.favorites-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.favorite-card {
+  width: 220px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 15px;
+  background: #ffffff;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.favorite-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+}
+
+.favorite-image {
+  max-width: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.favorite-details h4 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Notes Section */
+.notes-section {
+  margin-top: 20px;
+}
+
+.notes-list {
+  margin-top: 10px;
+}
+
+.note-item {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* Footer Styling */
+.footer-container {
+  background-color: #1a1a1a;
+  color: #f8f9fa;
+  font-family: "Arial", sans-serif;
+}
+
+.footer-top {
+  border-bottom: 1px solid #444;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.footer-about h5,
+.footer-links h5,
+.footer-social h5 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #f8f9fa;
+}
+
+.footer-about p {
+  font-size: 0.9rem;
+  color: #d1d1d1;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+  color: #f8f9fa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+  color: #007bff;
+}
+
+.footer-social .social-icons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footer-social .social-icons a {
+  font-size: 1.2rem;
+  color: #f8f9fa;
+  transition: color 0.3s ease;
+}
+
+.footer-social .social-icons a:hover {
+  color: #007bff;
+}
+
+.footer-bottom {
+  font-size: 0.85rem;
+  color: #d1d1d1;
+}
+
+.footer-bottom a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+
+/* admin Panel */
+
+.custom-dropdown-toggle::after {
+  display: none !important;
+}
+
+.hamburgerToggleStyle {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  background-color: #f1f1f1;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hamburgerLineStyle {
+  display: block;
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  margin: 3px 0;
+}
+.custom-dropdown-menu {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-40%);
+  background-color: rgba(223, 205, 205, 0.9);
+  min-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+.dropdown:hover .custom-dropdown-menu {
+  display: block;
+}
+ 

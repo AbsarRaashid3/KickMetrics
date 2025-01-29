@@ -36,50 +36,73 @@ const Header = () => {
 
               {isAuthenticated ? (
                 <>
-                {/* <NavItem>
-                <form class="d-flex ">        
-                    <input placeholder="Search" type="search" class="form-control"/>
-                    </form>
-                </NavItem>
-               */}
-                  <LinkContainer to='/players'>
-                    <Nav.Link >
-                      <FaFutbol /> Players
-                    </Nav.Link>
-                  </LinkContainer>
 
-                  <LinkContainer to='/performance-analysis'>
-                    <Nav.Link >
-                       Performance Analysis
-                    </Nav.Link>
-                  </LinkContainer>
-                  
-                  <LinkContainer to='/market-value'>
-                    <Nav.Link >
-                       Market Value
-                    </Nav.Link>
-                  </LinkContainer>
+                  {/* <NavItem>
+                    <form class="d-flex ">        
+                        <input placeholder="Search" type="search" class="form-control"/>
+                        </form>
+                    </NavItem>
+                  */}
 
-                  <LinkContainer to='/what-if-simulator'>
-                    <Nav.Link >
-                       What-if Simulator
-                    </Nav.Link>
-                  </LinkContainer>
+                  {/*conditional rendering for user header menus*/}
+                  {user && user.isAdmin === false && (
+                    <>
+                      <LinkContainer to='/players'>
+                        <Nav.Link>
+                          <FaFutbol /> Players
+                        </Nav.Link>
+                      </LinkContainer>
+                      <LinkContainer to='/compare'>
+                        <Nav.Link>
+                          <FaFutbol /> Compare Players
+                        </Nav.Link>
+                      </LinkContainer>
 
-                  <LinkContainer to='/dashboard'>
-                    <Nav.Link >
-                      Dashboard
-                    </Nav.Link>
-                  </LinkContainer>
-                  
-                    <Nav.Link >
-                      <ThemeToggle/>
-                    </Nav.Link>
-                    
+                      <LinkContainer to='/performance-analysis'>
+                        <Nav.Link >
+                          <FaFutbol />Performance Analysis
+                        </Nav.Link>
+                      </LinkContainer>
+
+                      <LinkContainer to='/teamC'>
+                        <Nav.Link >
+                          <FaFutbol />Team Composition
+                        </Nav.Link>
+                      </LinkContainer>
+
+                      <LinkContainer to='/whatif'>
+                        <Nav.Link >
+                          <FaFutbol />What-If Simulator
+                        </Nav.Link>
+                      </LinkContainer>
+
+                      <LinkContainer to='/market-value'>
+                        <Nav.Link >
+                          <FaFutbol />Market Value
+                        </Nav.Link>
+                      </LinkContainer>
+
+
+
+                      <LinkContainer to='/dashboard'>
+                        <Nav.Link >
+                          Dashboard
+                        </Nav.Link>
+                      </LinkContainer>
+
+
+                      <Nav.Link >
+                        <ThemeToggle />
+                      </Nav.Link>
+
+
+                    </>
+                  )}
+
                   <NavDropdown
                     title={
                       <img
-                        src={user?.profilePhoto || '/images/L. Messi.jpg' } //it will be coming from DB
+                        src={user?.profilePhoto || '/images/L. Messi.jpg'} //it will be coming from DB
                         alt='Profile'
                         style={{
                           width: '30px',
@@ -93,20 +116,20 @@ const Header = () => {
                     align='end'
                   >
 
-                    <NavDropdown.Item href='#action/3.1'>
-                    Edit Profile
-                    <Nav.Link >
-                      {/* <ThemeToggle/> */}
-                    </Nav.Link>
-                    </NavDropdown.Item>
-
                     <NavDropdown.Item onClick={handleLogout}>
                       Logout
                     </NavDropdown.Item>
 
+                    <LinkContainer to="/edit-user-profile">
+                      <NavDropdown.Item>
+                        Edit Profile
+                      </NavDropdown.Item>
+                    </LinkContainer>
+
+
                   </NavDropdown>
 
-                 
+
                 </>
               ) : (
 
