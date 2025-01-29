@@ -5,12 +5,12 @@ main {
 
 body {
   background-image: url('../IMG_0590.JPG');
-
   background-size: cover; /* Cover the entire viewport */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Avoid repeating the image */
   background-attachment: fixed; /* Keep the image fixed while scrolling */
-  color:black /* Adjust text color for contrast if needed */
+  color:black; 
+
 }
 
 .rating span {
@@ -1021,7 +1021,6 @@ input[type="range"] {
 
 
 /* admin Panel */
-
 .custom-dropdown-toggle::after {
   display: none !important;
 }

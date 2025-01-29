@@ -1,3 +1,5 @@
+//not using it for now
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const uiSlice = createSlice({

@@ -37,13 +37,6 @@ const Header = () => {
               {isAuthenticated ? (
                 <>
 
-                  {/* <NavItem>
-                    <form class="d-flex ">        
-                        <input placeholder="Search" type="search" class="form-control"/>
-                        </form>
-                    </NavItem>
-                  */}
-
                   {/*conditional rendering for user header menus*/}
                   {user && user.isAdmin === false && (
                     <>
