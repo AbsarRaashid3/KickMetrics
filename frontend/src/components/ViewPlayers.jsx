@@ -142,6 +142,8 @@ const PlayerTable = ({ players, removePlayer, handleEditClick }) => (
             </div>
         ))}
     </div>
+
+
 );
 
 export default PlayerTable;

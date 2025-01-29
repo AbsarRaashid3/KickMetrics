@@ -63,6 +63,7 @@ const AddPlayerForm = ({ newPlayer, handleInputChange, addPlayer, errors, previe
                     {errors.image && <div className="text-danger">{errors.image}</div>}
                 </Form.Group>
 
+
                 {previewImage && (
                     <div>
                         <p>Image Preview:</p>
@@ -93,10 +94,10 @@ const AddPlayerForm = ({ newPlayer, handleInputChange, addPlayer, errors, previe
                 <Button type="submit" className="mt-3">
                     Add Player
                 </Button>
+
             </Form>
         </Container>
     );
 };
-
 
 export default AddPlayerForm;
