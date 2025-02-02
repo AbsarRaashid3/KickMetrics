@@ -1,9 +1,11 @@
+
+
 main {
   min-height: 80vh;
 }
 
 body {
-  background-image: url('../IMG_0590.JPG');
+background-image: url(../5618236.jpg);
   background-size: cover; /* Cover the entire viewport */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Avoid repeating the image */
@@ -1055,3 +1057,258 @@ input[type="range"] {
 }
  
 
+/* Header */
+.custom-navbar {
+  background-color: #122433ea; /* Dark Emerald Green */
+  color: white;
+}
+
+.custom-navbar .navbar-nav .nav-link {
+  color: white !important; /* Make sure the text is white */
+}
+
+.custom-navbar .navbar-brand {
+  color: white;
+}
+
+.custom-navbar .navbar-toggler-icon {
+  background-color: white; /* Optional: Make the toggle icon white */
+}
+
+.custom-navbar .nav-dropdown-item {
+  color: white; /* Ensures dropdown items are white */
+}
+
+/* landing */
+
+
+
+
+
+
+
+.section2 {
+  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); /* Bootstrap's primary blue */
+  padding: 40px 0;
+
+}
+.section2 .row {
+  margin-bottom: 20px;
+}
+.section2 h1,
+.section2 h2 {
+  color: #fff; /* Ensure the text is white */
+}
+.section2 p {
+  color: #f8f9fa; /* Light text color for readability */
+}
+
+
+.custom-landing-container1 {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.custom-background-image1 {
+  background-image: url('../peakpx\ \(2\).jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.custom-overlay1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-content1 {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.custom-heading1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.custom-description1 {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.custom-btn-get-started1 {
+  background-color: #811e28;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn-get-started1:hover {
+  background-color: #183068;
+}
+
+
+
+.custom-team-container {
+  background-color: #0b0d17;
+  color: white;
+  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); 
+}
+
+.custom-heading-container {
+  text-align: center;
+  padding: 2.5rem 0;
+}
+
+.custom-heading {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #dc3545; /* Red color */
+  position: relative;
+  display: inline-block;
+}
+
+.custom-heading-overlay {
+  position: absolute;
+  inset: 0;
+  font-size: 8rem;
+  color: #8b1c1c; /* Darker red */
+  opacity: 0.25;
+  z-index: -1;
+}
+
+.custom-team-members {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+.custom-team-member {
+  position: relative;
+  background-color: #2d2d2d;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+}
+
+.custom-team-image {
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+.custom-team-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+}
+
+.custom-team-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #fffbfb;
+}
+
+.custom-team-role {
+  font-size: 1rem;
+  color: #d1d1d1;
+}
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.custom-football-result-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Dark background color */
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.custom-background-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+.custom-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-content {
+  position: relative;
+  z-index: 10;
+  padding: 2rem;
+  text-align: left;
+}
+
+.custom-heading {
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1.2;
+  color: #f1f1f1; 
+}
+
+.custom-highlight {
+  color: #f1f1f1; /* Blue color for the highlight */
+}
+
+.custom-button {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  border: 2px solid white;
+  color: white;
+  background-color: transparent;
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.custom-social-links {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  font-size: 0.875rem;
+  display: flex;
+  gap: 1rem;
+}

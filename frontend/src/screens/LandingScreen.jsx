@@ -1,281 +1,193 @@
-import React,{useEffect} from "react";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 
 const createAdmin = () => {
-    
-  const users = JSON.parse(localStorage.getItem('users')) || {};
+  const users = JSON.parse(localStorage.getItem("users")) || {};
   const email = "admin@gmail.com";
-  if (users[email]) { 
-      return false; //don't create the admin if present
+  if (users[email]) {
+    return false; // Don't create the admin if present
   }
 
   users[email] = {
-      ...users[email],  // Preserve the previous data (in case it exists)
-      email: email,
-      password: "admin@123",
-      username: "admin",
-      authToken: "jwt-token",
-      isAdmin: true
-    };
+    ...users[email], // Preserve any previous data (if it exists)
+    email: email,
+    password: "admin@123",
+    username: "admin",
+    authToken: "jwt-token",
+    isAdmin: true,
+  };
 
-  // Store the admin collection back in localStorage
-  localStorage.setItem('users', JSON.stringify(users));
-
+  // Store the updated users collection back in localStorage
+  localStorage.setItem("users", JSON.stringify(users));
 };
 
 const LandingScreen = () => {
+
   useEffect(() => {
+    // Apply inline styles to the body
+    document.body.style.backgroundColor = "#f4f4f4"; // Set the background color for the entire body
+    
     // Ensure the admin is created once when the component mounts
     createAdmin();
-}, []);
 
-  const styles = {
-    landingScreen: {
-      backgroundImage: "url('/images/landing-background.png')", // Path to the background image
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      backgroundAttachment: "fixed",
-      padding: "50px 0",
-      minHeight: "100vh",
-      position: "relative", // Required for overlay positioning
-    },
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.6)",
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      zIndex: 1,
-    },
-    contentWrapper: {
-      position: "relative",
-      zIndex: 2,
-      color: "white",
-    },
-    headerFix: {
-        position: "relative",
-        zIndex: 3, // Ensure header is above the overlay and content
-      },
-    title: {
-      fontSize: "3rem",
-      fontWeight: "bold",
-      marginBottom: "30px",
-      textAlign: "center",
-    },
-    description: {
-      fontSize: "1.25rem",
-      marginBottom: "40px",
-      textAlign: "center",
-      lineHeight: "1.8",
-    },
-    buttonContainer: {
-      display: "flex",
-      justifyContent: "center",
-      marginBottom: "50px",
-    },
-    button: {
-      fontSize: "1.2rem",
-      padding: "12px 30px",
-      borderRadius: "50px",
-      transition: "all 0.3s ease",
-      backgroundColor: "#007bff",
-      borderColor: "#007bff",
-      color: "white",
-    },
-    buttonHover: {
-      backgroundColor: "#0056b3",
-    },
-    imageContainer: {
-      textAlign: "center",
-    },
-    image: {
-      maxWidth: "90%",
-      borderRadius: "10px",
-      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-      transition: "transform 0.3s ease",
-    },
-    imageHover: {
-      transform: "scale(1.05)",
-    },
-    featuresTitle: {
-      textAlign: "center",
-      fontSize: "2.5rem",
-      marginBottom: "40px",
-      fontWeight: "bold",
-    },
-    rowSpacing: {
-      marginBottom: "30px",
-    },
-    card: {
-      background: "rgba(255, 255, 255, 0.85)",
-      border: "none",
-      borderRadius: "15px",
-      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-      transition: "all 0.3s ease",
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      padding: "20px",
-    },
-    cardHover: {
-      transform: "translateY(-10px)",
-      boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)",
-    },
-    cardTitle: {
-      fontSize: "1.5rem",
-      fontWeight: "bold",
-      marginBottom: "15px",
-    },
-    cardText: {
-      color: "#333",
-      lineHeight: "1.6",
-    },
-  };
+    // Cleanup function to reset background color when the component unmounts
+    return () => {
+      setTimeout(() => {
+        document.body.style.backgroundColor = ''; // Reset the background color on unmount
+      }, 0);
+    };
+  }, []);
 
   return (
-    <div style={styles.landingScreen}>
-      <div style={styles.overlay}></div>
-      <div style={styles.contentWrapper}>
-        <Container>
-          <Row>
-            <Col>
-              <h1 style={styles.title}>Welcome to KickMetrics</h1>
-              <p style={styles.description}>
-                Your ultimate football analytics companion. KickMetrics
-                provides cutting-edge insights into player performance, market
-                value predictions, and more. Whether you’re a professional
-                scout, coach, or fan, explore the possibilities today.
-              </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col style={styles.buttonContainer}>
-              <Button
-                variant="primary"
-                size="lg"
-                as={Link}
-                to="/players"
-                style={styles.button}
-                onMouseEnter={(e) =>
-                  (e.target.style.backgroundColor =
-                    styles.buttonHover.backgroundColor)
-                }
-                onMouseLeave={(e) =>
-                  (e.target.style.backgroundColor =
-                    styles.button.backgroundColor)
-                }
-              >
-                Explore Players
-              </Button>
-            </Col>
-          </Row>
-          <Row>
-          <Col md={12} style={styles.imageContainer}>
-              <img
-                src="/images/player-graphic.png" // Updated path
-                alt="Football Analytics"
-                style={{
-                  ...styles.image, // Retain existing styles
-                  maxWidth: "100%", // Ensure it does not overflow the container
-                  height: "auto", // Maintain aspect ratio
-                  width: "300px", // Specify the desired width (adjust as needed)
-                }}
-                onMouseEnter={(e) =>
-                  (e.target.style.transform = "scale(1.05)")
-                }
-                onMouseLeave={(e) =>
-                  (e.target.style.transform = "scale(1)")
-                }
-              />
-            </Col>
-
-          </Row>
-          <Row>
-            <Col>
-              <h3 style={styles.featuresTitle}>Our Features</h3>
-            </Col>
-          </Row>
-          <Row style={styles.rowSpacing}>
-            {[
-              {
-                title: "Player Comparison",
-                text: "Compare players side-by-side with interactive visualizations of performance metrics.",
-              },
-              {
-                title: "Performance Analysis",
-                text: "Get detailed insights into player strengths and weaknesses with automated recommendations.",
-              },
-              {
-                title: "Market Value Prediction",
-                text: "Predict player market values based on performance metrics and trends.",
-              },
-            ].map((feature, index) => (
-              <Col md={4} key={index} style={{ marginBottom: "20px" }}>
-                <Card
-                  style={styles.card}
-                  onMouseEnter={(e) =>
-                    Object.assign(e.currentTarget.style, styles.cardHover)
-                  }
-                  onMouseLeave={(e) =>
-                    Object.assign(e.currentTarget.style, styles.card)
-                  }
-                >
-                  <Card.Body>
-                    <Card.Title style={styles.cardTitle}>
-                      {feature.title}
-                    </Card.Title>
-                    <Card.Text style={styles.cardText}>
-                      {feature.text}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-          <Row>
-            {[
-              {
-                title: "Team Strategy Planning",
-                text: "Build optimal team compositions with strategic insights and recommendations.",
-              },
-              {
-                title: "Interactive Dashboards",
-                text: "Access a customizable, user-friendly dashboard with key metrics for favorite players.",
-              },
-              {
-                title: "What-If Simulations",
-                text: "Simulate performance scenarios to predict player or team outcomes.",
-              },
-            ].map((feature, index) => (
-              <Col md={4} key={index} style={{ marginBottom: "20px" }}>
-                <Card
-                  style={styles.card}
-                  onMouseEnter={(e) =>
-                    Object.assign(e.currentTarget.style, styles.cardHover)
-                  }
-                  onMouseLeave={(e) =>
-                    Object.assign(e.currentTarget.style, styles.card)
-                  }
-                >
-                  <Card.Body>
-                    <Card.Title style={styles.cardTitle}>
-                      {feature.title}
-                    </Card.Title>
-                    <Card.Text style={styles.cardText}>
-                      {feature.text}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
+    <>
+      <div className="custom-football-result-container">
+        <img
+          alt="A man in a white shirt holding a soccer ball under his arm"
+          className="custom-background-image"
+          src="https://storage.googleapis.com/a1aa/image/O9qoj8koUaMbIFPCYylKY_WU0blSdtGUJ0U_1Vws1JU.jpg"
+        />
+        <div className="custom-overlay"></div>
+        <div className="custom-content">
+          <h1 className="custom-heading">
+            Get The
+            <br />
+            Result
+            <br />
+            You Want in
+            <br />
+            <span className="custom-highlight">Football</span>
+          </h1>
+          <button className="custom-button">Read more</button>
+        </div>
+        <div className="custom-social-links">
+          Twitter Facebook Instagram
+        </div>
       </div>
-    </div>
+
+      <div className="section2">
+        <div className="container py-4">
+          <div className="row row-cols-1 row-cols-md-2 g-4">
+            <div className="position-relative">
+              <div className="position-absolute top-0 start-0 w-100 h-100 bg-gradient rounded-3" style={{ background: 'linear-gradient(135deg, rgba(107, 1, 1, 0.7), rgba(255, 99, 71, 0.7))' }}></div>
+
+              <img
+                alt="A football player in red uniform kicking a ball"
+                className="position-relative z-2 rounded-3"
+                height="600"
+                  src="/images/peakpx.jpg"
+                width="400"
+              />
+            </div>
+            <div className="d-flex flex-column justify-content-center">
+              <div className="mb-4">
+                <h2 className="text-white fw-bold fs-5">About the Club</h2>
+                <h1 className="text-4xl fw-bold text-info">WITH US YOU CAN</h1>
+                <ul className="list-unstyled mt-4">
+                  <li>Measure and track your players' progress</li>
+                  <li>Easily enter and update player data</li>
+                  <li>Get noticed by scouts from around the world</li>
+                </ul>
+                <p className="mt-4">
+                  Don't let your players' talent go unnoticed. Sign up for WeFeelSports today and start showcasing your team's potential to the world.
+                </p>
+                <p className="mt-2">
+                  Player's names won't be visible. No middleman, no bypass.
+                </p>
+              </div>
+              <button className="mt-4 btn btn-outline-danger">Get Started For Free</button>
+            </div>
+          </div>
+          <div className="row row-cols-1 row-cols-md-2 g-4 mt-4">
+            <div className="d-flex flex-column justify-content-center">
+              <div className="mb-4">
+              
+                <h1 className="text-4xl fw-bold text-info">OUR MISSION</h1>
+                <p className="mt-4">
+                  Anže was an extremely talented football player from Cerknica (Slovenia) with a dream of going pro. Despite his amazing skill and dedication,
+                </p>
+                <p className="mt-2">
+                  Despite his disappointment, Anže continued to play and coach football at a local level, finding joy in helping others pursue their own dreams.
+                </p>
+                <p className="mt-2">
+                  Today, we are looking back at his performance with big regret and questions of what he could have become.
+                </p>
+              </div>
+              <button className="mt-4 btn btn-outline-danger">Get Started For Free</button>
+            </div>
+            <div className="position-relative">
+              <div className="position-absolute top-0 start-0 w-100 h-100 bg-gradient rounded-3 transform-rotate"></div>
+              <img
+                alt="Three football players in red uniforms holding footballs"
+                className="position-relative z-2 rounded-3"
+                height="600"
+                src="/images/peakpx (1).jpg"
+                width="400"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="custom-landing-container1">
+        <div className="custom-background-image1">
+          <div className="custom-overlay1"></div>
+          <div className="custom-content1">
+            <h1 className="custom-heading1">
+              A SOLUTION BASED ON YEARS OF EXPERIENCE BY THE EXPERTS AND COACHES
+            </h1>
+            <p className="custom-description1">
+              All the assessment were defined by the football experts worldwide with years of experience with the problem of gathering relevant development information of young new talented players. The essential tests and assessments that are covered within the application "WeFeelSports" are described in detail within WeFeelSports Testing Methodology.
+            </p>
+            <button className="custom-btn-get-started1">
+              Get Started For Free
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="custom-team-container">
+        <div className="custom-heading-container">
+          <h1 className="custom-heading">
+            OUR TEAM
+            <span className="custom-heading-overlay">OUR TEAM</span>
+          </h1>
+        </div>
+        <div className="custom-team-members">
+          <div className="custom-team-member">
+            <img
+              alt="Portrait of Michelle Chu, Director of Technology"
+              className="custom-team-image"
+              src="/images/absar.jpg"
+            />
+            <div className="custom-team-info">
+              <h2 className="custom-team-name">Absar Rashid</h2>
+              <p className="custom-team-role">FYP'25</p>
+            </div>
+          </div>
+          <div className="custom-team-member">
+            <img
+              alt="Portrait of Tony Eades, Chief Strategy Officer"
+              className="custom-team-image"
+              src="/images/habiba2.jpg"
+            />
+            <div className="custom-team-info">
+              <h2 className="custom-team-name">Habiba Saleem</h2>
+              <p className="custom-team-role">FYP'25</p>
+            </div>
+          </div>
+          <div className="custom-team-member">
+            <img
+              alt="Portrait of Jason Feller, Business Unit Director"
+              className="custom-team-image"
+              src="/images/habshi.jpg"
+            />
+            <div className="custom-team-info">
+              <h2 className="custom-team-name">Habshi </h2>
+              <p className="custom-team-role">FYP'25</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
