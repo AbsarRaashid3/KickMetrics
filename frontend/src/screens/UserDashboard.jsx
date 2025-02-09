@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const API_URL = "https://v3.football.api-sports.io/standings";
@@ -25,30 +26,22 @@ export default function UserDashboard() {
   }, []);
 
   return (
-    <div className="container py-4">
-      <h1 className="mb-4">Football Dashboard</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Football Dashboard</h1>
       {loading ? (
         <p>Loading standings...</p>
       ) : (
-        <div className="row">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {standings.map((team) => (
-            <div key={team.team.id} className="col-md-4 mb-4">
-              <Card className="shadow-sm rounded">
-                <Card.Body className="d-flex align-items-center">
-                  <img
-                    src={team.team.logo}
-                    alt={team.team.name}
-                    className="me-3"
-                    width="50"
-                    height="50"
-                  />
-                  <div>
-                    <h5 className="mb-1">{team.team.name}</h5>
-                    <p className="mb-0">Points: {team.points}</p>
-                  </div>
-                </Card.Body>
-              </Card>
-            </div>
+            <Card key={team.team.id} className="p-4 shadow-md rounded-lg">
+              <CardContent className="flex items-center space-x-4">
+                <img src={team.team.logo} alt={team.team.name} className="w-12 h-12" />
+                <div>
+                  <h2 className="text-lg font-semibold">{team.team.name}</h2>
+                  <p>Points: {team.points}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}
