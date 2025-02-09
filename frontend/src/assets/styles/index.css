@@ -1058,8 +1058,13 @@ input[type="range"] {
 .dropdown:hover .custom-dropdown-menu {
   display: block;
 }
- 
-
+ .adminP{
+  color: white;
+  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); 
+ }
+.playerTable{
+  color: #000;
+}
 /* Header */
 .custom-navbar {
   background-color: #122433ea; /* Dark Emerald Green */
@@ -1411,7 +1416,7 @@ input[type="range"] {
 .dashboardC {
   display: grid;
   color: white;
-  background:linear-gradient(135deg, #223a6a,rgb(16, 13, 13), #670d0d);
+  background: linear-gradient(135deg, #223a6a, rgb(16, 13, 13), #032445);
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   padding: 10px;
@@ -1420,13 +1425,14 @@ input[type="range"] {
 
 .standings, .player-section, .progress-graph1, .sticky-notes, .next-games, .my-team {
   background: #f4f3f3;
-  color: #000;
+  color: white;
+  background: linear-gradient(135deg, #6a2230, rgb(16, 13, 13), #670d22);
   padding: 10px;
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+h4 {
   color: #333;
   margin-bottom: 10px;
 }
@@ -1439,20 +1445,6 @@ input, select, textarea {
   border-radius: 4px;
 }
 
-button {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  margin-top: 5px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button:hover {
-  background: #45a049;
-}
-
 .sticky-notes textarea {
   background: #787042;
   border: none;
@@ -1460,4 +1452,12 @@ button:hover {
   font-family: 'Comic Sans MS', cursive;
   font-size: 16px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.team-player {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #e8e8e8;
 }

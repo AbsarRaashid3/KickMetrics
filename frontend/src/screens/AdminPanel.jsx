@@ -306,11 +306,12 @@ const AdminPanel = () => {
                 </div>
             </Container>
 
-            <Container>
+            <Container className='adminP'>
                 {showPlayers && (
                     <Container id="viewSection" className="box">
-                        <h4>-- Players --</h4>
+                        <h3 style={{color:"white"}}>Players </h3>
                         <PlayerTable
+                           
                             players={players}
                             removePlayer={removePlayer}
                             handleEditClick={handleEditClick}
@@ -319,7 +320,7 @@ const AdminPanel = () => {
                 )}
                 {showAddPlayers && (
                     <Container id="addSection" className="box">
-                        <h4>-- Add Players --</h4>
+                        <h3 style={{color:"white"}}> Add Players </h3>
                         <AddPlayerForm
                             newPlayer={newPlayer}
                             handleInputChange={handleInputChange}
@@ -331,9 +332,9 @@ const AdminPanel = () => {
                 )}
 
                 {(showEditPlayers && editPlayer) && (
-                    <Container id="editSection" className="box">
-                        <h4>-- Edit Player --</h4>
-                        <EditPlayerForm
+                    <Container id="editSection" className="box  ">
+                       <h3 style={{color:"white"}}> Edit Players </h3>
+                        <EditPlayerForm s
                             editPlayer={editPlayer}
                             handleEditInputChange={handleEditInputChange}
                             handleEditSubmit={handleEditSubmit}
@@ -351,14 +352,14 @@ const AdminPanel = () => {
 
 
 const gradient1 = {
-    backgroundImage: "linear-gradient(230deg,rgb(103, 166, 168),rgb(154, 185, 172))"
+    backgroundImage: "linear-gradient(230deg,rgb(231, 169, 169),rgb(56, 10, 23))"
 };
 
 const gradient2 = {
-    backgroundImage: "linear-gradient(230deg,rgb(71, 136, 71), #fbaaa2)"
+    backgroundImage: "linear-gradient(230deg,rgb(47, 10, 10),rgb(127, 138, 171))"
 };
 const gradient3 = {
-    backgroundImage: "linear-gradient(230deg,rgb(143, 204, 176), #fbaaa2)"
+    backgroundImage: "linear-gradient(230deg,rgb(231, 169, 169),rgb(56, 10, 23))"
 };
 
 export default AdminPanel;

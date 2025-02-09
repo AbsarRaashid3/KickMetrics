@@ -1,109 +1,57 @@
-import React, { useState } from "react";
-import players from "../players";
+import { useState, useEffect } from "react";
+import { Card } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
-const UserDashboard = () => {
-  const [favorites, setFavorites] = useState([]);
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
+const API_URL = "https://v3.football.api-sports.io/standings";
+const API_KEY = "03c1a42e1bed9cc7a72312c1d1aae555";
 
-  const addFavoritePlayer = (player) => {
-    if (!favorites.find((fav) => fav._id === player._id)) {
-      setFavorites([...favorites, player]);
-    }
-  };
+export default function UserDashboard() {
+  const [standings, setStandings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const removeFavoritePlayer = (playerId) => {
-    setFavorites(favorites.filter((fav) => fav._id !== playerId));
-  };
-
-  const handlePlayerSelect = (e) => {
-    const player = players.find((p) => p._id === e.target.value);
-    setSelectedPlayer(player);
-  };
+  useEffect(() => {
+    fetch(`${API_URL}?league=39&season=2023`, {
+      headers: {
+        "x-apisports-key": API_KEY,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setStandings(data.response[0].league.standings[0]);
+        setLoading(false);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
 
   return (
-    <div className="container mt-5 user-dashboard">
-      <h1>Welcome to the Football Enthusiasts Dashboard</h1>
-      <p>Track your favorite players and analyze their stats with detailed insights.</p>
-
-      {/* Player Selection Dropdown */}
-      <h3>Select a Player</h3>
-      <select className="form-select mb-3" onChange={handlePlayerSelect}>
-        <option value="">Select a Player</option>
-        {players.map((player) => (
-          <option key={player._id} value={player._id}>
-            {player.name}
-          </option>
-        ))}
-      </select>
-
-      {/* FIFA Card with Insights */}
-      {selectedPlayer && (
-        <div className="fifa-card">
-          <img src={selectedPlayer.image} alt={selectedPlayer.name} className="player-image" />
-          <h2 className="player-name">{selectedPlayer.name}</h2>
-          <div className="player-stats">
-            <p>Overall: {selectedPlayer.overall_rating}</p>
-            <p>Shooting: {selectedPlayer.finishing}</p>
-            <p>Passing: {selectedPlayer.short_passing}</p>
-            <p>Dribbling: {selectedPlayer.dribbling}</p>
-            <p>Stamina: {selectedPlayer.stamina}</p>
-            <p>Strength: {selectedPlayer.strength}</p>
-          </div>
-          <div className="player-insights">
-            <h4>Player Insights:</h4>
-            <p>
-              <strong>Age:</strong> {selectedPlayer.age}
-            </p>
-            <p>
-              <strong>Position:</strong> {selectedPlayer.positions}
-            </p>
-            <p>
-              <strong>Nationality:</strong> {selectedPlayer.nationality}
-            </p>
-            <p>
-              <strong>Preferred Work Rate:</strong> {selectedPlayer.work_rate}
-            </p>
-          </div>
+    <div className="container py-4">
+      <h1 className="mb-4">Football Dashboard</h1>
+      {loading ? (
+        <p>Loading standings...</p>
+      ) : (
+        <div className="row">
+          {standings.map((team) => (
+            <div key={team.team.id} className="col-md-4 mb-4">
+              <Card className="shadow-sm rounded">
+                <Card.Body className="d-flex align-items-center">
+                  <img
+                    src={team.team.logo}
+                    alt={team.team.name}
+                    className="me-3"
+                    width="50"
+                    height="50"
+                  />
+                  <div>
+                    <h5 className="mb-1">{team.team.name}</h5>
+                    <p className="mb-0">Points: {team.points}</p>
+                  </div>
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
         </div>
       )}
-
-      {/* Favorite Players Section */}
-      <h3>Your Favorite Players</h3>
-      <div className="favorites-container">
-        {favorites.map((player) => (
-          <div className="favorite-card" key={player._id}>
-            <img src={player.image} alt={player.name} className="favorite-image" />
-            <div className="favorite-details">
-              <h4>{player.name}</h4>
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={() => removeFavoritePlayer(player._id)}
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Add Favorite Player */}
-      <h3>Add to Favorite Players</h3>
-      <select
-        className="form-select add-favorite-dropdown"
-        onChange={(e) => {
-          const player = players.find((p) => p._id === e.target.value);
-          addFavoritePlayer(player);
-        }}
-      >
-        <option value="">Select a Player</option>
-        {players.map((player) => (
-          <option key={player._id} value={player._id}>
-            {player.name}
-          </option>
-        ))}
-      </select>
     </div>
   );
-};
-
-export default UserDashboard;
+}
