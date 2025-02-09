@@ -158,7 +158,7 @@ const WhatIfSimulator = () => {
     <div className="simulator-container">
       <h2>What-If Performance Simulator</h2>
       {/* Player Selector */}
-      <div className="player-selector">
+      <div className="player-selector mb-5 text-center">
         <label>Select Player:</label>
         <select
           value={selectedPlayer._id}

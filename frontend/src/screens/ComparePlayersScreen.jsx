@@ -78,19 +78,19 @@ const ComparePlayersScreen = () => {
 
   return (
     <div>
-      <h2 className="mb-4 text-center">Compare Players</h2>
+      <h2 style={{ color: "white" }} className="mb-4 text-center">Compare Players</h2>
 
       {/* Select Players */}
       <Row className="mb-3">
         <Col md={6}>
-          <h4>Select Player 1</h4>
+          <h4 className="mb-4 text-center" style={{ color: "white" , borderRadius: "2px", backgroundColor: "#8B0000" ,   padding: "8px" }}>Select Player 1</h4>
           <select
             className="form-select"
             onChange={(e) =>
               handleSelectPlayer(players.find((player) => player._id === e.target.value), 1)
             }
           >
-            <option>Select Player</option>
+            <option style={{ color: "white" }}>Select Player</option>
             {players.map((player) => (
               <option key={player._id} value={player._id}>
                 {player.name}
@@ -99,7 +99,8 @@ const ComparePlayersScreen = () => {
           </select>
         </Col>
         <Col md={6}>
-          <h4>Select Player 2</h4>
+        <h4 className="mb-4 text-center" style={{ color: "white",   borderRadius: "2px", backgroundColor: "#8B0000" ,   padding: "8px" }}>Select Player 2</h4>
+
           <select
             className="form-select"
             onChange={(e) =>
@@ -125,8 +126,7 @@ const ComparePlayersScreen = () => {
               style={{
                 border: "none",
                 background:
-                  "linear-gradient(135deg, #7FFFD4 0%, #4F7942 60%, #5cd65c 100%)",
-                color: "white",
+                  "linear-gradient(135deg, #223a6a,rgb(94, 93, 93), #670d0d)",
                 borderRadius: "15px",
                 padding: "15px",
                 position: "relative",
@@ -139,10 +139,11 @@ const ComparePlayersScreen = () => {
                   top: "-20px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  background: "gold",
+                  background: " linear-gradient(135deg,rgb(126, 115, 27),rgb(176, 214, 227))",
                   borderRadius: "50%",
                   padding: "10px 20px",
                   fontWeight: "bold",
+                  color: "black",
                   fontSize: "1.5rem",
                 }}
               >
@@ -156,11 +157,11 @@ const ComparePlayersScreen = () => {
                   height: "250px",
                   margin: "10px auto",
                   borderRadius: "15px",
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                  boxShadow: "0px 4px 10px rgba(71, 8, 8, 0.75)",
                 }}
               />
               <Card.Body>
-                <Card.Title>{player1.name}</Card.Title>
+                <Card.Title style={{color:"white"}}>{player1.name}</Card.Title>
               </Card.Body>
             </Card>
           )}
@@ -172,7 +173,7 @@ const ComparePlayersScreen = () => {
               style={{
                 border: "none",
                 background:
-                  "linear-gradient(135deg, #7FFFD4 0%, #4F7942 60%, #5cd65c 100%)",
+                  "linear-gradient(135deg, #223a6a,rgb(75, 66, 66), #670d0d)",
                 color: "white",
                 borderRadius: "15px",
                 padding: "15px",
@@ -186,8 +187,9 @@ const ComparePlayersScreen = () => {
                   top: "-20px",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  background: "gold",
+                  background:  " linear-gradient(135deg,rgb(126, 115, 27),rgb(176, 214, 227))",
                   borderRadius: "50%",
+                  color: "black",
                   padding: "10px 20px",
                   fontWeight: "bold",
                   fontSize: "1.5rem",
@@ -203,7 +205,7 @@ const ComparePlayersScreen = () => {
                   height: "250px",
                   margin: "10px auto",
                   borderRadius: "15px",
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                  boxShadow: "0px 4px 10px rgba(29, 32, 108, 0.82)",
                 }}
               />
               <Card.Body>

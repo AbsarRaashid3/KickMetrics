@@ -62,7 +62,8 @@ const MarketValuePrediction = () => {
     };
 
     return (
-        <div className="prediction-page">
+        <div className="prediction-page" style={{background:"linear-gradient(135deg,rgb(8, 25, 69),rgb(35, 29, 29), #670d0d)",
+                }}>
             <h1 className="page-title">Market Value Prediction</h1>
 
             <div className="player-container">
@@ -149,7 +150,7 @@ const MarketValuePrediction = () => {
                 </div>
             </div>
 
-            <div className="ml-prediction">
+            <div className="ml-prediction" style={{background:"rgb(0, 0, 14)"}}>
                 <h3>Market Value Predicted by ML Model</h3>
                 <p className="predicted-value">
                     €<span ref={predictedValueRef}>{predictedValue}</span>

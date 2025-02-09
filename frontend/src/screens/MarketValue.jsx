@@ -105,7 +105,7 @@ const playersData = [
   
     return (
       <div className="market-value">
-        <h1>Player Market Value Progress</h1>
+        <h1 style={{color:"white"}}>Player Market Value Progress</h1>
         <input
           type="text"
           placeholder="Search for a player..."

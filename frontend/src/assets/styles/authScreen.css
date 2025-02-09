@@ -76,8 +76,9 @@
   
   .button {
     border-radius: 30px;
-    border: 1px solid #365b46;
-    background-color: #69ae7f;
+    border: 1px solid #82172e;
+    background-color: #122418;
+    background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); 
     color: #ffffff;
     font-size: 14px;
     font-weight: bold;
@@ -131,7 +132,7 @@
   }
   
   .overlay {
-    background: linear-gradient(to right, #2a6a45, #69ae7f);
+    background:  linear-gradient(135deg, #3e588e, #263a61, #921919); 
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -146,6 +147,7 @@
   
   .overlay.active {
     transform: translateX(50%);
+    
   }
   
   .overlay-panel {

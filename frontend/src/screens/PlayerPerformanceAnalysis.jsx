@@ -17,9 +17,11 @@ import {
   Bar,
   Line,
 } from "recharts";
+import { Table } from "react-bootstrap";
+
 import players from "../players"; // Player data
-import playerPerformanceSvg from "../assets/players2.png"; // SVG
-import footballBg from "../assets/football-bg.jpg"; // Background image
+ // SVG
+import footballBg from "../assets/5205447.jpg"; // Background image
 
 const PlayerPerformanceAnalysis = () => {
   const [selectedPlayerId, setSelectedPlayerId] = useState(players[0]._id);
@@ -82,24 +84,16 @@ const PlayerPerformanceAnalysis = () => {
 
 
     <div className="container d-flex align-items-center" style={{ height: "75%" }}>
-      <div style={{ color: "black" }}>
-        <h1>Player Performance Analysis</h1>
-        <p>
+      <div style={{ color: "white" }}>
+        <h1 className="mb-4 text-center">Player Performance Analysis</h1>
+        <p className="mb-6 text-center">
           Player analysis is crucial for identifying strengths, weaknesses, and areas for improvement.
           Coaches, players, scouts, and fans can use these insights to make informed decisions and
           enhance the team's overall performance.
         </p>
       </div>
 
-      <img
-        src={playerPerformanceSvg}
-        alt="Player Performance"
-        style={{
-          width: "300px",
-          marginLeft: "auto",
-
-        }}
-      />
+      
     </div>
   </div>
 
@@ -110,7 +104,7 @@ const PlayerPerformanceAnalysis = () => {
         <Row className="mb-4">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Select Player</Form.Label>
+              <Form.Label style={{ color: "white" }}>Select Player</Form.Label>
               <Form.Control
                 as="select"
                 value={selectedPlayerId}
@@ -126,7 +120,7 @@ const PlayerPerformanceAnalysis = () => {
           </Col>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Select Your Role</Form.Label>
+              <Form.Label style={{ color: "white" }}>Select Your Role</Form.Label>
               <Form.Control as="select" value={userRole} onChange={handleRoleChange}>
                 <option value="coach">Coach</option>
                 <option value="player">Player</option>
@@ -146,6 +140,9 @@ const PlayerPerformanceAnalysis = () => {
                 borderRadius: "10px",
                 padding: "20px",
                 boxShadow: "0px 4px 15px rgba(0,0,0,0.1)",
+                background:
+                  "linear-gradient(135deg, #223a6a,rgb(222, 210, 210), #670d0d)",
+                color:"black",
               }}
             >
               <h3>{player.name}'s Insights</h3>
@@ -156,66 +153,125 @@ const PlayerPerformanceAnalysis = () => {
           </Col>
         </Row>
 
-        {/* Graphical Insights Button */}
-        <Button variant="primary" onClick={toggleGraphs} className="football-button">
-          Graphical Insights
-        </Button>
+{/* Graphical Insights Button */}
+<Button variant="primary" onClick={toggleGraphs} className="football-button">
+  Graphical Insights
+</Button>
 
-        {/* Graphs Section */}
-        {showGraphs && (
-          <div>
-            <div className="mb-5">
-              <h3 className="text-center black">Performance Metrics (Comparison)</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={performanceMetrics}>
-                  <CartesianGrid stroke="#333333" strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#000000" />
-                  <Line type="monotone" dataKey="industryStandards" stroke="#8884d8" />
-                </LineChart>
-              </ResponsiveContainer>
-              <br>
-              </br><br>
-              </br>
-              <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={performanceMetrics}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" />
-              </BarChart>
-              <br>
-</br>
-<br>
-</br>
-<br>
-</br>
+{/* Graphs Section */}
+{showGraphs && (
+  <div>
+    <div className="mb-5">
+      <h3 className="text-center black">Performance Metrics (Comparison)</h3>
 
-            </ResponsiveContainer>
+      {/* Line Chart Section */}
+      <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
+        <h5 className="text-center">Figure 1: Line Chart - Performance Over Time</h5>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={performanceMetrics}>
+            <CartesianGrid stroke="#333333" strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="value" stroke="#000000" />
+            <Line type="monotone" dataKey="industryStandards" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
+        
+        {/* Table for Line Chart Data */}
+        <Table striped bordered hover className="mt-3">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Player Performance</th>
+              <th>Industry Standard</th>
+            </tr>
+          </thead>
+          <tbody>
+            {performanceMetrics.map((data, index) => (
+              <tr key={index}>
+                <td>{data.name}</td>
+                <td>{data.value}</td>
+                <td>{data.industryStandards}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
-                        {/* Radar Chart */}
-                        <ResponsiveContainer width="100%" height={300}>
-              <RadarChart data={performanceMetrics}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="name" />
-                <PolarRadiusAxis />
-                <Radar
-                  name="Player Metrics"
-                  dataKey="value"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                  fillOpacity={0.6}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
-            
-            </div>
-            {/* Additional Graphs Like Heatmaps */}
-          </div>
-        )}
+      {/* Bar Chart Section */}
+      <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
+        <h5 className="text-center">Figure 2: Bar Chart - Performance Distribution</h5>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={performanceMetrics}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="value" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+
+        {/* Table for Bar Chart Data */}
+        <Table striped bordered hover className="mt-3">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Player Performance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {performanceMetrics.map((data, index) => (
+              <tr key={index}>
+                <td>{data.name}</td>
+                <td>{data.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+
+      {/* Radar Chart Section */}
+      <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "8px" }}>
+        <h5 className="text-center">Figure 3: Radar Chart - Skill Comparison</h5>
+        <ResponsiveContainer width="100%" height={300}>
+          <RadarChart data={performanceMetrics}>
+            <PolarGrid />
+            <PolarAngleAxis dataKey="name" />
+            <PolarRadiusAxis />
+            <Radar
+              name="Player Metrics"
+              dataKey="value"
+              stroke="#8884d8"
+              fill="#8884d8"
+              fillOpacity={0.6}
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+
+        {/* Table for Radar Chart Data */}
+        <Table striped bordered hover className="mt-3">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Player Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {performanceMetrics.map((data, index) => (
+              <tr key={index}>
+                <td>{data.name}</td>
+                <td>{data.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+
+    </div>
+  </div>
+)}
+
 <br>
 </br>
 <br>
