@@ -10,7 +10,7 @@ const Players = ({ player }) => {
           </Link>
     
           <Card.Body>
-            <Link to={`/player/${player._id}`}>
+            <Link to={`/player/${player._id}`}>   
               <Card.Title as='div'>
                 <strong>{player.name}</strong>
               </Card.Title>

@@ -51,7 +51,7 @@ const router = createBrowserRouter(
     <Route path='/' element={<App />}>
       <Route index={true} path='/' element={<LandingScreen />} />
       <Route path='players' element={<HomeScreen />} />
-      <Route path='player/:id' element={<PlayerDetails />} />
+      <Route path='player/:id' element={<PlayerDetails />} />  
       {/* <Route path='/player' element={<HomeScreen />} /> */}
       <Route path='/signIn' element={<AuthForm />} />
       <Route path='/forgot-password' element={<ResetPassword />} />
