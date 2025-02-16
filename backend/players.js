@@ -1004,5 +1004,6 @@ const players = [
 
 
 ];
+// stringify the players array
 
 console.log(JSON.stringify(players));
