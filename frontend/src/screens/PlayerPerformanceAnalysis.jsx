@@ -27,6 +27,8 @@ const PlayerPerformanceAnalysis = () => {
   const [selectedPlayerId, setSelectedPlayerId] = useState(players[0]._id);
   const [userRole, setUserRole] = useState("coach");
   const [showGraphs, setShowGraphs] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [chatResponse, setChatResponse] = useState("");
 
   const player = players.find((p) => p._id === selectedPlayerId);
 
@@ -70,6 +72,32 @@ const PlayerPerformanceAnalysis = () => {
   const handleRoleChange = (e) => setUserRole(e.target.value);
   const toggleGraphs = () => setShowGraphs(!showGraphs);
 
+
+  const fetchAIAnalysis = async () => {
+    if (!player) {
+      alert("Please select a player first!");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://127.0.0.1:5000/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          playerName: player.name, // Sending player name correctly
+          query: chatInput,
+          role: userRole, // Sending selected role
+        }),
+      });
+  
+      const data = await response.json();
+      setChatResponse(data.response);
+    } catch (error) {
+      console.error("Error fetching AI analysis:", error);
+      setChatResponse("⚠️ Error fetching analysis. Please try again.");
+    }
+  };
+  
   return (
 <div> {/* Header Section */}
   <div
@@ -132,9 +160,10 @@ const PlayerPerformanceAnalysis = () => {
         </Row>
 
         {/* Insights */}
-        <Row className="mb-4">
+         {/* Chatbot Section */}
+         <Row className="mb-4">
           <Col>
-            <div
+            <Card 
               style={{
                 background: "#f8f9fa",
                 borderRadius: "10px",
@@ -144,12 +173,20 @@ const PlayerPerformanceAnalysis = () => {
                   "linear-gradient(135deg, #223a6a,rgb(222, 210, 210), #670d0d)",
                 color:"black",
               }}
-            >
+             >
               <h3>{player.name}'s Insights</h3>
-              <p style={{ fontStyle: "italic", fontSize: "1.2rem" }}>
-                {userRoleInsights[userRole]}
-              </p>
-            </div>
+              <Form.Control
+                type="text"
+                placeholder="Ask about the player's performance"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+              />
+              <Button className="mt-2" onClick={fetchAIAnalysis}>Ask Your Questions</Button>
+              {chatResponse && (
+  <p className="mt-3" dangerouslySetInnerHTML={{ __html: chatResponse }} />
+)}
+
+            </Card>
           </Col>
         </Row>
 
@@ -162,7 +199,7 @@ const PlayerPerformanceAnalysis = () => {
 {showGraphs && (
   <div>
     <div className="mb-5">
-      <h3 className="text-center black">Performance Metrics (Comparison)</h3>
+      <h3 className="text-center black" style={{color: "white"}}>Performance Metrics (Comparison)</h3>
 
       {/* Line Chart Section */}
       <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
