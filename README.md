@@ -34,25 +34,25 @@ Strategy Planning: Utilize team analysis tools to devise optimal game strategies
 ## Technologies Used
 Frontend:
 
-React.js
-Redux
-Chart.js (for data visualization)
-Axios
+React.js <br>
+Redux <br>
+Chart.js (for data visualization) <br>
+Axios <br>
 
 Backend:
 
-Node.js
-Express.js
-MongoDB
-Mongoose
-Python (for machine learning models)
-Flask
+Node.js <br>
+Express.js <br>
+MongoDB <br>
+Mongoose <br>
+Python (for machine learning models) <br>
+Flask <br>
 
 Others:
 
-JWT for authentication
-D3.js for advanced data visualizations
-Docker for containerization
+JWT for authentication <br>
+D3.js for advanced data visualizations <br>
+Docker for containerization <br>
 
 
 
