@@ -378,7 +378,7 @@ table th {
 .predicted-value {
   font-size: 2.5em;
   font-weight: bold;
-  color: #28a745;
+  color: #49862c;
   margin: 10px 0;
 }
 
@@ -395,6 +395,7 @@ table th {
   margin: 0 auto;
   background: #f9f9f9;
   border: 1px solid #ddd;
+  
   border-radius: 8px;
 }
 
@@ -437,7 +438,7 @@ input[type="range"] {
 .performance-score h3 {
   text-align: center;
   font-size: 1.5em;
-  color: #4caf50;
+  color: #0d0d10;
 }
 
 .scenario-visualization canvas {
@@ -521,7 +522,7 @@ input[type="range"] {
 }
 
 .position.active .player-icon {
-  color: #127d12;
+  color: #3d0606;
 }
 
 .player-selection ul {
@@ -583,14 +584,15 @@ input[type="range"] {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(80, 36, 36, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .alert-content {
-  background: #285e20;
+  background: linear-gradient(135deg, #223a6a,rgb(94, 93, 93), #670d0d);
+    
   color: white;
   padding: 20px;
   border-radius: 10px;
@@ -617,7 +619,7 @@ input[type="range"] {
 }
 
 .close-button:hover {
-  background-color: #739c6d;
+  background-color: #6d759c;
 }
 
 .player-list {
@@ -634,14 +636,14 @@ input[type="range"] {
 }
 
 .player-item:hover {
-  background-color: #5a845f87; /* Highlight on hover */
+  background-color: #3c404787; /* Highlight on hover */
   color: #fff;
 }
 
 .football-button {
   background-color: #000000;
   color: white;
-  border: 2px solid #0e4a2a;
+  border: 2px solid #4a0e0e;
   border-radius: 25px;
   padding: 10px 20px;
   margin: 10px;
@@ -671,7 +673,7 @@ input[type="range"] {
   border-radius: 4px;
   background-color: #000000;
   color: white;
-  border: 2px solid #0e4a2a;
+  border: 2px solid #6f1717;
   border-radius: 25px;
   padding: 10px 20px;
   margin: 5px;
@@ -683,7 +685,8 @@ input[type="range"] {
 }
 
 .metric-buttons button.selected {
-  background: #165118;
+  background: linear-gradient(135deg, #223a6a,rgb(94, 93, 93), #670d0d);
+                ;
   color: white;
 }
 
@@ -1055,8 +1058,13 @@ input[type="range"] {
 .dropdown:hover .custom-dropdown-menu {
   display: block;
 }
- 
-
+ .adminP{
+  color: white;
+  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); 
+ }
+.playerTable{
+  color: #000;
+}
 /* Header */
 .custom-navbar {
   background-color: #122433ea; /* Dark Emerald Green */
@@ -1311,4 +1319,145 @@ input[type="range"] {
   font-size: 0.875rem;
   display: flex;
   gap: 1rem;
+}
+
+
+/* player details */
+/* General Container */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Accordion Styling */
+.accordion-button {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  color: #000;
+  transition: all 0.3s ease-in-out;
+}
+
+.accordion-button:hover {
+  background-color: #41648f;
+  color: #000;
+}
+
+.accordion-body {
+  background-color: #fefefe;
+  padding: 20px;
+  border-radius: 8px;
+  color:#000;
+}
+
+/* Style for the position dropdown */
+.position-dropdown {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.position-dropdown:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Container for attribute selectors */
+.attribute-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background:linear-gradient(135deg, #223a6a,rgb(16, 13, 13), #670d0d);
+}
+
+/* Styling for the attribute select dropdowns */
+.attribute-selectors select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.attribute-selectors select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Adding some space between dropdowns */
+.attribute-selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+/* Dashboard.css */
+.dashboard-card:hover {
+  transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
+  transition: transform 0.3s ease-in-out;
+}
+.dashboard-card
+{
+  background:linear-gradient(135deg, #223a6a,rgb(16, 13, 13), #670d0d);
+}
+
+.dashboardC {
+  display: grid;
+  color: white;
+  background: linear-gradient(135deg, #223a6a, rgb(16, 13, 13), #032445);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.standings, .player-section, .progress-graph1, .sticky-notes, .next-games, .my-team {
+  background: #f4f3f3;
+  color: white;
+  background: linear-gradient(135deg, #6a2230, rgb(16, 13, 13), #670d22);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.sticky-notes textarea {
+  background: #787042;
+  border: none;
+  padding: 10px;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 16px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.team-player {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #e8e8e8;
 }

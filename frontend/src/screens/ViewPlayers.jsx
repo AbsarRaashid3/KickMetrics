@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button, Image } from 'react-bootstrap';
 
-
+//this is admin side page for viewing players
 const PlayerTable = ({ players, removePlayer, handleEditClick }) => (
     <Table responsive bordered hover className="text-center">
         <tbody>

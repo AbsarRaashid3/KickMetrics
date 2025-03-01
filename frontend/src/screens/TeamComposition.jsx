@@ -91,7 +91,7 @@ const TeamComposition = () => {
 
   return (
     <div className="team-composition">
-      <h1>Team Composition and Strategy</h1>
+      <h1 style={{color:"white"}}>Team Composition and Strategy</h1>
 
       {/* Mode Buttons */}
       <div className="mode-buttons ">
@@ -129,72 +129,87 @@ const TeamComposition = () => {
         </div>
       )}
 
-      {/* Generate Team Mode */}
-      {!isCustomTeam && (
-        <div className="team-generation">
-          <div className="field">
-            {positions.map((position) => (
-              <div
-                key={position.id}
-                className="position"
-                style={{ top: position.top, left: position.left }}
-              >
-                <GiAmericanFootballPlayer className="player-icon" />
-                <span>{position.name}</span>
-              </div>
-            ))}
-          </div>
+{/* Generate Team Mode */}
+{!isCustomTeam && (
+  <div className="team-generation">
+    <div className="field">
+      {positions.map((position) => (
+        <div
+          key={position.id}
+          className="position"
+          style={{ top: position.top, left: position.left }}
+        >
+          <GiAmericanFootballPlayer className="player-icon" />
+          <span>{position.name}</span>
+        </div>
+      ))}
+    </div>
 
-          <div className="attribute-panel">
-            <h3>Select Attributes</h3>
-            {positions.map((position) => (
-              <div key={position.id} className="attribute-selector">
-                <h4>{position.name}</h4>
-                <select
-                  onChange={(e) =>
-                    handleAttributeChange(position.id, "overall_rating", e.target.value)
-                  }
-                >
-                  <option value="">Minimum Rating</option>
-                  {[80, 85, 90, 95].map((rating) => (
-                    <option key={rating} value={rating}>
-                      {rating}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  onChange={(e) =>
-                    handleAttributeChange(position.id, "speed", e.target.value)
-                  }
-                >
-                  <option value="">Minimum Speed</option>
-                  {[70, 80, 90, 100].map((speed) => (
-                    <option key={speed} value={speed}>
-                      {speed}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  onChange={(e) =>
-                    handleAttributeChange(position.id, "strength", e.target.value)
-                  }
-                >
-                  <option value="">Minimum Strength</option>
-                  {[70, 80, 90, 100].map((strength) => (
-                    <option key={strength} value={strength}>
-                      {strength}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
-          </div>
+    <div className="attribute-panel">
+      <h3 style={{color:"white"}}>Select Position & Attributes</h3>
+      <select
+        className="position-dropdown"
+        onChange={(e) => setSelectedPosition(e.target.value)}
+      >
+        <option  value="">Select Position</option>
+        {positions.map((position) => (
+          <option key={position.id} value={position.id}>
+            {position.name}
+          </option>
+        ))}
+      </select>
 
-          <button className="generate-button football-button" onClick={generateTeam}>
-            Generate Team
-          </button>
+      {selectedPosition && (
+        <div className="attribute-container">
+          <h4 style={{color:"white"}}>{positions.find((pos) => pos.id === selectedPosition)?.name}</h4>
+          <div className="attribute-selectors">
+            <select
+              onChange={(e) =>
+                handleAttributeChange(selectedPosition, "overall_rating", e.target.value)
+              }
+            >
+              <option value="">Minimum Rating</option>
+              {[80, 85, 90, 95].map((rating) => (
+                <option key={rating} value={rating}>
+                  {rating}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={(e) =>
+                handleAttributeChange(selectedPosition, "speed", e.target.value)
+              }
+            >
+              <option value="">Minimum Speed</option>
+              {[70, 80, 90, 100].map((speed) => (
+                <option key={speed} value={speed}>
+                  {speed}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={(e) =>
+                handleAttributeChange(selectedPosition, "strength", e.target.value)
+              }
+            >
+              <option value="">Minimum Strength</option>
+              {[70, 80, 90, 100].map((strength) => (
+                <option key={strength} value={strength}>
+                  {strength}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
+    </div>
+
+    <button className="mode-button football-button"onClick={generateTeam}>
+      Generate Team
+    </button>
+  </div>
+)}
+
 
       {/* Football Alert Modal */}
       {showAlert && (

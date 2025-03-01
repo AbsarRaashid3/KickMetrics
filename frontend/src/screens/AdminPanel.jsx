@@ -350,15 +350,15 @@ const AdminPanel = () => {
 };
 
 
+
 const gradient1 = {
-    backgroundImage: "linear-gradient(230deg,rgb(103, 166, 168),rgb(154, 185, 172))"
+    backgroundImage: "linear-gradient(230deg,rgb(231, 169, 169),rgb(56, 10, 23))"
 };
 
 const gradient2 = {
-    backgroundImage: "linear-gradient(230deg,rgb(71, 136, 71), #fbaaa2)"
+    backgroundImage: "linear-gradient(230deg,rgb(47, 10, 10),rgb(127, 138, 171))"
 };
 const gradient3 = {
-    backgroundImage: "linear-gradient(230deg,rgb(143, 204, 176), #fbaaa2)"
+    backgroundImage: "linear-gradient(230deg,rgb(231, 169, 169),rgb(56, 10, 23))"
 };
-
 export default AdminPanel;

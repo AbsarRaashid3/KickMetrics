@@ -38,7 +38,7 @@ const Header = () => {
     className="d-inline-block align-top"
     alt="Kick Metrics"
   />
-  <span style={{
+<span style={{
     backgroundColor: "rgb(160, 169, 165)",
      backgroundImage: "linear-gradient(135deg,rgb(88, 101, 110), rgb(86, 30, 35))", // Change to your preferred color
     color: "#fff", // Text color

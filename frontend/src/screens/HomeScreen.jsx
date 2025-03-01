@@ -8,22 +8,28 @@ const HomeScreen = () => {
 
   return (
     <>
-      {isLoading ? (<Loader/>) : error ? 
-      (<Message variant='danger'>
-        {error?.data?.message || error.error}
-      </Message>) : 
-      (
-      <>
-        <h1>Players</h1>
-        <Row>
-          {players.map((player) => (
-            <Col key={player._id} sm={12} md={6} lg={4} xl={3}>
-              <Player player={player} />
-            </Col>
-          ))}
-        </Row>
-      </>
-      )
+      {isLoading ? (<Loader />) : error ?
+        (<Message variant='danger'>
+          {error?.data?.message || error.error}
+        </Message>) :
+        (
+          <>
+            <h1 style={{
+              color: "white",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+
+            }}>Players</h1>
+            <Row>
+              {players.map((player) => (
+                <Col key={player._id} sm={12} md={6} lg={4} xl={3}>
+                  <Player player={player} />
+                </Col>
+              ))}
+            </Row>
+          </>
+        )
       }
 
     </>
