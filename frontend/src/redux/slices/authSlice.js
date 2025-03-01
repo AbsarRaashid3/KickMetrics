@@ -1,31 +1,28 @@
 //slices, which are modular files defining state and reducers for specific parts of your app.
 //useEffect hook handles tasks that aren't directly related to rendering.
+
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isAuthenticated: false,
-  user: null,
+    userInfo: localStorage.getItem('userInfo') 
+        ? JSON.parse(localStorage.getItem('userInfo')) 
+        : null,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    login(state, action) {
-      const { user } = action.payload;
-
-      state.isAuthenticated = true;
-      state.user = user;
-    },
-
-    logout(state) {
-      if (state.user) {
-        state.isAuthenticated = false;
-        state.user = null;
-      }
-    },
-  },
+    name: 'auth',
+    initialState,
+    reducers: {
+        setCredentials: (state, action) => {
+            state.userInfo = action.payload;
+            localStorage.setItem('userInfo', JSON.stringify(action.payload));
+        },
+        logout: (state, action) =>{
+            state.userInfo = null;
+            localStorage.removeItem('userInfo');
+            console.log("logout called");
+        }
+    }
 });
-
-export const { login, logout } = authSlice.actions;
+export const { setCredentials,logout } = authSlice.actions;
 export default authSlice.reducer;

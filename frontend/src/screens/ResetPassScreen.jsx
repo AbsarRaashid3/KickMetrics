@@ -1,29 +1,27 @@
 import { useState } from 'react'; // to manage state
 import { Row, Col, Form, Button, FormGroup, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // react-router component for navigation without reloading the site
+import { Link ,useNavigate} from 'react-router-dom'; // react-router component for navigation without reloading the site
 import './../assets/styles/authScreen.css';
-import { validateEmail, validatePassword } from "../FormValidation";
+import {  validatePassword } from "../FormValidation";
+import { useResetPasswordMutation } from '../redux/slices/usersApiSlice';
 
 const ResetPassScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
-    const submitHandler = (e) => {
+    const [resetPassword, { isLoading }] = useResetPasswordMutation();
+    const navigate = useNavigate();
+    
+    const submitHandler = async(e) => {
         e.preventDefault(); // Prevent form refresh
-        const emailError = validateEmail(email); if (emailError) { setError(emailError); return; }
         const passwordError = validatePassword(password); if (passwordError) { setError(passwordError); return; }
-        const users = JSON.parse(localStorage.getItem('users')) || {};
-        if (!users[email]) { setError("No account found with this email."); return; }
-
-        setError('');
-        setTimeout(() => {      // Use a timeout to ensure the state is updated before triggering the alert
-            users[email].password = password; // Update the password for the user
-            localStorage.setItem('users', JSON.stringify(users)); // Save the updated users object
-            alert("Password Reset successfully!");
-            setEmail('');
-            setPassword('');
-        }, 0);
+        try {
+            const res = await resetPassword({ email, password }).unwrap();
+            navigate('/login');
+        } catch (err) {
+            setError(err?.data?.message || err.error);
+        }
+      
     };
     return (
         <Container className='authForm-container form' >
@@ -54,7 +52,7 @@ const ResetPassScreen = () => {
                 
                 <Row className="py-3">
                     <Col className="text-center">
-                        <Link to="/signIn" className='anchor'>Back to SignIn?</Link>
+                        <Link to="/register" className='anchor'>Back to SignIn?</Link>
                     </Col>
                 </Row>
             </div>

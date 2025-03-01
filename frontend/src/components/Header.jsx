@@ -5,12 +5,24 @@ import logo from '../assets/logo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice'; // Import the logout action
 import ThemeToggle from './ThemeToggle';
+import { useLogoutMutation } from '../redux/slices/usersApiSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
-  const handleLogout = () => {
-    dispatch(logout()); // Ensure this is only called on events like onClick
+  const navigate = useNavigate();
+  const [logoutApiCall] = useLogoutMutation();
+
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate('/login');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -45,9 +57,9 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
-              {isAuthenticated ? (
+              {userInfo ? (
                 <>
-                  {user && user.isAdmin === false && (
+                  {userInfo && !userInfo.isAdmin && (
                     <>
                       <LinkContainer to='/players'>
                         <Nav.Link>
@@ -97,7 +109,7 @@ const Header = () => {
                   <NavDropdown
                     title={
                       <img
-                        src={user?.profilePhoto || '/images/L. Messi.jpg'}
+                        src={userInfo?.profilePhoto || '/images/L. Messi.jpg'}
                         alt='Profile'
                         style={{
                           width: '30px',
@@ -110,17 +122,17 @@ const Header = () => {
                     id='basic-nav-dropdown'
                     align='end'
                   >
-                    <NavDropdown.Item onClick={handleLogout}>
+                    <NavDropdown.Item onClick={logoutHandler}>
                       Logout
                     </NavDropdown.Item>
 
-                    <LinkContainer to='/edit-user-profile'>
+                    <LinkContainer to='/profile'>
                       <NavDropdown.Item>Edit Profile</NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
                 </>
               ) : (
-                <LinkContainer to='/signIn'>
+                <LinkContainer to='/login'>
                   <Nav.Link>
                     <FaUser /> Sign In
                   </Nav.Link>

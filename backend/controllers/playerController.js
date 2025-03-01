@@ -24,4 +24,4 @@ const getPlayerByID = asyncHandler(async (req, res) => {
     
   });
 
-  export {getPlayers, getPlayerByID};
+export {getPlayers, getPlayerByID};

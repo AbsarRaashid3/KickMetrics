@@ -9,6 +9,7 @@ export const playersApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5
     }),
+    
     getPlayerDetails: builder.query({
       query: (playerId) => ({
         url: `${PLAYERS_URL}/${playerId}`,

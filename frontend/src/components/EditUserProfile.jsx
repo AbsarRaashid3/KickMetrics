@@ -1,115 +1,113 @@
-import React from "react";
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { Card, Button, Form, Alert, Spinner } from "react-bootstrap";
+import { Edit, Save } from "lucide-react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useUpdateProfileMutation, useUserProfileQuery } from "../redux/slices/usersApiSlice";
 
 const EditUserProfile = () => {
-  const currentUser = useSelector((state) => state.auth.user);
-  //const users = JSON.parse(localStorage.getItem('users')) || {};
+  const { data: profile, isLoading, error } = useUserProfileQuery();
+  const [updateProfile, { isLoading: loadingUpdate }] = useUpdateProfileMutation();
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [alertMessage, setAlertMessage] = useState(null);
+// Add proper initial state
 
+  // Update state when profile data is available
+useEffect(() => {
+  if (profile) {
+    console.log('Setting Profile Data:', profile);
+    setName(profile.name || "");
+    setBio(profile.bio || "");
+     
+  }
+}, [profile]);
+
+  const saveProfile = async () => {
+    try {
+      await updateProfile({ name, bio }).unwrap();
+      setAlertMessage({ type: "success", text: "Profile updated successfully!" });
+      setIsEditing(false);
+    } catch (err) {
+      setAlertMessage({ type: "danger", text: err?.data?.message || "Failed to update profile" });
+    }
+  };
+
+ // Add loading and error states
+if (isLoading) {
+  return <div className="text-center mt-5">Loading profile...</div>;
+}
+
+if (!profile) {
+  return <div className="text-center mt-5">No profile data available</div>;
+}
   return (
+    <div className="d-flex justify-content-center align-items-center mt-4">
+      <Card className="shadow-lg p-4" style={{ width: "40rem", borderRadius: "15px" }}>
+        <Card.Header className="text-center bg-primary text-white" style={{ borderRadius: "10px 10px 0 0" }}>
+          <h5>User Profile</h5>
+        </Card.Header>
 
-    <section className="h-100 gradient-custom-2">
-      <div className="container py-5 h-100">
-        <div className="row d-flex justify-content-center">
-          <div className="col col-lg-9 col-xl-8">
-            <div className="card">
-              <div
-                className="rounded-top text-white d-flex flex-row"
-                style={{ backgroundColor: "#000", height: "200px" }}
-              >
-                <div
-                  className="ms-4 mt-5 d-flex flex-column"
-                  style={{ width: "150px" }}
-                >
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                    alt="Generic placeholder"
-                    className="img-fluid img-thumbnail mt-4 mb-2"
-                    style={{ width: "150px", zIndex: 1 }}
+        <Card.Body>
+          {alertMessage && <Alert variant={alertMessage.type}>{alertMessage.text}</Alert>}
+          {error && <Alert variant="danger">{error.data?.message || "An error occurred"}</Alert>}
+          
+          {!profile ? (
+            <Alert variant="danger">Profile data is missing</Alert>
+          ) : (
+            <>
+              <div className="text-center mb-3">
+                {isEditing ? (
+                  <Form.Control
+                    type="text"
+                    className="text-center mb-2"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
                   />
-                  <button
-                    type="button"
-                    className="btn btn-outline-dark text-body"
-                    style={{ zIndex: 1 }}
-                  >
-                    Edit profile
-                  </button>
-                </div>
-                <div className="ms-3" style={{ marginTop: "130px" }}>
-                  <h5><h5>{currentUser.username || "Guest User"}</h5>
-                  <p>{currentUser.email || "No Email Provided"}</p></h5>
-                </div>
+                ) : (
+                  <h4>{profile.name || "No name available"}</h4>
+                )}
               </div>
-              <div className="p-4 text-black bg-body-tertiary">
-                <div className="d-flex justify-content-end text-center py-1 text-body">
-                  <div>
-                    <p className="mb-1 h5">8</p>
-                    <p className="small text-muted mb-0">Favourite Players</p>
-                  </div>
-                  <div className="px-3">
-                    <p className="mb-1 h5">xxxx-xxxxxxx</p>
-                    <p className="small text-muted mb-0">Contact</p>
-                  </div>
-                  <div>
-                    <p className="mb-1 h5">Faisalabad</p>
-                    <p className="small text-muted mb-0">City</p>
-                  </div>
-                </div>
-              </div>
-              <div className="card-body p-4 text-black">
-                <div className="mb-5 text-body">
-                  <p className="lead fw-normal mb-1">About</p>
-                  <div className="p-4 bg-body-tertiary">
-                    <p className="font-italic mb-1">Web Developer</p>
-                    <p className="font-italic mb-1">Lives in New York</p>
-                    <p className="font-italic mb-0">Photographer</p>
-                  </div>
-                </div>
-                <div className="d-flex justify-content-between align-items-center mb-4 text-body">
-                  <p className="lead fw-normal mb-0">Recent photos</p>
-                  <p className="mb-0">
-                    <a href="#!" className="text-muted">
-                      Show all
-                    </a>
-                  </p>
-                </div>
-                <div className="row g-2">
-                  <div className="col mb-2">
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                      alt="Image 1"
-                      className="w-100 rounded-3"
-                    />
-                  </div>
-                  <div className="col mb-2">
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                      alt="Image 2"
-                      className="w-100 rounded-3"
-                    />
-                  </div>
-                </div>
-                <div className="row g-2">
-                  <div className="col">
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                      alt="Image 3"
-                      className="w-100 rounded-3"
-                    />
-                  </div>
-                  <div className="col">
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                      alt="Image 4"
-                      className="w-100 rounded-3"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+
+              {isEditing ? (
+                <Form.Group controlId="bio">
+                  <Form.Label>Bio</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    placeholder="Tell us about yourself"
+                  />
+                </Form.Group>
+              ) : (
+                <Card.Text className="text-muted text-center">{profile.bio || "Add your bio"}</Card.Text>
+              )}
+            </>
+          )}
+        </Card.Body>
+
+        <Card.Footer className="d-flex justify-content-between">
+          <Button
+            variant={isEditing ? "success" : "outline-primary"}
+            className="w-100"
+            onClick={isEditing ? saveProfile : () => setIsEditing(true)}
+            disabled={loadingUpdate || !profile}
+          >
+            {loadingUpdate ? (
+              <>
+                <Spinner animation="border" size="sm" className="mr-2" /> Saving...
+              </>
+            ) : (
+              <>
+                {isEditing ? <Save className="mr-2" /> : <Edit className="mr-2" />} {isEditing ? "Save" : "Edit"}
+              </>
+            )}
+          </Button>
+        </Card.Footer>
+      </Card>
+    </div>
   );
 };
 

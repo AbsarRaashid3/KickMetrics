@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 
 const App = () => {
   const location = useLocation();
-  const isAuthPage = location.pathname === '/signIn';
+  const isAuthPage = location.pathname === '/login';
   const isResetPassPage = location.pathname === '/forgot-password';
 
   return (

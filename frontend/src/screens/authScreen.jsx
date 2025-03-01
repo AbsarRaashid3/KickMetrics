@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import { validateEmail, validatePassword, validateUsername } from "../FormValidation";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/slices/authSlice';
 import '../assets/styles/authScreen.css';
-
-/*Use useDispatch to dispatch actions like login or logout.
+import { useLoginMutation } from '../redux/slices/usersApiSlice';
+import { setCredentials } from "../redux/slices/authSlice";
+import { useRegisterMutation } from '../redux/slices/usersApiSlice';
+/*Use useDispatch to dispatch actions like login or logout into slice.
 Use useSelector to read from the Redux store.
 useState triggers re-rendering. it is used to store/manage  the dynamic data in component */
 
@@ -19,91 +20,69 @@ function AuthScreen() {
     const [error, setError] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-    const isAdmin=useSelector((state) => state.auth.user?.isAdmin);
+    const [login, { isLoading }] = useLoginMutation();
+    const { userInfo } = useSelector((state) => state.auth);
+    const { search } = useLocation();
+    const [register, { IsLoading }] = useRegisterMutation();
 
-    const SignInHandler = (e) => {
+    const sp = new URLSearchParams(search);
+    const redirect = sp.get('redirect') || '/dashboard'; 
+
+    useEffect(() => {  //if user info is already in redux store, redirect to home page
+        if (userInfo) {
+            navigate(redirect);
+        }
+    }, [userInfo, redirect, navigate]);
+
+
+    const SignInHandler = async (e) => {
         e.preventDefault();
-        const emailError = validateEmail(email); if (emailError) { setError(emailError); return; }
-        const passwordError = validatePassword(password); if (passwordError) { setError(passwordError); return; }
-        const users = JSON.parse(localStorage.getItem('users')) || {};
-
-        if (!users[email]) { setError("No account found with this email."); return; }
-        if (users[email].password !== password) { setError("Invalid password."); return; }
-        const token = "jwt-token";
-        users[email] = {
-            ...users[email],  // Preserve the previous data (in case it exists)
-            email: email,
-            password: password,
-            username: username,
-            authToken: token,
-           
-          };
-        // Store the updated users collection back in localStorage
-        localStorage.setItem('users', JSON.stringify(users));
-
+        try {
+            const res = await login({ email, password }).unwrap();
+            dispatch(setCredentials({ ...res, }));
+            navigate(redirect);  //check it
+        } catch (error) {
+            console.log(error);
+            setError(error?.data?.message || error.error);
+        }
        
-        dispatch(login({ user: users[email] }));
-        setError('');
     };
 
-    const SignUpHandler = (e) => {
+    const SignUpHandler = async (e) => {
         e.preventDefault();
         const emailError = validateEmail(email); if (emailError) { setError(emailError); return; }
         const passwordError = validatePassword(password); if (passwordError) { setError(passwordError); return; }
         const userNameError = validateUsername(username); if (userNameError) { setError(userNameError); return; }
 
-        const users = JSON.parse(localStorage.getItem('users')) || {};
-        if (users[email]) { setError("User already exists with this email."); return; }
-        setError('');
-        const token = "jwt-token";          // In a real app, this would come from the backend and is stored in HTTP-only cookies that is not possible without backend
-        const isAdmin=false;
-
-        setTimeout(() => {                   // Use a timeout to ensure the state is updated before triggering the alert
-        users[email] = {
-            ...users[email],  // Preserve the previous data (in case it exists)
-            email: email,
-            password: password,
-            username: username,
-            authToken: token,
-            isAdmin:isAdmin
-          };
-        localStorage.setItem('users', JSON.stringify(users));
-
-      
-            dispatch(login({ user: users[email] }));
-        }, 100);
+        try {
+            const res = await register({name:username, email, password}).unwrap();
+            dispatch(setCredentials({ ...res, }));
+            navigate(redirect);
+        } catch (error) {
+            console.log(error);
+            setError(error?.data?.message || error.error);
+        }
     };
 
-    // navigatiosn after signIn/signUp
-    useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/signIn'); // Redirect to sign-in if not authenticated
-        }
-        else if (isAdmin) {
-            navigate('/AdminPanel'); // Redirect to Admin Panel for admins
-        }else {
-            navigate('/dashboard'); // Redirect to user Dashboard for non-admins
-        }
-
-    }, [isAuthenticated, isAdmin, navigate]);
 
     return (
         <div className="authForm-container">
+
             <div className={`signup-container ${!signIn ? "active" : ""}`}>
+
                 <form id="SignUp" className="form" onSubmit={SignUpHandler}>
                     <h1 className="title">Create Account</h1>
                     <input
                         type="text"
                         className="input"
-                        placeholder="Username"
+                        placeholder="Enter Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                     <input
                         type="email"
                         className="input"
-                        placeholder="Email"
+                        placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -118,6 +97,7 @@ function AuthScreen() {
                         Sign Up
                     </button>
                     {error && <p className="error">{error}</p>}
+
                 </form>
             </div>
 
@@ -138,11 +118,12 @@ function AuthScreen() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Link to="/forgot-password" className="anchor">Forgot your password?</Link>
-                    <button className="button" type="submit" >
+                    <Link to="/reset-password" className="anchor">Forgot your password?</Link>
+                    <button className="button" type="submit" disabled={isLoading} >
                         Sign In
                     </button>
                     {error && <p className="error">{error}</p>}
+
                 </form>
             </div>
 

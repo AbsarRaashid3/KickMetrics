@@ -30,17 +30,14 @@ import EditUserProfile from './components/EditUserProfile';
 
 // Wrapper Component for Protected Routes
 const ProtectedRoute = ({ children, adminOnly = false }) => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const isAdmin = useSelector((state) => state.auth.user?.isAdmin);
-
-  if (!isAuthenticated) {
-    return <Navigate to="/signIn" />;
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  
+  if (!userInfo) {
+    return <Navigate to="/login" />;
   }
-
-  if (adminOnly && !isAdmin) {
+  if (adminOnly && !userInfo.isAdmin) {
     return <Navigate to="/" />;
   }
-
   return children;
 };
 
@@ -49,12 +46,24 @@ const router = createBrowserRouter(
   createRoutesFromElements(
 
     <Route path='/' element={<App />}>
-      <Route index={true} path='/' element={<LandingScreen />} />
-      <Route path='players' element={<HomeScreen />} />
-      <Route path='player/:id' element={<PlayerDetails />} />  
-      {/* <Route path='/player' element={<HomeScreen />} /> */}
-      <Route path='/signIn' element={<AuthForm />} />
-      <Route path='/forgot-password' element={<ResetPassword />} />
+      <Route index={true} path='/' element={<LandingScreen />} />  
+      <Route path='/login' element={<AuthForm />} />
+      <Route path='/register' element={<AuthForm />} />
+      <Route path='/reset-password' element={<ResetPassword />} />
+
+      <Route path='/players'
+        element={
+          <ProtectedRoute>
+            <HomeScreen />
+          </ProtectedRoute>
+        } />
+
+      <Route path='player/:id'
+        element={
+          <ProtectedRoute>
+            <PlayerDetails />
+          </ProtectedRoute>
+        } />
 
       <Route path='/AdminPanel'
         element={
@@ -74,6 +83,12 @@ const router = createBrowserRouter(
         element={
           <ProtectedRoute>
             <PlayerPerformanceAnalysis />
+          </ProtectedRoute>
+        } />
+      <Route path='/dashboard'
+        element={
+          <ProtectedRoute>
+            <DashboardScreen />
           </ProtectedRoute>
         } />
 
@@ -134,7 +149,7 @@ const router = createBrowserRouter(
             <WhatIf />
           </ProtectedRoute>
         } />
-      <Route path='/edit-user-profile'
+      <Route path='/profile'
         element={
           <ProtectedRoute>
             <EditUserProfile />
