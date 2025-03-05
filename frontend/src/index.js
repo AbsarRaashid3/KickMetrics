@@ -80,12 +80,12 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         } />
 
-      {/* <Route path='performance-analysis'
+      <Route path='performance-analysis'
         element={
           <ProtectedRoute>
             <PlayerPerformanceAnalysis />
           </ProtectedRoute>
-        } /> */}
+        } />
         
       <Route path='/dashboard'
         element={
@@ -131,19 +131,19 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         } />
 
-      {/* <Route path='market-value'
+      <Route path='market-value'
         element={
           <ProtectedRoute>
             <MarketValue />
           </ProtectedRoute>
-        } /> */}
+        } />
 
-      {/* <Route path='/prediction/:playerId'
+       <Route path='/prediction/:playerId'
         element={
           <ProtectedRoute>
             <MarketValuePrediction />
           </ProtectedRoute>
-        } /> */}
+        } /> 
 
       <Route path='/whatif'
         element={

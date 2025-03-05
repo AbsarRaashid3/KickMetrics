@@ -22,6 +22,8 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
+
+
 //@desc Auth user and get the token
 //@route POST /api/users
 //@access Public

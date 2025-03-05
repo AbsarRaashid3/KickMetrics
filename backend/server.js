@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import playerRoutes from './routes/playerRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser';
+import externalRoutes from './routes/externalRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 //Axios is a popular third-party library for making HTTP requests in JavaScript.
 
@@ -25,6 +26,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/players', playerRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/external', externalRoutes);  // Add this line
+
 app.use(notFound);
 app.use(errorHandler);
 app.listen(port, () => {

@@ -5,14 +5,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import authSliceReducer from '../slices/authSlice';
 import uiReducer from "../slices/uiSlice";
 import { apiSlice } from '../slices/apiSlice';
+import { externalApiSlice } from '../slices/externalApiSlice';
 
 const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
+    [externalApiSlice.reducerPath]: externalApiSlice.reducer,
     ui: uiReducer,
     auth: authSliceReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware).concat(externalApiSlice.middleware),
   devTools: true,
 });
 
