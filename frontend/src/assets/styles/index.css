@@ -542,40 +542,6 @@ input[type="range"] {
   color: #333;
 }
 
-.sticky-note {
-  margin: 20px auto;
-  width: 300px;
-  height: 200px;
-  background: #fffa8c;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 15px;
-  position: relative;
-}
-
-.sticky-note::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50px;
-  height: 20px;
-  background: #ffcd4c;
-  clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
-}
-
-.sticky-note textarea {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  resize: none;
-  font-size: 14px;
-  font-family: Arial, sans-serif;
-  color: #333;
-  padding: 5px;
-}
 
 
 .alert-modal {
@@ -691,22 +657,13 @@ input[type="range"] {
 }
 
 
-.dashboard-card {
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.dashboard-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
 
 
 /* General Styling for User Dashboard */
 .user-dashboard {
   font-family: "Arial", sans-serif;
-  color: #333;
+  padding: 2rem;
+  font-family: "Arial", sans-serif;
 }
 
 /* FIFA Card */
@@ -745,49 +702,6 @@ input[type="range"] {
   margin-top: 15px;
 }
 
-/* Favorite Players Section */
-.favorites-container {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 30px 0;
-}
-
-.favorite-card {
-  width: 220px;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  padding: 15px;
-  background: #ffffff;
-  animation: scaleUp 0.3s ease-in-out;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.favorite-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
-}
-
-.favorite-image {
-  max-width: 100px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.favorite-details h4 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-}
-
-/* Add Favorite Player Dropdown */
-.add-favorite-dropdown {
-  margin-top: 15px;
-  max-width: 300px;
-}
-
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -812,134 +726,280 @@ input[type="range"] {
 
 /* General Styling for Coach Dashboard */
 .coach-dashboard {
+  padding: 2rem;
   font-family: "Arial", sans-serif;
-  color: #333;
-}
-
-/* Player Analysis Section */
-.player-analysis {
-  margin-top: 30px;
-  text-align: center;
-}
-
-/* Chart Containers */
-.chart-container {
-  margin: 20px auto;
-  text-align: center;
-}
-
-/* Favorite Players Section */
-.favorites-container {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 30px 0;
-}
-
-.favorite-card {
-  width: 220px;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  padding: 15px;
-  background: #ffffff;
-  animation: scaleUp 0.3s ease-in-out;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.favorite-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
-}
-
-.favorite-image {
-  max-width: 100px;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.favorite-details h4 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-}
-
-/* Notes Section */
-.notes-section {
-  margin-top: 20px;
-}
-
-.notes-list {
-  margin-top: 10px;
-}
-
-.note-item {
   background: #f8f9fa;
-  border: 1px solid #ddd;
+}
+.title-gradient {
+  background: linear-gradient(45deg, #2c3e50, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin: 2rem auto;
+  display: block;
+}
+.stats-card {
+  background: white;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+.coaches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+.coach-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
+  text-align: center;
+}
+.coach-card:hover {
+  transform: translateY(-5px);
+}
+.coach-image-wrapper {
+  padding: 1rem;
+  text-align: center;
+}
+.coach-image-wrapper img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+.coach-modal .modal-content {
+  border-radius: 15px;
+}
+
+.coach-profile {
+  text-align: center;
+}
+.profile-image {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+.country-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.country-flag {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+}
+.team-entry {
+  background: #f8f9fa;
+  padding: 1rem;
   border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  .coach-dashboard {
+    padding: 1rem;
+  }
+  
+  .title-gradient {
+    font-size: 2rem;
+  }
+  
+  .coaches-grid {
+    grid-template-columns: 1fr;
+  }
+  
+
 }
 
 /* General Styling for Scout Dashboard */
-.scout-dashboard {
+.scout-dashboard-container {
+  background: linear-gradient(45deg, #2c3e50, #3498db);
   font-family: "Arial", sans-serif;
-  color: #333;
+padding: 3rem;
 }
-
-/* Favorite Players Section */
-.favorites-container {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 30px 0;
-}
-
-.favorite-card {
-  width: 220px;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+.dashboard-header {
   text-align: center;
-  padding: 15px;
-  background: #ffffff;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  margin-bottom: 3rem;
+  font-family: "Arial", sans-serif;
 }
-
-.favorite-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+.section-title {  
+  font-size: 2rem;
+  font-family: "Arial", sans-serif;
+  color: #2d3238;
+  border-bottom: 3px solid #3498db;
+  width: fit-content;
+  padding-bottom: 5px;
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-bottom: 15px;
 }
+ .transfer-cards-container {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+.transfer-cards-container::-webkit-scrollbar {
+  height: 3px;
+  background: #78ABCE;
 
-.favorite-image {
-  max-width: 100px;
+}
+.transfer-cards-container::-webkit-scrollbar-thumb {
+  background: #e4e8eb;
+  border-radius: 10px;
+}
+.transfer-card {
+  transition: transform 0.2s;
+  border: none;
+  height: 210px !important; /* Fixed height */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  backdrop-filter: blur(5px);
+  background: rgba(204, 215, 223, 0.85) !important; 
+} 
+.transfer-card:hover {
+  transform: translateY(-5px);
+}
+.player-image-container {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-right: 1rem;
 }
-
-.favorite-details h4 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
+.player-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-
-/* Notes Section */
-.notes-section {
-  margin-top: 20px;
+.transfer-details {
+  flex: 1;
 }
-
-.notes-list {
-  margin-top: 10px;
+.player-name {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
 }
-
-.note-item {
-  background: #f8f9fa;
+.transfer-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.transfer-arrow {
+  color: #3498db;
+  font-weight: bold;
+}
+.custom-select {
+  width: 100%;
+  padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 1.5rem;
+  background: white;
 }
+.radar-chart-container,
+.comparison-chart-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+/* .notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.note-card {
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+} */
+
+/*------------ Notes---------- */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+.note-card {
+  width: 100%;
+  position: relative;
+  background: rgba(120, 171, 206, 0.85);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.delete-note {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 2rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.note-card:hover .delete-note {
+  opacity: 1;
+}
+
+.add-note {
+  height: 150px;
+  background: #ecf0f1;
+  border: 2px dashed #bdc3c7;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.add-note:hover {
+  background: #dfe6e9;
+  color: #2c3e50;
+}
+
+@media (max-width: 768px) {
+  .scout-dashboard-container {
+    padding: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+  }
+  
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------------*/
 
 
 /* Footer Styling */
@@ -1413,20 +1473,11 @@ input[type="range"] {
   background:linear-gradient(135deg, #223a6a,rgb(16, 13, 13), #670d0d);
 }
 
-.dashboardC {
-  display: grid;
-  color: white;
-  background: linear-gradient(135deg, #223a6a, rgb(16, 13, 13), #032445);
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  padding: 10px;
-  font-family: Arial, sans-serif;
-}
 
 .standings, .player-section, .progress-graph1, .sticky-notes, .next-games, .my-team {
   background: #f4f3f3;
   color: white;
-  background: linear-gradient(135deg, #6a2230, rgb(16, 13, 13), #670d22);
+  background: linear-gradient(135deg, #b48e96, rgb(68, 53, 53), #7a4e58);
   padding: 10px;
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
@@ -1460,4 +1511,76 @@ input, select, textarea {
   border: 1px solid #ccc;
   border-radius: 5px;
   background: #e8e8e8;
+}
+
+
+/* current seasontable in userDashboards*/ 
+.table-custom {
+  background:transparent !important;
+ 
+}
+
+.table-custom th, .table-custom td {
+  background:transparent !important;
+  border-color: rgba(255, 255, 255, 0.2);
+
+}
+
+/* Custom scrollbar styles */
+.custom-scroll {
+  scrollbar-width:thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.match-card {
+  background: #1e1e2e;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 450px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.team-logo {
+  width: 80px;
+  height: auto;
+}
+
+.team-name {
+  font-weight: bold;
+}
+
+.vs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vs-text 
+  {
+    background: #758ab6;
+    color: white;
+    font-weight: 500;
+    padding: 5px 7px;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
+
+.match-info {
+  margin-top: 10px;
+}
+
+.league-name {
+  color: #758ab6;
+  font-weight: bold;
+}
+
+.arena-name {
+  color: #e63946;
+  font-weight: bold;
+}
+
+.upcoming-matches p{
+  margin: 0;
 }

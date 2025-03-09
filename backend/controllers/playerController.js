@@ -5,7 +5,7 @@ import Player from '../models/PlayersModel.js';
 //@route GET /api/players
 //@access Public
 const getPlayers = asyncHandler(async (req, res) => {
-  const players = await Player.find({});
+  const players = await Player.find({}).limit(100);
   console.log("i am in player controller, in getPlayers");
   res.json(players);
 });
@@ -16,7 +16,6 @@ const getPlayers = asyncHandler(async (req, res) => {
 const getPlayerByID = asyncHandler(async (req, res) => {
     const player = await Player.findById(req.params.id);
     if(player){
-      console.log("i am in player controller, in getPlayerByID");
         return res.json(player);
     }
     res.status(404);

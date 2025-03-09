@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const playerSchema = new mongoose.Schema({
   _id: {
-    type: String,
+    type: Number,
     required: true,
   },
   name: {

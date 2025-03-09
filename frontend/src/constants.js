@@ -6,4 +6,3 @@ export const PLAYERS_URL = '/api/players';
 export const USERS_URL = '/api/users';
 export const EXTERNAL_API_URL = '/api/external';
 
-

@@ -1,110 +1,205 @@
-import React, { useState, useEffect } from "react";
-import players from "../players";
-import { useGetCountriesQuery,useGetLeaguesQuery } from '../redux/slices/externalApiSlice';
+import React from "react";
+import { useGetUserDashboardQuery, useGetFavoritesQuery, useAddFavoriteMutation, useRemoveFavoriteMutation } from '../redux/slices/externalApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { Card, Table, Button, Row, Col, Container, Accordion } from 'react-bootstrap';
+import { useGetPlayersQuery } from '../redux/slices/playersApiSlice';
+import Player from '../components/Players';
+
 const UserDashboard = () => {
+  const { data: leagues, isLoading: isLoadingLeagues, error: errorLeagues } = useGetUserDashboardQuery();
+  const { data: favorites, isLoading: loadingFavorites, error: favError, refetch } = useGetFavoritesQuery();
+  const { data: players, isLoading: isLoadingPlayers, error: errorPlayers } = useGetPlayersQuery();
+  const [addFavorite] = useAddFavoriteMutation();
+  const [removeFavorite] = useRemoveFavoriteMutation();
 
-  const [favorites, setFavorites] = useState([]);
-  const { data: countries, isLoadingCountries, errorCountries } = useGetCountriesQuery();
-  const { data: leagues, isLoadingLeagues, errorLeagues } = useGetLeaguesQuery();
+  if (isLoadingPlayers) return (<Loader />);
+  if (errorPlayers) return <Message variant='danger'> {errorPlayers?.data?.message} </Message>;
 
-  console.log(leagues);
-  console.log(countries);
-
-
-  const addFavoritePlayer = (player) => {
-    if (!favorites.find((fav) => fav._id === player._id)) {
-      setFavorites([...favorites, player]);
+  const favoritePlayerIds = favorites?.map(fav => fav.playerId);
+  const favoritePlayers = players?.filter(player =>
+    favoritePlayerIds?.includes(Number(player._id))
+  );
+  // Function to handle adding a favorite player
+  const handlePlayerSelect = async (e) => {
+    const playerId = e.target.value;
+    if (playerId) {
+      try {
+        await addFavorite(playerId);
+        refetch();
+      } catch (err) {
+        console.error('Failed to add favorite:', err);
+      }
     }
   };
 
-  const removeFavoritePlayer = (playerId) => {
-    setFavorites(favorites.filter((fav) => fav._id !== playerId));
+  const handleRemoveFavorite = async (playerId) => {
+    try {
+      await removeFavorite(playerId);
+      refetch();
+    } catch (err) {
+      console.error('Failed to remove favorite:', err);
+    }
   };
 
   return (
     <>
-      {(isLoadingCountries || isLoadingLeagues)  ? (<Loader />) : (errorCountries || errorLeagues) ?
-        (<Message variant='danger'>
-          {errorCountries?.data?.message  || errorLeagues?.data?.message}
-        </Message>) : (
-          <h1 style={{
-            color: "white",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+      {(isLoadingLeagues || loadingFavorites) ? (
+        <Loader />
+      ) : (errorLeagues || favError) ? (
+        <Message variant='danger'>
+          {errorLeagues?.data?.message}
+        </Message>
+      ) : (
 
-          }} />
-        )
-      }
+        <Container className="user-dashboard">
+          <div className="dashboard-header">
+            <h1 >User Dashboard</h1>
+            <p className="lead"> Track top leagues, upcoming matches, and manage your favorite players all in one place.</p>
+            <h3 className="section-title">
+              Ongoing Leagues
+            </h3>
+          </div>
 
-      <div className="container mt-2 scout-dashboard">
-        {/* League Standings Section */}
-        <div className="p-4 rounded shadow-lg"
-          style={{
-            background: "linear-gradient(135deg, #670d0d,  #223a6a)",
-          }}
-        >
-          <h3 className="text-center mb-4 bold text-secondary">Ongoing Leagues</h3>
+          <Accordion defaultActiveKey={leagues?.data[0]?.id} >
+            {leagues && leagues.data ? (
+              leagues.data.slice(0, 2).map((league) => (
 
-          {isLoadingLeagues ? (
-            <p className="text-center fs-5">Loading Leagues...</p>
-          ) : errorLeagues ? (
-            <p className="text-center text-danger fs-5">Error loading Leagues</p>
-          ) : (
-            <>
-              {leagues.result.map((row, index) => (
-                <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch">
-                  <div className="card text-center shadow-sm border-0 w-100">
-                    <div className="card-body d-flex flex-column align-items-center">
-                      <img
-                        src={row.league_logo}
-                        alt={row.league_name}
-                        className="mb-3"
-                        style={{ width: "90px", height: "auto" }}
-                      />
-                      <h5 className="card-title fw-bold">{row.league_name}</h5>
-                      <div className="d-flex align-items-center mt-auto">
-                        <img
-                          src={row.country_logo}
-                          alt={row.country_name}
-                          className="rounded-circle border me-2"
-                          style={{ width: "40px", height: "40px" }}
-                        />
-                        <span className="fw-bold text-dark">{row.country_name}</span>
-                      </div>
-                    </div>
-                  </div>
+                <Accordion.Item eventKey={league.id} >
+                  <Accordion.Header >{league.name}</Accordion.Header>
+                  <Accordion.Body style={{ background: "linear-gradient(135deg,#223a6a, rgb(86, 103, 136),rgb(184, 137, 153))" }}>
+
+                    <Row className="mt-4">
+                      <Col xs={12} sm={12} md={12} lg={12} className="text-center">
+                        <img width={"15%"} src={league.image_path} alt={league.name} className="mb-3 img-fluid" />
+                      </Col>
+                    </Row>
+
+                    <Row className="mt-4 ">
+                      <Col xs={12} sm={6} md={3} className="text-center">
+                        <h5 className="text-center">Season</h5>
+                        <p className="text-center">{league.currentseason.name}</p>
+                      </Col>
+                      <Col xs={12} sm={6} md={3} className="text-center">
+                        <h5 className="text-center">Start Date</h5>
+                        <p className="text-center">{league.currentseason.starting_at}</p>
+                      </Col>
+                      <Col xs={12} sm={6} md={3} className="text-center">
+                        <h5 className="text-center">End Date</h5>
+                        <p className="text-center">{league.currentseason.ending_at}</p>
+                      </Col>
+                      <Col xs={12} sm={6} md={3} className="text-center">
+                        <h5 className="text-center">Status</h5>
+                        <p className="text-center">
+                          {(league.currentseason.finished ? "Finished" : "Ongoing")}
+                        </p>
+                      </Col>
+                    </Row>
+
+                    <Row className="mt-4">
+                      <Col xs={12} className="text-center">
+                        <h5 className="text-center">Upcoming Matches</h5>
+                      </Col>
+                    </Row>
+
+                    <Row className="mt-4 g-4 upcoming-matches">
+                      {league.upcoming && league.upcoming.map((match) => {
+                        const dateTime = new Date(match.starting_at);
+                        const [team1, team2] = match.name.split(" vs ");
+                        return (
+                          <Col xs={12} sm={6} md={4} lg={3} className="text-center" key={match.id}>
+                            <Card className="match-card text-center p-2 " style={{
+                              backgroundColor: "white",
+                            }}>
+                              <Row className="align-items-center">
+                                <Col xs={12} className="text-center">
+                                  <h6 className="team-name">{team1}</h6>
+                                </Col>
+                              </Row>
+                              <Row className="align-items-center">
+                                <Col xs={12} className="vs-container">
+                                  <span className="vs-text">VS</span>
+                                </Col>
+                              </Row>
+                              <Row className="align-items-center">
+                                <Col xs={12} className="text-center">
+                                  <h6 className="team-name">{team2}</h6>
+                                </Col>
+                              </Row>
+                              <div className="match-info mt-1" >
+                                <h6 className="league-name">{league.name}</h6>
+                                <p>{dateTime.toLocaleDateString()}</p>
+                                <p>{dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                              </div>
+                            </Card>
+                          </Col>
+                        );
+                      })}
+                    </Row>
+
+                  </Accordion.Body>
+                </Accordion.Item>
+
+              ))
+            ) : (
+              <p className="text-center text-danger fs-5">No leagues available</p>
+            )}
+
+          </Accordion>
+
+          <br></br>
+          <br></br>
+
+
+
+          {/*  Fav players section*/}
+          <h3 className="section-title">Add Favorite Players</h3>
+          <select
+            className="form-select w-25 mx-auto"
+
+            onChange={handlePlayerSelect}
+            defaultValue=""
+          >
+            <option value="" disabled>Select a Player</option>
+            {players?.map((player) => (
+              <option key={player._id} value={player._id}>
+                {player.name}
+              </option>
+            ))}
+          </select>
+
+          <Row>
+            {favoritePlayers?.map((favorite) => (
+              <Col key={favorite._id} sm={12} md={6} lg={4} xl={3}>
+                <div className="position-relative">
+                  <Player player={favorite} />
+                  <Button
+                    variant="danger"
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '10px',
+                      zIndex: 1000
+                    }}
+                    onClick={() => handleRemoveFavorite(favorite._id)}
+                  >
+                    X
+                  </Button>
                 </div>
-              ))}
-</>
-          )}
-        </div>
+              </Col>
 
-        {/* Add to Favorite Players */}
-        <h3>Add to Favorite Players</h3>
-        <select
-          className="form-select add-favorite-dropdown"
-          onChange={(e) => {
-            const player = players.find((p) => p._id === e.target.value);
-            addFavoritePlayer(player);
-          }}
-        >
-          <option value="">Select a Player</option>
-          {players.map((player) => (
-            <option key={player._id} value={player._id}>
-              {player.name}
-            </option>
-          ))}
-        </select>
+            ))}
+
+          </Row>
 
 
 
-      </div>
+
+        </Container>
+
+      )}
     </>
   );
-
 };
 
 export default UserDashboard;

@@ -6,23 +6,63 @@ export const externalApiSlice = createApi({
 
   baseQuery: fetchBaseQuery({ 
     baseUrl: EXTERNAL_API_URL,
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.userInfo?.token;
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
 
   endpoints: (builder) => ({
-    getCountries: builder.query({
+    getUserDashboard: builder.query({
       query: () => ({
-        url: `/getCountries`,
+        url: `/getLeaguesCurrentSeasonUpcoming`,
+        
       }),
     }),
 
-    getLeagues: builder.query({
+    getCoachDashboard: builder.query({
       query: () => ({
-        url: `/getLeagues`,
+        url: `/getCoachesPlayersTeamsCountries`,
         
       }),
+    }),
+    
+    getScoutDashboard: builder.query({
+      query: () => ({
+        url: `/getTransfers`,
+
+      }),
+    }),
+
+    getFavorites: builder.query({
+      query: () => ({
+        url:'/favorites',
+        method: 'GET',
+    }),
+    keepUnusedDataFor: 5,
+  }),
+
+  addFavorite: builder.mutation({
+      query: (playerId) => ({
+        url: '/favorites',
+        method: 'POST',
+        body: {playerId:playerId}
+      }),
+      invalidatesTags: ['FavPlayers']
+    }),
+
+    removeFavorite: builder.mutation({
+      query: (playerId) => ({
+        url: `/favorites/${playerId}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['FavPlayers']
     }),
   }),
   
 });
 
-export const { useGetCountriesQuery,useGetLeaguesQuery } = externalApiSlice;
+export const { useGetCoachDashboardQuery,useGetUserDashboardQuery,useAddFavoriteMutation,useGetFavoritesQuery,useRemoveFavoriteMutation,useGetScoutDashboardQuery } = externalApiSlice;

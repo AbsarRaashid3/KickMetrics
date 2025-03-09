@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import players from "../players";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   ResponsiveContainer,
   BarChart,
@@ -14,45 +13,51 @@ import {
   Tooltip,
   Bar,
 } from "recharts";
+import { useGetPlayersQuery } from '../redux/slices/playersApiSlice';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+
+import { useGetScoutDashboardQuery } from '../redux/slices/externalApiSlice';
+import { Card, Container, Row, Col, Button, Form } from "react-bootstrap";
 
 const ScoutDashboard = () => {
+
+  const { data: players, isLoading: isLoadingPlayers, error: errorPlayers } = useGetPlayersQuery();
+  const { data: transfers, isLoading: isLoadingScouts, error: errorScouts } = useGetScoutDashboardQuery();
+
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [comparePlayer, setComparePlayer] = useState(null);
-  const [favorites, setFavorites] = useState([]);
-  const [scoutNotes, setScoutNotes] = useState({});
-  const [noteText, setNoteText] = useState("");
-
-  const addFavoritePlayer = (player) => {
-    if (!favorites.find((fav) => fav._id === player._id)) {
-      setFavorites([...favorites, player]);
-    }
-  };
-
-  const removeFavoritePlayer = (playerId) => {
-    setFavorites(favorites.filter((fav) => fav._id !== playerId));
-  };
-
-  const handlePlayerSelect = (e) => {
-    const player = players.find((p) => p._id === e.target.value);
-    setSelectedPlayer(player);
-  };
 
   const handleComparePlayerSelect = (e) => {
-    const player = players.find((p) => p._id === e.target.value);
+    const player = players?.find((p) => String(p._id) === e.target.value);
     setComparePlayer(player);
   };
 
-  const handleAddScoutNote = (playerId) => {
-    if (!noteText.trim()) return;
-    setScoutNotes({
-      ...scoutNotes,
-      [playerId]: [...(scoutNotes[playerId] || []), noteText],
-    });
-    setNoteText("");
+  // Sticky Notes
+  const [notes, setNotes] = useState(() => {
+    const savedNotes = localStorage.getItem('coachNotes');
+    return savedNotes ? JSON.parse(savedNotes) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('scoutNotes', JSON.stringify(notes));
+  }, [notes]);
+
+  const addNote = () => setNotes([...notes, ""]);
+
+  const updateNote = (index, value) => {
+    const newNotes = [...notes];
+    newNotes[index] = value;
+    setNotes(newNotes);
   };
 
-  const radarData = selectedPlayer
-    ? [
+  const deleteNote = (index) => {
+    setNotes(notes.filter((_, i) => i !== index));
+  };
+
+  const radarData = useMemo(
+    () =>
+      selectedPlayer ? [
         { attribute: "Dribbling", value: selectedPlayer.dribbling },
         { attribute: "Finishing", value: selectedPlayer.finishing },
         { attribute: "Speed", value: selectedPlayer.sprint_speed },
@@ -60,173 +65,189 @@ const ScoutDashboard = () => {
         { attribute: "Stamina", value: selectedPlayer.stamina },
         { attribute: "Strength", value: selectedPlayer.strength },
       ]
-    : [];
+        : [],
+    [selectedPlayer]
+  );
 
-  const comparisonData = selectedPlayer && comparePlayer
+  if (isLoadingPlayers || isLoadingScouts) return (<Loader />);
+  if (errorPlayers || errorScouts) return <Message variant='danger'> {errorPlayers?.data?.message || errorScouts?.data.message} </Message>;
+
+  const handlePlayerSelect = (e) => {
+    const player = players?.find((p) => String(p._id) === e.target.value);
+    console.log(typeof e.target.value);
+
+    setSelectedPlayer(player);
+  };
+
+
+  const comparisonData = selectedPlayer?.name && comparePlayer?.name
     ? [
-        {
-          attribute: "Dribbling",
-          [selectedPlayer.name]: selectedPlayer.dribbling,
-          [comparePlayer.name]: comparePlayer.dribbling,
-        },
-        {
-          attribute: "Finishing",
-          [selectedPlayer.name]: selectedPlayer.finishing,
-          [comparePlayer.name]: comparePlayer.finishing,
-        },
-        {
-          attribute: "Speed",
-          [selectedPlayer.name]: selectedPlayer.sprint_speed,
-          [comparePlayer.name]: comparePlayer.sprint_speed,
-        },
-        {
-          attribute: "Passing",
-          [selectedPlayer.name]: selectedPlayer.short_passing,
-          [comparePlayer.name]: comparePlayer.short_passing,
-        },
-        {
-          attribute: "Strength",
-          [selectedPlayer.name]: selectedPlayer.strength,
-          [comparePlayer.name]: comparePlayer.strength,
-        },
-      ]
+      {
+        attribute: "Dribbling",
+        [selectedPlayer.name]: selectedPlayer.dribbling,
+        [comparePlayer.name]: comparePlayer.dribbling,
+      },
+      {
+        attribute: "Finishing",
+        [selectedPlayer.name]: selectedPlayer.finishing,
+        [comparePlayer.name]: comparePlayer.finishing,
+      },
+      {
+        attribute: "Speed",
+        [selectedPlayer.name]: selectedPlayer.sprint_speed,
+        [comparePlayer.name]: comparePlayer.sprint_speed,
+      },
+      {
+        attribute: "Passing",
+        [selectedPlayer.name]: selectedPlayer.short_passing,
+        [comparePlayer.name]: comparePlayer.short_passing,
+      },
+      {
+        attribute: "Strength",
+        [selectedPlayer.name]: selectedPlayer.strength,
+        [comparePlayer.name]: comparePlayer.strength,
+      },
+    ]
     : [];
 
-  return (
-    <div className="container mt-5 scout-dashboard">
-      <h1>Welcome to the Scout Dashboard</h1>
-      <p>
-        Compare players, manage favorites, and analyze detailed performance
-        metrics to aid scouting decisions.
-      </p>
 
-      {/* Player Selection */}
-      <h3>Select a Player for Analysis</h3>
-      <select className="form-select mb-3" onChange={handlePlayerSelect}>
-        <option value="">Select a Player</option>
-        {players.map((player) => (
-          <option key={player._id} value={player._id}>
-            {player.name}
-          </option>
-        ))}
-      </select>
+return (
 
-      {/* Player Details and Radar Chart */}
-      {selectedPlayer && (
-        <div className="player-analysis">
-          <h2>{selectedPlayer.name}</h2>
-          <p>Key attribute analysis for scouting purposes.</p>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <RadarChart data={radarData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="attribute" />
-              <PolarRadiusAxis angle={30} domain={[0, 100]} />
-              <Radar
-                name={selectedPlayer.name}
-                dataKey="value"
-                stroke="#8884d8"
-                fill="#8884d8"
-                fillOpacity={0.6}
-              />
-            </RadarChart>
-          </ResponsiveContainer>
+  <div className="scout-dashboard-container">
+    <div className="dashboard-header">
+      <h1>Scout Dashboard</h1>
+      <h3 className="lead text-muted">
+        Advanced player analysis and comparison tools for professional scouting.
+      </h3>
+    </div>
+    <Container fluid className="mt-4">
+   
+      <div className="transfers-section">
+        <h3 className="section-title">Latest Transfer Activities</h3>
+        <div className="transfer-cards-container">
+          <Row className="flex-nowrap">  
+            {transfers?.data?.map((transfer) => (
+              <Col key={transfer.id} xs={12} md={4} lg={3}>
+                <Card className="transfer-card">
+                  <Card.Body>
+                    <div className="d-flex align-items-center">
+                      <div className="player-image-container">
+                        <Card.Img
+                          src={transfer.player?.image_path || "https://via.placeholder.com/80"}
+                          alt={transfer.player?.common_name}
+                          className="player-image"
+                        />
+                      </div>
+                      <div className="transfer-details">
+                        <Card.Title className="player-name">{transfer.player?.name}</Card.Title>
+                        <div className="transfer-info">
+                          <span className="from-team">{transfer?.fromteam?.name}</span>
+                          <span className="transfer-arrow">→</span>
+                          <span className="to-team">{transfer?.toteam?.name}</span>
+                        </div>
+                        <small className="text-muted">{transfer?.date}</small>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
         </div>
-      )}
-
-      {/* Player Comparison */}
-      <h3>Compare with Another Player</h3>
-      <select
-        className="form-select mb-3"
-        onChange={handleComparePlayerSelect}
-      >
-        <option value="">Select a Player to Compare</option>
-        {players.map((player) => (
-          <option key={player._id} value={player._id}>
-            {player.name}
-          </option>
-        ))}
-      </select>
-
-      {selectedPlayer && comparePlayer && (
-        <div className="comparison-chart">
-          <h4>Player Comparison</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={comparisonData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="attribute" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey={selectedPlayer.name} fill="#8884d8" />
-              <Bar dataKey={comparePlayer.name} fill="#82ca9d" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      )}
-
-      {/* Favorite Players Section */}
-      <h3>Favorite Players</h3>
-      <div className="favorites-container">
-        {favorites.map((player) => (
-          <div className="favorite-card" key={player._id}>
-            <img src={player.image} alt={player.name} className="favorite-image" />
-            <div className="favorite-details">
-              <h4>{player.name}</h4>
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={() => removeFavoritePlayer(player._id)}
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        ))}
       </div>
 
-      {/* Add to Favorite Players */}
-      <h3>Add to Favorite Players</h3>
-      <select
-        className="form-select add-favorite-dropdown"
-        onChange={(e) => {
-          const player = players.find((p) => p._id === e.target.value);
-          addFavoritePlayer(player);
-        }}
-      >
-        <option value="">Select a Player</option>
-        {players.map((player) => (
-          <option key={player._id} value={player._id}>
-            {player.name}
-          </option>
-        ))}
-      </select>
+      <div className="analysis-section mt-5">
+        <Row>
+          <Col lg={6}>
+            <div className="player-select-container">
+              <h3 className="section-title">Player Analysis</h3>
+              <select className="custom-select" onChange={handlePlayerSelect}>
+                <option value="">Select Primary Player</option>
+                {players?.map((player) => (
+                  <option key={player._id} value={player._id}>
+                    {player.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-      {/* Scout Notes */}
-      <h3>Scouting Notes</h3>
-      {selectedPlayer && (
-        <div className="notes-section">
-          <textarea
-            className="form-control mb-2"
-            placeholder="Add a note..."
-            value={noteText}
-            onChange={(e) => setNoteText(e.target.value)}
-          ></textarea>
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={() => handleAddScoutNote(selectedPlayer._id)}
-          >
-            Add Note
-          </button>
-          <div className="notes-list mt-3">
-            {scoutNotes[selectedPlayer._id]?.map((note, index) => (
-              <div key={index} className="note-item">
-                <p>{note}</p>
+            {selectedPlayer && (
+              <div className="radar-chart-container">
+                <h4 className="player-name">{selectedPlayer.name}</h4>
+                <ResponsiveContainer width="100%" height={400}>
+                  <RadarChart data={radarData}>
+                    <PolarGrid strokeDasharray="3 3" />
+                    <PolarAngleAxis dataKey="attribute" />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                    <Radar
+                      name={selectedPlayer.name}
+                      dataKey="value"
+                      stroke="#8884d8"
+                      fill="#8884d8"
+                      fillOpacity={0.6}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+            )}
+          </Col>
+
+          <Col lg={6}>
+            <div className="comparison-section">
+              <h3 className="section-title">Player Comparison</h3>
+              <select className="custom-select" onChange={handleComparePlayerSelect}>
+                <option value="">Select Player to Compare</option>
+                {players?.map((player) => (
+                  <option key={player._id} value={player._id}>
+                    {player.name}
+                  </option>
+                ))}
+              </select>
+
+              {selectedPlayer && comparePlayer && (
+                <div className="comparison-chart-container">
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarChart data={comparisonData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="attribute" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey={selectedPlayer.name} fill="#8884d8" />
+                      <Bar dataKey={comparePlayer.name} fill="#82ca9d" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </div>
+
+      <div className="mt-5">
+        <h3 className="section-title">Scouting Notes</h3>
+        <Row  >
+          <Col >
+            <div className="notes-grid">
+              {notes.map((note, index) => (
+                <div key={index} className="note-card">
+                  <Form.Control
+                    as="textarea"
+                    value={note}
+                    onChange={(e) => updateNote(index, e.target.value)}
+                    placeholder="Add scouting observations..."
+                    rows={6}
+                  />
+                  <button className="delete-note" onClick={() => deleteNote(index)}>×</button>
+                </div>
+              ))}
+              <button className="add-note" onClick={addNote}>+ New Note</button>
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </Container>
+  </div>
+);
 };
 
 export default ScoutDashboard;
