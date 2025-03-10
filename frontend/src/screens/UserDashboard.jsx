@@ -2,7 +2,7 @@ import React from "react";
 import { useGetUserDashboardQuery, useGetFavoritesQuery, useAddFavoriteMutation, useRemoveFavoriteMutation } from '../redux/slices/externalApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { Card, Table, Button, Row, Col, Container, Accordion } from 'react-bootstrap';
+import { Card,  Button, Row, Col, Container, Accordion } from 'react-bootstrap';
 import { useGetPlayersQuery } from '../redux/slices/playersApiSlice';
 import Player from '../components/Players';
 

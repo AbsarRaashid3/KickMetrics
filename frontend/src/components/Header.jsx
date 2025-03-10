@@ -97,12 +97,9 @@ const Header = () => {
                       </LinkContainer>
 
                       <LinkContainer to='/dashboard'>
-                        <Nav.Link>Dashboard</Nav.Link>
+                        <Nav.Link><FaFutbol />Dashboard</Nav.Link>
                       </LinkContainer>
 
-                      <Nav.Link>
-                        <ThemeToggle />
-                      </Nav.Link>
                     </>
                   )}
 

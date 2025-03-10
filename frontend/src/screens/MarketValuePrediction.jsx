@@ -106,7 +106,7 @@ const MarketValuePrediction = () => {
   const [loading, setLoading] = useState(true);
   const [predictionError, setPredictionError] = useState(null);
   const [image, setImage] = useState(player?.image || "/images/default.jpg");
-  const [visible, setVisible] = useState(true);
+  const [setVisible] = useState(true);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -387,9 +387,11 @@ const MarketValuePrediction = () => {
           )}
         </div>
       </div>
-
+<div className="mb-5">
       {/* Feature Importance Chart */}
       <FeatureImportanceChart />
+      </div>
+     
 
       <div
         className="section2 mb-5"
@@ -414,68 +416,88 @@ const MarketValuePrediction = () => {
               <img
                 alt="strenght"
                 className="position-relative z-2 rounded-3"
-                height="600"
-                src="/images/peapx.jpg"
-                width="400"
+                height="700"
+                src="/images/mvp5.jpeg"
+                width="550"
               />
             </div>
             <div className="d-flex flex-column justify-content-center">
-              <div className="mb-4">
-                <h2 className="text-white fw-bold fs-5">
-                  MARKET VALUE PREDICTION MODEL
-                </h2>
-                <h1 className="text-4xl fw-bold text-info">
-                  Machine learning model: random forest regressor
-                </h1>
-                <ul className="list-unstyled mt-4">
-                  <li>Measure and track your players' progress</li>
-                  <li>Easily enter and update player data</li>
-                  <li>Get noticed by scouts from around the world</li>
-                </ul>
-                <p className="mt-4">
-                  Don't let your players' talent go unnoticed. Sign up for
-                  WeFeelSports today and start showcasing your team's potential
-                  to the world.
-                </p>
-                <p className="mt-2">
-                  Player's names won't be visible. No middleman, no bypass.
-                </p>
-              </div>
-            </div>
+  <div className="mb-4">
+    <h2 className="text-white fw-bold fs-5">
+      MARKET VALUE PREDICTION MODEL
+    </h2>
+    <h1 className="text-4xl fw-bold text-info">
+      Machine Learning Model: Random Forest Regressor
+    </h1>
+    <ul className="list-unstyled mt-4">
+      <li>Predict and analyze player market value with high accuracy</li>
+      <li>Identify key attributes influencing a player's valuation</li>
+      <li>Compare model performance across different techniques</li>
+    </ul>
+    <p className="mt-4">
+      Our <strong>market value prediction model</strong> is powered by a 
+      <strong> Random Forest Regressor</strong>, which outperforms traditional methods like 
+      <strong> Linear Regression</strong> and <strong>XGBoost</strong> when dealing with complex, 
+      non-linear football data.
+    </p>
+    <p className="mt-2">
+      <strong>Feature Importance Analysis</strong> helps us determine the most critical 
+      attributes affecting a player's market value, such as 
+      <strong> age, position, match performance, contract details, and physical stats</strong>.
+    </p>
+    <h3 className="text-info fw-bold mt-3">Why Random Forest?</h3>
+    <p className="mt-2">
+      - <strong>Linear Regression</strong> struggles with non-linear patterns in football data. <br />
+      - <strong>XGBoost</strong> performs well but can overfit when dealing with high-variance player data. <br />
+      - <strong>Random Forest</strong> balances <strong>accuracy and interpretability</strong>, 
+      handling outliers and missing values effectively while providing a clear view of feature importance.
+    </p>
+    <p className="mt-2">
+      Our system ensures <strong>scouts and analysts</strong> get precise player valuation insights, 
+      helping clubs make <strong>data-driven transfer decisions</strong>.
+    </p>
+  </div>
+</div>
+
           </div>
           <div className="row row-cols-1 row-cols-md-2 g-4 mt-4">
-            <div className="d-flex flex-column justify-content-center">
-              <div className="mb-4">
-                <h1 className="text-4xl fw-bold text-info">
-                  TOP 3 factors it depends on:
-                </h1>
-                <p className="mt-4">
-                  Anže was an extremely talented football player from Cerknica
-                  (Slovenia) with a dream of going pro. Despite his amazing skill
-                  and dedication,
-                </p>
-                <p className="mt-2">
-                  Despite his disappointment, Anže continued to play and coach
-                  football at a local level, finding joy in helping others
-                  pursue their own dreams.
-                </p>
-                <p className="mt-2">
-                  Today, we are looking back at his performance with big regret
-                  and questions of what he could have become.
-                </p>
-              </div>
-            </div>
-            <div className="position-relative">
-              <div className="position-absolute top-0 start-0 w-100 h-100 bg-gradient rounded-3 transform-rotate"></div>
-              <img
-                alt="another variable football image"
-                className="position-relative z-2 rounded-3"
-                height="600"
-                src="/images/peakpx (1).jpg"
-                width="400"
-              />
-            </div>
-          </div>
+  {/* Left Column - Text Content */}
+  <div className="d-flex flex-column justify-content-center">
+    <div className="mb-4">
+      <h1 className="text-4xl fw-bold text-info">
+        Top 3 Factors Affecting Market Value:
+      </h1>
+      <ul className="list-unstyled mt-4">
+        <li>
+          <strong>Overall Rating:</strong> A player's general skill level and performance.
+        </li>
+        <li>
+          <strong>Potential:</strong> The predicted growth and future ability of the player.
+        </li>
+        <li>
+          <strong>Age:</strong> Younger players with high potential often have higher market value.
+        </li>
+      </ul>
+      <p className="mt-4">
+        These key attributes significantly impact a player's transfer value. 
+        Clubs, scouts, and analysts use advanced AI models to assess them accurately.
+      </p>
+    </div>
+  </div>
+
+  {/* Right Column - Image */}
+  <div className="position-relative">
+    <div className="position-absolute top-0 start-0 w-100 h-100 bg-gradient rounded-3 transform-rotate"></div>
+    <img
+      alt="Football analysis image"
+      className="position-relative z-2 rounded-3"
+      height="650"
+      src="/images/mvp4.jpeg"
+      width="450"
+    />
+  </div>
+</div>
+
         </div>
       </div>
       <br />
@@ -483,19 +505,70 @@ const MarketValuePrediction = () => {
       <br />
       <br />
       <div
-        className="small-container mb-5"
+        className="small-container mb-5 "
         style={{ maxWidth: "40%", margin: "0 auto", padding: "10px" }}
       >
         <div className="small-overlay"></div>
-        <div className="small-content">
-          <h1 className="small-heading">
-            A SOLUTION BASED ON YEARS OF EXPERIENCE
-          </h1>
-          <p className="small-description">
-            All the assessments were defined by football experts worldwide with
-            years of experience in identifying young talented players.
-          </p>
-        </div>
+        <div
+  className="small-content"
+  style={{
+    background: "rgba(0, 0, 0, 0.5)",
+    padding: "20px",
+    borderRadius: "10px",
+    textAlign: "center",
+    backdropFilter: "blur(10px)",
+    border: "2px solid rgba(0, 255, 255, 0.7)",
+    boxShadow: "0 0 20px rgba(0, 255, 255, 0.5)",
+    position: "relative",
+    animation: "flicker 2s infinite alternate",
+    maxWidth: "600px",
+    margin: "auto",
+  }}
+>
+  <h1
+    className="small-heading"
+    style={{
+      color: "#00ffff",
+      fontSize: "2rem",
+      textTransform: "uppercase",
+      fontWeight: "bold",
+      letterSpacing: "2px",
+      textShadow: "0 0 15px rgba(0, 255, 255, 0.8)",
+      animation: "glitchText 1.5s infinite alternate",
+    }}
+  >
+    DATA-DRIVEN MARKET VALUE PREDICTION
+  </h1>
+  <p
+    className="small-description"
+    style={{
+      color: "#ccc",
+      fontSize: "1rem",
+      lineHeight: "1.5",
+      textShadow: "0 0 8px rgba(0, 255, 255, 0.5)",
+    }}
+  >
+    KickMetrics leverages advanced AI models trained on real-world football data to predict player market value accurately. 
+    Our system considers key performance metrics, potential growth, and historical trends to deliver reliable insights.
+  </p>
+
+  {/* Glowing Scanline Effect */}
+  <div
+    style={{
+      position: "absolute",
+      top: "-5px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: "80%",
+      height: "3px",
+      background: "rgba(0, 255, 255, 0.8)",
+      boxShadow: "0 0 10px rgba(0, 255, 255, 0.8)",
+      animation: "scanline 2s infinite alternate",
+    }}
+  ></div>
+</div>
+
+
       </div>
     </div>
   );

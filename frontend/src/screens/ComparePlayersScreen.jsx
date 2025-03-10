@@ -11,7 +11,7 @@ const ComparePlayersScreen = () => {
   const [search1, setSearch1] = useState("");
   const [search2, setSearch2] = useState("");
   const { data: players=[], isLoading, error } = useGetPlayersQuery();
-  const [images, setImages] = useState({});
+
   
  // Add data validation logging
  useEffect(() => {

@@ -18,13 +18,13 @@ import {
   Tooltip,
   PieChart,
   AreaChart,
-  ScatterChart, Scatter, RadialBar,RadialBarChart,
+  
   Pie,
-  Bar,
+
   Cell,
   Line,
 } from "recharts";
-import { ResponsiveBar } from '@nivo/bar'
+
 import { Table } from "react-bootstrap";
  // SVG
 import footballBg from "../assets/5205447.jpg"; // Background image
@@ -67,9 +67,6 @@ useEffect(() => {
   }
 }, [players]);
 
-const filteredPlayers = players.filter((player) =>
-  player.name.toLowerCase().includes(search.toLowerCase())
-);
 
 // Get selected player data
 const player = players?.find((p) => p._id === selectedPlayerId) || null;

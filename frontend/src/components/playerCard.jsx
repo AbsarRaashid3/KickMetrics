@@ -8,7 +8,7 @@ const PlayerCard = ({ player, onClick }) => {
 
   useEffect(() => {
     const fetchImageFromDB = async () => {
-      if (!player.image && !storedImage) { 
+      if (!player.image_url && !storedImage) { 
         setLoading(true);
         try {
           const { data } = await axios.get(`/api/players/${player._id}`); // ✅ Fetch from DB

@@ -1,6 +1,6 @@
 import React, { useMemo,useState} from "react";
-import { useParams, Link } from "react-router-dom";
-import { Row, Col, Button, Accordion } from "react-bootstrap";
+import { useParams} from "react-router-dom";
+import { Row, Col,  Accordion } from "react-bootstrap";
 import { Chart } from "react-google-charts";
 import { useGetPlayerDetailsQuery } from "../redux/slices/playersApiSlice";
 import Loader from "../components/Loader";

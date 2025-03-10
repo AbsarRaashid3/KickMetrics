@@ -1,6 +1,6 @@
-import { Navbar, Nav, Dropdown, Button, Container } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown,  Container } from 'react-bootstrap';
 import { Link } from 'react-scroll';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PlayerTable from '../components/ViewPlayers';
 import AddPlayerForm from '../components/AddPlayerForm';
 import { ToastContainer, toast } from 'react-toastify';
@@ -39,7 +39,6 @@ const AdminPanel = () => {
         heading_accuracy: '',
         short_passing: '',
         volleys: '',
-        dribbling: '',
         curve: '',
         freekick_accuracy: '',
         long_passing: '',
