@@ -1,0 +1,6 @@
+/*The .gitkeep file serves as a placeholder to ensure that empty directories are tracked in Git. Git doesn't track empty folders by default, so adding .gitkeep allows us to:
+
+Maintain the uploads folder structure in version control
+Share the required directory structure with other developers
+Keep the uploads folder in place while ignoring its contents through .gitignore
+*/

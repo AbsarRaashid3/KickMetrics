@@ -1,6 +1,37 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/UserModel.js';
 import generateToken from '../utils/generateToken.js';
+import multer from 'multer';
+import path from 'path';
+
+//image handling thru multer
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    const uploadPath = path.join(__dirname, '../uploads');
+    cb(null, uploadPath);
+  },
+  filename: function(req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 1024 * 1024 * 5 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if (extname && mimetype) {
+      return cb(null, true);
+    }
+    cb(new Error('Images only!'));
+  }
+}).single('image');
 
 //@desc Auth user and get the token
 //@route POST /api/users/login
@@ -97,7 +128,6 @@ const resetPassword = asyncHandler(async (req, res) => {
 //@access Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  console.log('Found user:', user);
 
   if (user) {
     res.status(200).json({
@@ -105,6 +135,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       bio: user.bio,
+      image: user.image,
       isAdmin: user.isAdmin,
     });
   } else {
@@ -118,31 +149,35 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //@route PUT /api/users/profile
 //@access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.bio = req.body.bio || user.bio;
-
-    if (req.body.password) {
-      user.password = req.body.password;
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: err.message });
     }
-    const updatedUser = await user.save();  //password hashing will be done here
-    res.status(200).json({
-      _id: user.id,
-      name: user.name,
-      bio: user.bio,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
 
+    const user = await User.findById(req.user._id);
+    
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.bio = req.body.bio || user.bio;
+      
+      if (req.file) {
+        user.image = `/uploads/${req.file.filename}`;
+      }
+
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        bio: updatedUser.bio,
+        image: updatedUser.image
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  });
 });
-
 
 /////////////////////////////////ADMIN CONTROLLERS//////////////////////////////////
 //@desc Get users

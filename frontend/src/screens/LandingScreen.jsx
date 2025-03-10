@@ -1,24 +1,5 @@
 import React, { useEffect } from "react";
 
-const createAdmin = () => {
-  const users = JSON.parse(localStorage.getItem("users")) || {};
-  const email = "admin@gmail.com";
-  if (users[email]) {
-    return false; // Don't create the admin if present
-  }
-
-  users[email] = {
-    ...users[email], // Preserve any previous data (if it exists)
-    email: email,
-    password: "admin@123",
-    username: "admin",
-    authToken: "jwt-token",
-    isAdmin: true,
-  };
-
-  // Store the updated users collection back in localStorage
-  localStorage.setItem("users", JSON.stringify(users));
-};
 
 const LandingScreen = () => {
 
@@ -27,7 +8,6 @@ const LandingScreen = () => {
     document.body.style.backgroundColor = "#f4f4f4"; // Set the background color for the entire body
     
     // Ensure the admin is created once when the component mounts
-    createAdmin();
 
     // Cleanup function to reset background color when the component unmounts
     return () => {

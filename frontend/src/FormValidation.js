@@ -1,5 +1,5 @@
 const validateEmail = (email) => {
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail.com$/;
+  const emailPattern = /^[a-zA-Z][a-zA-Z0-9._%+-]*@gmail.com$/;
   if (!email) {
     return 'Email is required.';
   }

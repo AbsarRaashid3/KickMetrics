@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Card, Container, Row, Col, Table, Image, Accordion, Button, Form, Modal } from "react-bootstrap";
+import { Card, Container, Row, Col, Image,  Form, Modal } from "react-bootstrap";
 import { useGetPlayersQuery } from '../redux/slices/playersApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { useGetCoachDashboardQuery, useGetScoutDashboardQuery } from '../redux/slices/externalApiSlice';
+import { useGetCoachDashboardQuery } from '../redux/slices/externalApiSlice';
 import {
   LineChart,
   Line,
@@ -21,9 +21,14 @@ const CoachDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   // Filter players based on search term
-  const searchedPlayer = players?.find(player =>
-    player.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const searchedPlayer = useMemo(() => {
+    if (!searchTerm) return null; // If search input is empty, return null
+    const foundPlayer = players?.find(player =>
+      player.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    return foundPlayer || "not found"; // Return "not found" if no match
+  }, [searchTerm, players]);
+
 
   const mentalAttributes = useMemo(
     () =>
@@ -72,8 +77,8 @@ const CoachDashboard = () => {
     setShowModal(true);
   };
 
-  if (isLoadingPlayers || isLoadingCoaches ) return (<Loader />);
-  if (errorPlayers || errorCoaches ) return <Message variant='danger'> {errorPlayers?.data?.message} </Message>;
+  if (isLoadingPlayers || isLoadingCoaches) return (<Loader />);
+  if (errorPlayers || errorCoaches) return <Message variant='danger'> {errorPlayers?.data?.message} </Message>;
 
 
   return (
@@ -86,36 +91,38 @@ const CoachDashboard = () => {
       <div className="search-section">
         <input
           type="text"
-          placeholder={searchedPlayer ? searchedPlayer.name : "Search players by name..."}
+          placeholder={searchedPlayer ? searchedPlayer.name : "Search players by name to analyze their mental attributes..."}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
       </div>
 
-      <Row className="stats-section">
-        <Col lg={12}>
-        <h3 className="section-title">Player Mental Attributes</h3>
-
-          <Card className="stats-card">
-
-            <Card.Body>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={mentalAttributes}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#3498db" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      {searchedPlayer === "not found" ? (
+        <Message variant="warning">Player not found</Message>
+      ) : searchedPlayer ? (
+        <Row className="stats-section">
+          <Col lg={12}>
+            <h3 className="section-title">Player Mental Attributes</h3>
+            <Card className="stats-card">
+              <Card.Body>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={mentalAttributes}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="value" stroke="black" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      ) : null}
 
       <div className="coaches-section">
-        <h2 className="section-title">Coaches Around the Globe</h2>
+        <h2 className="section-title ">Coaches Around the Globe</h2>
         <div className="coaches-grid" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
           {coaches?.data?.map((coach, index) => (
             <Card
@@ -139,25 +146,25 @@ const CoachDashboard = () => {
 
       <div className="mt-5">
         <h3 className="section-title">Quick Notes</h3>
-     <Row  >
-              <Col >
-                <div className="notes-grid">
-                  {notes.map((note, index) => (
-                    <div key={index} className="note-card">
-                      <Form.Control
-                        as="textarea"
-                        value={note}
-                        onChange={(e) => updateNote(index, e.target.value)}
-                        placeholder="Add scouting observations..."
-                        rows={6}
-                      />
-                      <button className="delete-note" onClick={() => deleteNote(index)}>×</button>
-                    </div>
-                  ))}
-                  <button className="add-note" onClick={addNote}>+ New Note</button>
+        <Row  >
+          <Col >
+            <div className="notes-grid">
+              {notes.map((note, index) => (
+                <div key={index} className="note-card">
+                  <Form.Control
+                    as="textarea"
+                    value={note}
+                    onChange={(e) => updateNote(index, e.target.value)}
+                    placeholder="Add observations..."
+                    rows={6}
+                  />
+                  <button className="delete-note" onClick={() => deleteNote(index)}>×</button>
                 </div>
-              </Col>
-            </Row>
+              ))}
+              <button className="add-note" onClick={addNote}>+ New Note</button>
+            </div>
+          </Col>
+        </Row>
       </div>
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered className="coach-modal">

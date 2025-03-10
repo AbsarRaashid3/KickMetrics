@@ -14,7 +14,16 @@ const store = configureStore({
     ui: uiReducer,
     auth: authSliceReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware).concat(externalApiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      // Ignore these action types
+      ignoredActions: ['your-action-type'],
+      // Ignore these field paths in all actions
+      ignoredActionPaths: ['meta.arg', 'payload.timestamp'],
+      // Ignore these paths in the state
+      ignoredPaths: ['items.dates'],
+    },
+  }).concat(apiSlice.middleware).concat(externalApiSlice.middleware),
   devTools: true,
 });
 

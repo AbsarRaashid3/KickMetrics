@@ -38,7 +38,8 @@ export default function PlayerDetails() {
   const [transform, setTransform] = useState('');
   const { id: playerId } = useParams();
   const { data: player, isLoading, error } = useGetPlayerDetailsQuery(playerId);
-  // Ensure hooks are not conditionally rendered
+
+  // ensure the array is only recalculated when the player data changes, not on every render.
   const physicalAttributes = useMemo(() =>player? [
           { name: "Height (cm)", value: player.height_cm },
           { name: "Weight (kg)", value: player.weight_kgs },
@@ -210,12 +211,13 @@ export default function PlayerDetails() {
             </h3>
           </div>
           <img
-            src={player.image}
-            alt={player.name}
+              src={player.image_url || "/images/default.jpg"}
+              onError={(e) => (e.target.src = "/images/default.jpg")}
+              alt={player.name}
             style={{
               width: "100%",
-              maxWidth: "200px",
-              height: "200px",
+              maxWidth: "250px",
+              height: "350px",
               objectFit: "cover",
               borderRadius: "15px",
               margin: "30px auto 10px",

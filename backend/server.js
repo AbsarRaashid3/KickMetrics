@@ -7,6 +7,9 @@ import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser';
 import externalRoutes from './routes/externalRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
 //Axios is a popular third-party library for making HTTP requests in JavaScript.
 
 const app = express();
@@ -18,6 +21,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //cookie parser middleware
 app.use(cookieParser());  
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+//This line creates a public URL route that maps:URL requests to '/uploads/some-image.jpg'
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req, res) => {
   console.log('i am in server.js at /');

@@ -31,7 +31,7 @@ const DashboardScreen = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-3">
       <h1 className="text-center mb-4" style={{color:"white"}}>Dashboard</h1>
       <div className="row">
         {roles.map((role, idx) => (

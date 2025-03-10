@@ -23,29 +23,39 @@ function AuthScreen() {
     const [login, { isLoading }] = useLoginMutation();
     const { userInfo } = useSelector((state) => state.auth);
     const { search } = useLocation();
-    const [register, { IsLoading }] = useRegisterMutation();
+    const [register] = useRegisterMutation();
 
     const sp = new URLSearchParams(search);
     const redirect = sp.get('redirect') || '/dashboard'; 
 
-    useEffect(() => {  //if user info is already in redux store, redirect to home page
-        if (userInfo) {
-            navigate(redirect);
+    useEffect(() => {  //if user info is already in redux store and user tries to re-login, redirect to home page
+        if (userInfo) {   
+            // Prevent overriding if user is already on AdminPanel
+            if (userInfo.isAdmin && window.location.pathname !== "/AdminPanel") {
+                navigate('/AdminPanel');
+            } else if (!userInfo.isAdmin && window.location.pathname !== redirect) {
+                navigate(redirect);
+            }
         }
-    }, [userInfo, redirect, navigate]);
 
+    }, [userInfo, redirect, navigate]);
 
     const SignInHandler = async (e) => {
         e.preventDefault();
         try {
             const res = await login({ email, password }).unwrap();
+            console.log(res);
             dispatch(setCredentials({ ...res, }));
-            navigate(redirect);  //check it
+            if (res.isAdmin) {
+                navigate('/AdminPanel');
+            } else {
+                navigate(redirect);
+            }
         } catch (error) {
             console.log(error);
             setError(error?.data?.message || error.error);
         }
-       
+
     };
 
     const SignUpHandler = async (e) => {

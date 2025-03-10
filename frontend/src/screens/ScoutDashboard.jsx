@@ -18,7 +18,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 
 import { useGetScoutDashboardQuery } from '../redux/slices/externalApiSlice';
-import { Card, Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Card, Container, Row, Col, Form } from "react-bootstrap";
 
 const ScoutDashboard = () => {
 

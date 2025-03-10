@@ -42,7 +42,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
       transformResponse: (response) => {
-        console.log('API Response:', response);
         return response;
     },
     }),
@@ -53,6 +52,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/profile`, // Fixing the URL
         method: "PUT",
         body: data,
+        formData: true,
+
       }),
     }),
     

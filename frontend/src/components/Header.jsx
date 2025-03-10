@@ -109,7 +109,7 @@ const Header = () => {
                   <NavDropdown
                     title={
                       <img
-                        src={userInfo?.profilePhoto || '/images/L. Messi.jpg'}
+                        src={userInfo?.profilePhoto || '/images/avatar.jpeg'}
                         alt='Profile'
                         style={{
                           width: '30px',

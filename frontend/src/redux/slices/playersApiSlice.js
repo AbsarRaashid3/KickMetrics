@@ -7,14 +7,14 @@ export const playersApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: PLAYERS_URL,
       }),
-      keepUnusedDataFor: 5
+      keepUnusedDataFor: 300  // Cache data for 5 minutes
     }),
     
     getPlayerDetails: builder.query({
       query: (playerId) => ({
         url: `${PLAYERS_URL}/${playerId}`,
       }),
-      keepUnusedDataFor: 5
+      keepUnusedDataFor: 300
     })
  
   }),

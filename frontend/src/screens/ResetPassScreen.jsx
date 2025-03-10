@@ -17,6 +17,7 @@ const ResetPassScreen = () => {
         const passwordError = validatePassword(password); if (passwordError) { setError(passwordError); return; }
         try {
             const res = await resetPassword({ email, password }).unwrap();
+            console.log(res);
             navigate('/login');
         } catch (err) {
             setError(err?.data?.message || err.error);

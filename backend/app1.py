@@ -6,6 +6,7 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import LLMChain
+import re
 
 app1 = Blueprint("app1", __name__)  # Define Blueprint
 CORS(app1)
@@ -13,13 +14,33 @@ CORS(app1)
 # Load players from JavaScript file
 def load_players():
     try:
-        result = subprocess.run(["node", "players.js"], capture_output=True, text=True, check=True)
-        return json.loads(result.stdout)
+        with open("players.js", "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # Extract JSON array from `players.js`
+        match = re.search(r'\[.*\]', content, re.DOTALL)
+        if match:
+            json_str = match.group(0)
+        else:
+            raise ValueError("No valid JSON array found in players.js")
+
+        # Convert single quotes to double quotes for valid JSON
+        json_str = json_str.replace("'", '"')
+
+        # Ensure all keys are enclosed in double quotes
+        json_str = re.sub(r'(?<!")(\b\w+\b)(?=\s*:)', r'"\1"', json_str)
+        
+        # Fix trailing commas
+        json_str = re.sub(r',\s*([}\]])', r'\1', json_str)
+
+        return json.loads(json_str)
+
     except Exception as e:
         print(f"Error loading players.js: {e}")
         return []
 
 players_data = load_players()
+
 
 # AI Football Performance Analyzer Class
 class FootballPerformanceAnalyzer:

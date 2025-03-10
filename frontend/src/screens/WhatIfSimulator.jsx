@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from "react";
-import players from "../players";
+import React, { useState, useEffect, useCallback } from "react";
 import { Radar, Line, Bar } from "react-chartjs-2";
 import { FaFootballBall } from "react-icons/fa";
 import { Chart as ChartJS, CategoryScale, LinearScale, RadialLinearScale, LineElement, PointElement, ArcElement, BarElement } from 'chart.js';
+import { useGetPlayersQuery } from "../redux/slices/playersApiSlice";
 
-// Register necessary components
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  RadialLinearScale,
-  LineElement,
-  PointElement,
-  ArcElement,
-  BarElement
+  CategoryScale, LinearScale, RadialLinearScale,
+  LineElement, PointElement, ArcElement, BarElement
 );
 
 const allMetrics = [
@@ -22,31 +16,38 @@ const allMetrics = [
 ];
 
 const WhatIfSimulator = () => {
-  const [selectedPlayer, setSelectedPlayer] = useState(players[0]);
+  const { data: players = [], isLoading, error } = useGetPlayersQuery();
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [selectedMetrics, setSelectedMetrics] = useState(allMetrics.slice(0, 5));
   const [metrics, setMetrics] = useState({});
-  
-  // Reset metrics when player or metrics selection changes
-  useEffect(() => {
-    const newMetrics = Object.fromEntries(
-      selectedMetrics.map((metric) => [metric, selectedPlayer[metric]])
-    );
-    setMetrics(newMetrics);
-  }, [selectedPlayer, selectedMetrics]);
-  
-  // Calculate performance
-  const calculatePerformance = () => {
+  const [performance, setPerformance] = useState(0);
+
+  const calculatePerformance = useCallback(() => {
+    if (!metrics || Object.keys(metrics).length === 0) return 0;
     const weight = 100 / selectedMetrics.length;
     return (
       Object.values(metrics).reduce((total, value) => total + value * (weight / 100), 0)
     ).toFixed(1);
-  };
-  
-  const [performance, setPerformance] = useState(calculatePerformance);
-  
+  }, [metrics, selectedMetrics]);
+
+  useEffect(() => {
+    if (players?.length > 0 && !selectedPlayer) {
+      setSelectedPlayer(players[0]);
+    }
+  }, [players, selectedPlayer]);
+
+  useEffect(() => {
+    if (selectedPlayer) {
+      const newMetrics = Object.fromEntries(
+        selectedMetrics.map((metric) => [metric, selectedPlayer[metric] || 0])
+      );
+      setMetrics(newMetrics);
+    }
+  }, [selectedPlayer, selectedMetrics]);
+
   useEffect(() => {
     setPerformance(calculatePerformance());
-  }, [metrics, selectedMetrics]);
+  }, [calculatePerformance]);
 
   const handleSliderChange = (metric, value) => {
     setMetrics({ ...metrics, [metric]: value });
@@ -57,38 +58,40 @@ const WhatIfSimulator = () => {
       prev.includes(metric)
         ? prev.filter((m) => m !== metric)
         : prev.length < 5
-        ? [...prev, metric]
-        : prev
+          ? [...prev, metric]
+          : prev
     );
   };
-  
-  // Radar Chart Data
-  const beforeMetrics = selectedMetrics.map((metric) => selectedPlayer[metric]);
-  const afterMetrics = selectedMetrics.map((metric) => metrics[metric]);
-  
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!selectedPlayer) return <div>Loading player data...</div>;
+
+  const beforeMetrics = selectedMetrics.map((metric) => selectedPlayer[metric] || 0);
+  const afterMetrics = selectedMetrics.map((metric) => metrics[metric] || 0);
+
   const radarData = {
     labels: selectedMetrics.map((metric) => metric.toUpperCase()),
     datasets: [
       {
         label: "Before",
         data: beforeMetrics,
-        backgroundColor: "rgba(255, 99, 132, 0.2)", // Shaded area with a light opacity
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 2,
-        fill: true, // Fill the area under the radar chart
+        fill: true,
       },
       {
         label: "After",
         data: afterMetrics,
-        backgroundColor: "rgba(75, 192, 192, 0.2)", // Shaded area with a light opacity
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 2,
-        fill: true, // Fill the area under the radar chart
+        fill: true,
       },
     ],
   };
-  
-  // Line Chart Data for Metric Changes
+
   const lineChartData = {
     labels: selectedMetrics.map((metric) => metric.toUpperCase()),
     datasets: [
@@ -98,7 +101,7 @@ const WhatIfSimulator = () => {
         backgroundColor: "rgba(255, 159, 64, 0.2)",
         borderColor: "rgba(255, 159, 64, 1)",
         borderWidth: 2,
-        tension: 0.2, // Smooth curve
+        tension: 0.2,
       },
       {
         label: "After Adjustment",
@@ -106,12 +109,11 @@ const WhatIfSimulator = () => {
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 2,
-        tension: 0.2, // Smooth curve
+        tension: 0.2,
       },
     ],
   };
 
-  // Bar Chart to show change in overall performance
   const overallPerformanceChangeData = {
     labels: selectedMetrics.map((metric) => metric.toUpperCase()),
     datasets: [
@@ -125,7 +127,6 @@ const WhatIfSimulator = () => {
     ],
   };
 
-  // Textual Insights on the Effect of Metric Changes
   const getPerformanceChangeText = (metric) => {
     const beforeValue = selectedPlayer[metric];
     const afterValue = metrics[metric];
@@ -157,14 +158,13 @@ const WhatIfSimulator = () => {
   return (
     <div className="simulator-container">
       <h2>What-If Performance Simulator</h2>
-      {/* Player Selector */}
       <div className="player-selector mb-5 text-center">
         <label>Select Player:</label>
         <select
           value={selectedPlayer._id}
           onChange={(e) =>
             setSelectedPlayer(
-              players.find((player) => player._id === e.target.value)
+              players.find((player) => player._id === parseInt(e.target.value))
             )
           }
         >
@@ -175,17 +175,14 @@ const WhatIfSimulator = () => {
           ))}
         </select>
       </div>
-  
-      {/* Metric Selector */}
+
       <div className="metric-selector">
         <h3>Select Metrics to Adjust (5 Max):</h3>
-        <div className="metric-buttons  ">
+        <div className="metric-buttons">
           {allMetrics.map((metric) => (
             <button
               key={metric}
-              className={`metric-btn  ${
-                selectedMetrics.includes(metric) ? "selected" : ""
-              }`}
+              className={`metric-btn ${selectedMetrics.includes(metric) ? "selected" : ""}`}
               onClick={() => handleMetricSelection(metric)}
             >
               {metric.charAt(0).toUpperCase() + metric.slice(1)}
@@ -193,8 +190,7 @@ const WhatIfSimulator = () => {
           ))}
         </div>
       </div>
-  
-      {/* Sliders */}
+
       <div className="sliders">
         {selectedMetrics.map((metric) => (
           <div key={metric} className="slider">
@@ -211,30 +207,25 @@ const WhatIfSimulator = () => {
           </div>
         ))}
       </div>
-  
-      {/* Performance Score */}
+
       <div className="performance-score">
         <h3>Performance Score: {performance}</h3>
       </div>
-  
-      {/* Radar Chart */}
+
       <div className="chart-container">
         <Radar data={radarData} />
       </div>
-  
-      {/* Line Chart for Metric Changes */}
+
       <div className="chart-container">
         <h4>Effect of Metric Changes</h4>
         <Line data={lineChartData} />
       </div>
 
-      {/* Bar Chart for Overall Performance Change */}
       <div className="chart-container">
         <h4>Change in Overall Performance by Metric</h4>
         <Bar data={overallPerformanceChangeData} />
       </div>
-  
-      {/* Impact Analysis */}
+
       <div className="impact-dashboard">
         <h3>Impact Analysis</h3>
         {selectedMetrics.map((metric) => (

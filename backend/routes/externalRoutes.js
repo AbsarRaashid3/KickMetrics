@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/getLeaguesCurrentSeasonUpcoming', protect, getLeagues);
 router.get('/getCoachesPlayersTeamsCountries', protect, getCoaches);
 router.get('/getTransfers', protect, getScouts);
+
 // Fav Player routes
 router.get('/favorites', protect, getFavorites);
 router.post('/favorites', protect, addFavorite);

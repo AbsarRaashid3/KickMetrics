@@ -1,18 +1,38 @@
 import React, { useState } from "react";
 import PlayerCard from "../components/playerCard";
 import { useNavigate } from 'react-router-dom';
-import players from "../players"; // Ensure this imports from your players.js
+import { useGetPlayersQuery } from "../redux/slices/playersApiSlice";
 
 const MarketValue = () => {
+  const { data: players = [], isLoading, error } = useGetPlayersQuery();
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="text-center" style={{ color: "white" }}>
+        <h3>Loading players data...</h3>
+      </div>
+    );
+  }
 
-  const filteredPlayers = players.filter((player) =>
-    player.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Error state
+  if (error) {
+    return (
+      <div className="text-center" style={{ color: "white" }}>
+        <h3>Error loading players: {error.message}</h3>
+      </div>
+    );
+  }
+
+  const filteredPlayers = players?.filter((player) =>
+    player?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || [];
 
   const handleCardClick = (playerId) => {
-    navigate(`/prediction/${playerId}`);
+    if (playerId) {
+      navigate(`/prediction/${playerId}`);
+    }  
   };
 
   return (

@@ -7,7 +7,6 @@ const router = express.Router();
 // Player realted routes
 router.get('/', protect, getPlayers);
 router.get('/:id', protect, getPlayerByID);
-// router.get('/getCountries', protect, getCountries);
 
 
 export default router;
