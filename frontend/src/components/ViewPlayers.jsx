@@ -1,38 +1,42 @@
-
 import React from 'react';
 import { Table, Button, Image } from 'react-bootstrap';
 
 const PlayerTable = ({ players, removePlayer, handleEditClick }) => (
     <div
         style={{
-            display: 'flex', // Align items in a horizontal row
-            overflowX: 'auto', // Allow horizontal scrolling
-            gap: '16px', // Add spacing between cards
-            padding: '16px',
+            display: 'flex',
+            overflowX: 'auto',
+            gap: '20px',
+            padding: '20px',
+            background: 'linear-gradient(135deg, #f3f3f3, #e3eaf2)',
+            borderRadius: '12px',
         }}
     >
         {players.map((player) => (
             <div
                 key={player._id}
                 style={{
-                    minWidth: '300px', // Ensure each player card has a fixed width
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    padding: '16px',
-                    background: '#fff',
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                    flexShrink: 0, // Prevent shrinking of cards
+                    minWidth: '350px',
+                    border: '2px solid #5088AD',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    background: 'white',
+                    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
+                    flexShrink: 0,
+                    transition: 'transform 0.3s ease-in-out',
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.02)')}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
             >
                 <div
                     style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginBottom: '12px',
+                        marginBottom: '14px',
                     }}
                 >
-                    <h5>Player-{player._id}</h5>
+                    <h5 style={{ color: '#2C3E50', fontWeight: 'bold' }}>Player-{player._id}</h5>
                     <div>
                         <Button
                             variant="danger"
@@ -60,15 +64,17 @@ const PlayerTable = ({ players, removePlayer, handleEditClick }) => (
                         fluid
                         style={{
                             maxWidth: '100%',
-                            height: '150px',
-                            marginBottom: '12px',
+                            height: '160px',
+                            objectFit: 'cover',
+                            borderRadius: '8px',
+                            marginBottom: '14px',
                         }}
                     />
                 )}
 
-                <Table bordered >
+                <Table bordered hover responsive style={{ fontSize: '14px', textAlign: 'center' }}>
                     <tbody>
-                        <tr>
+                        <tr style={{ backgroundColor: '#f8f9fa', fontWeight: 'bold' }}>
                             <td>Full Name</td>
                             <td>{player.full_name}</td>
                             <td>Birth Date</td>
@@ -87,7 +93,7 @@ const PlayerTable = ({ players, removePlayer, handleEditClick }) => (
                             <td>{player.nationality}</td>
                         </tr>
                         <tr>
-                            <th colSpan="4" className="text-primary" style={{ paddingTop: '20px', backgroundColor: 'rgba(80, 136, 173, 0.2)' }}>
+                            <th colSpan="4" style={{ paddingTop: '16px', backgroundColor: 'rgba(80, 136, 173, 0.15)', color: '#2C3E50' }}>
                                 <strong>Skills and Attributes</strong>
                             </th>
                         </tr>
@@ -135,16 +141,13 @@ const PlayerTable = ({ players, removePlayer, handleEditClick }) => (
                         </tr>
                         <tr>
                             <td>Vision</td>
-                            <td>{player.vision}</td>
+                            <td colSpan="3">{player.vision}</td>
                         </tr>
                     </tbody>
                 </Table>
-
             </div>
         ))}
     </div>
-
-
 );
 
 export default PlayerTable;

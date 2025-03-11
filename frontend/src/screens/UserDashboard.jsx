@@ -55,13 +55,13 @@ const UserDashboard = () => {
         <Container className="user-dashboard">
           <div className="dashboard-header">
             <h1 >User Dashboard</h1>
-            <p className="lead"> Track top leagues, upcoming matches, and manage your favorite players all in one place.</p>
-            <h3 className="section-title">
+            <h5> Track top leagues, upcoming matches, and manage your favorite players all in one place.</h5>
+          </div>
+          <h3 className="section-title">
               Ongoing Leagues
             </h3>
-          </div>
 
-          <Accordion defaultActiveKey={leagues?.data[0]?.id} >
+          <Accordion defaultActiveKey={leagues?.data[0]?.id}  className="custom-accordion" >
             {leagues && leagues.data ? (
               leagues.data.slice(0, 2).map((league) => (
 
@@ -75,7 +75,7 @@ const UserDashboard = () => {
                       </Col>
                     </Row>
 
-                    <Row className="mt-4 ">
+                    <Row className="mt-4 border-bottom">
                       <Col xs={12} sm={6} md={3} className="text-center">
                         <h5 className="text-center">Season</h5>
                         <p className="text-center">{league.currentseason.name}</p>
@@ -98,11 +98,11 @@ const UserDashboard = () => {
 
                     <Row className="mt-4">
                       <Col xs={12} className="text-center">
-                        <h5 className="text-center">Upcoming Matches</h5>
+                        <h3 className="text-center">Upcoming Matches</h3>
                       </Col>
                     </Row>
 
-                    <Row className="mt-4 g-4 upcoming-matches">
+                    <Row className="mt-2 g-4 upcoming-matches">
                       {league.upcoming && league.upcoming.map((match) => {
                         const dateTime = new Date(match.starting_at);
                         const [team1, team2] = match.name.split(" vs ");

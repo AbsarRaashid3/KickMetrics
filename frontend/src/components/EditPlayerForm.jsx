@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container,Row, Col} from 'react-bootstrap';
 import { useRef } from 'react';
 
 const EditPlayerForm = ({ editPlayer, handleEditInputChange, handleEditSubmit, errors, previewImage }) => {
@@ -48,39 +48,73 @@ const EditPlayerForm = ({ editPlayer, handleEditInputChange, handleEditSubmit, e
     ];
 
     return (
-        <Container className='box'>
+        <Container className='box' style={{
+            maxWidth: '1000px',
+            background: 'white',
+            padding: '20px',
+            borderRadius: '12px',
+            boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+            margin: '20px auto',
+            border: '2px solid #5088AD'
+        }}>
+            <h2 style={{ textAlign: 'center', color: '#2C3E50', marginBottom: '20px' }}>Edit Player</h2>
             <Form onSubmit={handleEditSubmit}>
-            {previewImage && (
-                    <div>
-                        <p>Image Preview:</p>
+                {previewImage && (
+                    <div style={{ textAlign: 'center', marginBottom: '15px' }}>
                         <img
                             src={previewImage}
                             alt="Preview"
-                            style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                            style={{
+                                width: "120px",
+                                height: "120px",
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                                border: "1px solid #ddd",
+                                padding: "5px"
+                            }}
                         />
                     </div>
                 )}
+                
+                <Row>
+                    {formFields.map((field, index) => (
+                        <Col md={4} key={field.name} style={{ marginBottom: '12px' }}>
+                            <Form.Group>
+                                <Form.Label htmlFor={field.name} style={{ fontWeight: 'bold', color: '#2C3E50' }}>{field.label}</Form.Label>
+                                <Form.Control
+                                    type={field.type}
+                                    name={field.name}
+                                    id={field.name}
+                                    value={field.type === 'file' ? undefined : editPlayer[field.name] || ''}
+                                    onChange={handleEditInputChange}
+                                    required={field.type !== 'file'}
+                                    accept={field.accept}
+                                    ref={field.ref}
+                                    style={{
+                                        borderRadius: '8px',
+                                        border: '1px solid #5088AD',
+                                        padding: '8px',
+                                        fontSize: '14px'
+                                    }}
+                                />
+                                {errors[field.name] && <div className="text-danger" style={{ fontSize: '13px', marginTop: '5px' }}>{errors[field.name]}</div>}
+                            </Form.Group>
+                        </Col>
+                    ))}
+                </Row>
 
-                {formFields.map((field) => (
-                    <Form.Group key={field.name}>
-                        <Form.Label htmlFor={field.name}>{field.label}</Form.Label>
-                        <Form.Control
-                            type={field.type}
-                            name={field.name}
-                            id={field.name}
-                            value={field.type === 'file' ? undefined : editPlayer[field.name] || ''}
-                            onChange={handleEditInputChange}
-                            required={field.type !== 'file'}
-                            accept={field.accept}
-                            ref={field.ref}
-                        />
-                        {errors[field.name] && <div className="text-danger">{errors[field.name]}</div>}
-                    </Form.Group>
-                ))}
-
-               
-
-                <Button type="submit" className="mt-3">
+                <Button type="submit" className="mt-3" style={{
+                    backgroundColor: '#5088AD',
+                    border: 'none',
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    transition: 'background 0.3s'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#3B6D93'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#5088AD'}>
                     Save Changes
                 </Button>
             </Form>

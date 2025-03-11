@@ -84,8 +84,8 @@ const CoachDashboard = () => {
   return (
     <Container fluid className="coach-dashboard">
       <div className="dashboard-header">
-        <h1 className="title-gradient">Coach Dashboard</h1>
-        <p className="lead">Track Player through Meantal Attributes, Analyze Metrics, See Caoches Around there & Take Notes  </p>
+        <h1 >Coach Dashboard</h1>
+        <h5 >Track Player through Meantal Attributes, Analyze Metrics, See Caoches Around there & Take Notes  </h5>
       </div>
 
       <div className="search-section">

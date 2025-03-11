@@ -10,7 +10,7 @@ import { validatePlayerInput } from '../FormValidation'
 import EditPlayerForm from '../components/EditPlayerForm';
 import { FaFutbol, FaUsers,FaInbox } from 'react-icons/fa';
 
-
+import { useGetPlayersQuery } from '../redux/slices/playersApiSlice';
 const AdminPanel = () => {
 
     const totUsers = JSON.parse(localStorage.getItem('users')) || {};
@@ -309,7 +309,6 @@ const AdminPanel = () => {
             <Container>
                 {showPlayers && (
                     <Container id="viewSection" className="box">
-                        <h4>-- Players --</h4>
                         <PlayerTable
                             players={players}
                             removePlayer={removePlayer}
@@ -329,10 +328,9 @@ const AdminPanel = () => {
                         />
                     </Container>
                 )}
-
+                
                 {(showEditPlayers && editPlayer) && (
                     <Container id="editSection" className="box">
-                        <h4>-- Edit Player --</h4>
                         <EditPlayerForm
                             editPlayer={editPlayer}
                             handleEditInputChange={handleEditInputChange}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container,Row,Col } from 'react-bootstrap';
 import { useRef } from 'react';
 
 const AddPlayerForm = ({ newPlayer, handleInputChange, addPlayer, errors, previewImage }) => {
@@ -47,11 +47,20 @@ const AddPlayerForm = ({ newPlayer, handleInputChange, addPlayer, errors, previe
     ];
 
     return (
-        <Container className='box'>
+        <Container className='box' style={{
+            maxWidth: '1000px',
+            background: 'white',
+            padding: '20px',
+            borderRadius: '12px',
+            boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)',
+            margin: '20px auto',
+            border: '2px solid #5088AD'
+        }}>
+            <h2 style={{ textAlign: 'center', color: '#2C3E50', marginBottom: '20px' }}>Add Player</h2>
             <Form onSubmit={addPlayer}>
-                {/* Image upload field - kept separate due to unique handling */}
+                {/* Image Upload Field */}
                 <Form.Group>
-                    <Form.Label htmlFor="image">Image</Form.Label>
+                    <Form.Label htmlFor="image" style={{ fontWeight: 'bold', color: '#2C3E50' }}>Player Image</Form.Label>
                     <Form.Control
                         type="file"
                         name="image"
@@ -59,42 +68,71 @@ const AddPlayerForm = ({ newPlayer, handleInputChange, addPlayer, errors, previe
                         onChange={handleInputChange}
                         accept="image/jpeg, image/png, image/jpg"
                         ref={fileInputRef}
+                        style={{ padding: '6px', borderRadius: '8px' }}
                     />
-                    {errors.image && <div className="text-danger">{errors.image}</div>}
+                    {errors.image && <div className="text-danger" style={{ fontSize: '13px', marginTop: '5px' }}>{errors.image}</div>}
                 </Form.Group>
 
-
+                {/* Image Preview */}
                 {previewImage && (
-                    <div>
-                        <p>Image Preview:</p>
+                    <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+                        <p style={{ fontWeight: 'bold', color: '#2C3E50' }}>Image Preview</p>
                         <img
                             src={previewImage}
                             alt="Preview"
-                            style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                            style={{
+                                width: "120px",
+                                height: "120px",
+                                objectFit: "cover",
+                                borderRadius: "8px",
+                                border: "1px solid #ddd",
+                                padding: "5px"
+                            }}
                         />
                     </div>
                 )}
 
-                {/* Dynamic form fields */}
-                {formFields.map((field) => (
-                    <Form.Group key={field.name}>
-                        <Form.Label htmlFor={field.name}>{field.label}</Form.Label>
-                        <Form.Control
-                            type={field.type}
-                            name={field.name}
-                            id={field.name}
-                            value={newPlayer[field.name] || ''}
-                            onChange={handleInputChange}
-                            required
-                        />
-                        {errors[field.name] && <div className="text-danger">{errors[field.name]}</div>}
-                    </Form.Group>
-                ))}
+                {/* Dynamic Form Fields in Two Columns */}
+                <Row>
+                    {formFields.map((field, index) => (
+                        <Col md={4} key={field.name} style={{ marginBottom: '12px' }}>
+                            <Form.Group>
+                                <Form.Label htmlFor={field.name} style={{ fontWeight: 'bold', color: '#2C3E50' }}>{field.label}</Form.Label>
+                                <Form.Control
+                                    type={field.type}
+                                    name={field.name}
+                                    id={field.name}
+                                    value={newPlayer[field.name] || ''}
+                                    onChange={handleInputChange}
+                                    required
+                                    style={{
+                                        borderRadius: '8px',
+                                        border: '1px solid #5088AD',
+                                        padding: '8px',
+                                        fontSize: '14px'
+                                    }}
+                                />
+                                {errors[field.name] && <div className="text-danger" style={{ fontSize: '13px', marginTop: '5px' }}>{errors[field.name]}</div>}
+                            </Form.Group>
+                        </Col>
+                    ))}
+                </Row>
 
-                <Button type="submit" className="mt-3">
+                {/* Submit Button */}
+                <Button type="submit" className="mt-3" style={{
+                    backgroundColor: '#5088AD',
+                    border: 'none',
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    transition: 'background 0.3s'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#3B6D93'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#5088AD'}>
                     Add Player
                 </Button>
-
             </Form>
         </Container>
     );

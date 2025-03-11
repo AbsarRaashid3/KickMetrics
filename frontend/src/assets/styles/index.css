@@ -1,16 +1,18 @@
-
-
 main {
   min-height: 80vh;
 }
 
 body {
-background-image: url(../5618236.jpg);
-  background-size: cover; /* Cover the entire viewport */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Avoid repeating the image */
-  background-attachment: fixed; /* Keep the image fixed while scrolling */
-  color:black; 
+  background-image: url(../5618236.jpg);
+  background-size: cover;
+  /* Cover the entire viewport */
+  background-position: center;
+  /* Center the image */
+  background-repeat: no-repeat;
+  /* Avoid repeating the image */
+  background-attachment: fixed;
+  /* Keep the image fixed while scrolling */
+  color: black;
 }
 
 .rating span {
@@ -28,10 +30,14 @@ background-image: url(../5618236.jpg);
 }
 
 .product-title {
-  height: 2.5em; /* Set a fixed height */
-  overflow: hidden; /* Hide overflow content */
-  text-overflow: ellipsis; /* Add ellipsis for long text */
-  white-space: nowrap; /* Prevent wrapping */
+  height: 2.5em;
+  /* Set a fixed height */
+  overflow: hidden;
+  /* Hide overflow content */
+  text-overflow: ellipsis;
+  /* Add ellipsis for long text */
+  white-space: nowrap;
+  /* Prevent wrapping */
 }
 
 table td,
@@ -65,19 +71,25 @@ table th {
 
 .card-img-top {
   width: 100%;
-  height: 400px; /* Fixed height for all images */
-  object-fit: cover; /* Ensures images maintain aspect ratio and don't distort */
+  height: 400px;
+  /* Fixed height for all images */
+  object-fit: cover;
+  /* Ensures images maintain aspect ratio and don't distort */
 }
 
 .return-button-container {
   display: flex;
-  justify-content: flex-start; /* Aligns the button to the left */
-  align-items: center; /* Centers the button vertically */
-  margin-bottom: 20px; /* Adds spacing below the button */
+  justify-content: flex-start;
+  /* Aligns the button to the left */
+  align-items: center;
+  /* Centers the button vertically */
+  margin-bottom: 20px;
+  /* Adds spacing below the button */
 }
 
 .return-button-container a {
-  text-decoration: none; /* Removes underline from the link */
+  text-decoration: none;
+  /* Removes underline from the link */
 }
 
 .return-button {
@@ -219,7 +231,7 @@ table th {
   position: relative;
   padding: 40px;
   z-index: 2;
- 
+
 }
 
 .player-ranking {
@@ -292,7 +304,8 @@ table th {
   font-family: Arial, sans-serif;
   margin: 20px;
   color: #fff;
-  background-color: #1a1a1a; /* Dark theme */
+  background-color: #1a1a1a;
+  /* Dark theme */
   padding: 20px;
   border-radius: 8px;
 }
@@ -300,7 +313,8 @@ table th {
 .page-title {
   text-align: center;
   font-size: 2em;
-  color: #ffa500; /* Accent color */
+  color: #ffa500;
+  /* Accent color */
   margin-bottom: 20px;
 }
 
@@ -320,7 +334,8 @@ table th {
 }
 
 .player-info.black-box {
-  background: #000; /* Black box theme */
+  background: #000;
+  /* Black box theme */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
@@ -337,7 +352,8 @@ table th {
 .player-details p {
   margin: 5px 0;
   line-height: 1.5;
-  color: #ccc; /* Text color in black box */
+  color: #ccc;
+  /* Text color in black box */
 }
 
 .charts {
@@ -395,11 +411,12 @@ table th {
   margin: 0 auto;
   background: #f9f9f9;
   border: 1px solid #ddd;
-  
+
   border-radius: 8px;
 }
 
-h2, h3 {
+h2,
+h3 {
   color: #333;
   text-align: center;
 }
@@ -486,7 +503,7 @@ input[type="range"] {
 }
 
 .field {
-   /* Adjust the path if needed */
+  /* Adjust the path if needed */
   background-size: cover;
   background-position: center;
   background-size: cover;
@@ -512,7 +529,7 @@ input[type="range"] {
 
 .position .player-icon {
   font-size: 30px;
-  color:  #eaeaea;
+  color: #eaeaea;
 }
 
 .position span {
@@ -557,8 +574,8 @@ input[type="range"] {
 }
 
 .alert-content {
-  background: linear-gradient(135deg, #223a6a,rgb(94, 93, 93), #670d0d);
-    
+  background: linear-gradient(135deg, #223a6a, rgb(94, 93, 93), #670d0d);
+
   color: white;
   padding: 20px;
   border-radius: 10px;
@@ -604,7 +621,8 @@ input[type="range"] {
 /*color boxes maybe IDE behaviour*/
 
 .player-item:hover {
-  background-color: #3c404787; /* Highlight on hover */
+  background-color: #3c404787;
+  /* Highlight on hover */
   color: #fff;
 
 }
@@ -654,20 +672,39 @@ input[type="range"] {
 }
 
 .metric-buttons button.selected {
-  background: linear-gradient(135deg, #223a6a,rgb(94, 93, 93), #670d0d);
-                ;
+  background: linear-gradient(135deg, #223a6a, rgb(94, 93, 93), #670d0d);
+  ;
   color: white;
 }
-
 
 /* General Styling for User Dashboard */
 .user-dashboard {
   font-family: "Arial", sans-serif;
   padding: 2rem;
-  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, rgb(16, 46, 107), rgba(181, 135, 135, 0.88), #670d0d) !important;
+  color: white;
+}
+.custom-accordion {
+  margin-top: 5px;
+  max-width: 850px; 
+  margin: 0 auto; 
+}
+.custom-accordion .accordion-button {
+  background-color: #2b4c6d !important; 
+  color: white !important;
+  font-weight: bold;
+}
+.custom-accordion .accordion-button:not(.collapsed) {
+  background-color: #1a252f !important; 
+  color: #2c7496 !important; 
+}
+.custom-accordion .accordion-button::after {
+  color: white !important;
+  filter: invert(1); 
 }
 
 /* FIFA Card */
+
 .fifa-card {
   max-width: 350px;
   margin: 20px auto;
@@ -709,6 +746,7 @@ input[type="range"] {
     opacity: 0;
     transform: translateY(-15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -719,6 +757,7 @@ input[type="range"] {
   from {
     transform: scale(0.95);
   }
+
   to {
     transform: scale(1);
   }
@@ -729,8 +768,8 @@ input[type="range"] {
 .coach-dashboard {
   padding: 2rem;
   font-family: "Arial", sans-serif;
-  /* background: #f8f9fa; */
-  background: rgb(32, 53, 97) ;
+  background: linear-gradient(135deg, rgb(16, 46, 107), rgba(181, 135, 135, 0.88), #670d0d) !important;
+  color: white;
 }
 
 .title-gradient {
@@ -740,24 +779,27 @@ input[type="range"] {
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
+
 .search-input {
   width: 100%;
   max-width: 500px;
   padding: 1rem;
   border: none;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin: 2rem auto;
   display: block;
 }
+
 .stats-card {
   background: rgb(158, 172, 207) !important;
   border: none;
   color: #000;
   border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
 }
+
 .coaches-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -766,10 +808,13 @@ input[type="range"] {
 }
 
 .coach-card {
-  background-color: rgba(58, 81, 119, 0.9) !important; /* Ensure color applies */
-  border: 3px solid #3498db !important; /* Blue border */
+  background-color: rgba(58, 81, 119, 0.9) !important;
+  /* Ensure color applies */
+  border: 3px solid #3498db !important;
+  /* Blue border */
   border-radius: 15px;
-  box-shadow: 0px 4px 10px rgba(52, 152, 219, 0.8) !important; /* Stronger shadow */
+  box-shadow: 0px 4px 10px rgba(52, 152, 219, 0.8) !important;
+  /* Stronger shadow */
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
   text-align: center;
@@ -779,29 +824,35 @@ input[type="range"] {
 .coach-card:hover {
   transform: translateY(-5px);
 }
+
 .coach-image-wrapper {
   padding: 1rem;
   text-align: center;
 }
+
 .coach-image-wrapper img {
   width: 120px;
   height: 120px;
   object-fit: cover;
 }
+
 .coach-modal .modal-content {
   border-radius: 15px;
-  background-color:  rgba(66, 86, 99, 0.8) !important; /* Stronger shadow */
-  
+  background-color: rgba(66, 86, 99, 0.8) !important;
+  /* Stronger shadow */
+
 }
 
 .coach-profile {
   text-align: center;
 }
+
 .profile-image {
   width: 150px;
   height: 150px;
   margin-bottom: 1rem;
 }
+
 .country-info {
   display: flex;
   align-items: center;
@@ -809,45 +860,51 @@ input[type="range"] {
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+
 .country-flag {
   width: 40px;
   height: 30px;
   object-fit: cover;
 }
+
 .team-entry {
   background: #f8f9fa;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
 }
+
 @media (max-width: 768px) {
   .coach-dashboard {
     padding: 1rem;
   }
-  
+
   .title-gradient {
     font-size: 2rem;
   }
-  
+
   .coaches-grid {
     grid-template-columns: 1fr;
   }
-  
+
 
 }
 
 /* General Styling for Scout Dashboard */
 .scout-dashboard-container {
-  background: linear-gradient(45deg, #2c3e50, #3498db);
+  background: linear-gradient(135deg, rgb(16, 46, 107), rgba(181, 135, 135, 0.88), #670d0d) !important;
+  color: white;
   font-family: "Arial", sans-serif;
-padding: 3rem;
+  padding: 3rem;
 }
+
 .dashboard-header {
   text-align: center;
   margin-bottom: 3rem;
   font-family: "Arial", sans-serif;
 }
-.section-title {  
+
+.section-title {
   font-size: 2rem;
   font-family: "Arial", sans-serif;
   color: linear-gradient(45deg, #2c3e50, #3498db);
@@ -861,61 +918,72 @@ padding: 3rem;
   text-align: center;
   margin-bottom: 15px;
 }
- .transfer-cards-container {
+
+.transfer-cards-container {
   overflow-x: auto;
   padding: 1rem 0;
 }
+
 .transfer-cards-container::-webkit-scrollbar {
   height: 3px;
   background: #78ABCE;
 
 }
+
 .transfer-cards-container::-webkit-scrollbar-thumb {
   background: #e4e8eb;
   border-radius: 10px;
 }
+
 .transfer-card {
   transition: transform 0.2s;
   border: none;
-  height: 210px !important; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 210px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
-  background: rgba(204, 215, 223, 0.85) !important; 
-} 
+  background: rgba(204, 215, 223, 0.85) !important;
+}
+
 .transfer-card:hover {
   transform: translateY(-5px);
 }
+
 .player-image-container {
   width: 80px;
   height: 80px;
-  border-radius: 50%; 
-  overflow: hidden; 
+  border-radius: 50%;
+  overflow: hidden;
   margin-right: 0.2rem;
 }
 
 .player-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
- 
+  object-fit: cover;
+
 }
+
 .transfer-details {
   flex: 1;
   margin-left: 0.3rem;
 }
+
 .player-name {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
 }
+
 .transfer-info {
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
+
 .transfer-arrow {
   color: #3498db;
   font-weight: bold;
 }
+
 .custom-select {
   width: 100%;
   padding: 0.75rem;
@@ -924,13 +992,15 @@ padding: 3rem;
   margin-bottom: 1.5rem;
   background: white;
 }
+
 .radar-chart-container,
 .comparison-chart-container {
   background: white;
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 /* .notes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1002,11 +1072,11 @@ padding: 3rem;
   .scout-dashboard-container {
     padding: 1rem;
   }
-  
+
   .section-title {
     font-size: 1.25rem;
   }
-  
+
   .notes-grid {
     grid-template-columns: 1fr;
   }
@@ -1117,6 +1187,7 @@ padding: 3rem;
   background-color: #333;
   margin: 3px 0;
 }
+
 .custom-dropdown-menu {
   position: fixed;
   left: 50%;
@@ -1131,21 +1202,26 @@ padding: 3rem;
 .dropdown:hover .custom-dropdown-menu {
   display: block;
 }
- .adminP{
+
+.adminP {
   color: white;
-  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); 
- }
-.playerTable{
+  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d);
+}
+
+.playerTable {
   color: #000;
 }
+
 /* Header */
 .custom-navbar {
-  background-color: #122433ea; /* Dark Emerald Green */
+  background-color: #122433ea;
+  /* Dark Emerald Green */
   color: white;
 }
 
 .custom-navbar .navbar-nav .nav-link {
-  color: white !important; /* Make sure the text is white */
+  color: white !important;
+  /* Make sure the text is white */
 }
 
 .custom-navbar .navbar-brand {
@@ -1153,30 +1229,38 @@ padding: 3rem;
 }
 
 .custom-navbar .navbar-toggler-icon {
-  background-color: white; /* Optional: Make the toggle icon white */
+  background-color: white;
+  /* Optional: Make the toggle icon white */
 }
 
 .custom-navbar .nav-dropdown-item {
-  color: white; /* Ensures dropdown items are white */
+  color: white;
+  /* Ensures dropdown items are white */
 }
 
 /* landing */
 
 
 .section2 {
-  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); /* Bootstrap's primary blue */
+  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d);
+  /* Bootstrap's primary blue */
   padding: 40px 0;
 
 }
+
 .section2 .row {
   margin-bottom: 20px;
 }
+
 .section2 h1,
 .section2 h2 {
-  color: #fff; /* Ensure the text is white */
+  color: #fff;
+  /* Ensure the text is white */
 }
+
 .section2 p {
-  color: #f8f9fa; /* Light text color for readability */
+  color: #f8f9fa;
+  /* Light text color for readability */
 }
 
 
@@ -1246,7 +1330,7 @@ padding: 3rem;
 .custom-team-container {
   background-color: #0b0d17;
   color: white;
-  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d); 
+  background: linear-gradient(135deg, #223a6a, #080f21, #670d0d);
 }
 
 .custom-heading-container {
@@ -1257,7 +1341,8 @@ padding: 3rem;
 .custom-heading {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #dc3545; /* Red color */
+  color: #dc3545;
+  /* Red color */
   position: relative;
   display: inline-block;
 }
@@ -1266,7 +1351,8 @@ padding: 3rem;
   position: absolute;
   inset: 0;
   font-size: 8rem;
-  color: #8b1c1c; /* Darker red */
+  color: #8b1c1c;
+  /* Darker red */
   opacity: 0.25;
   z-index: -1;
 }
@@ -1324,7 +1410,8 @@ padding: 3rem;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #1a1a1a; /* Dark background color */
+  background-color: #1a1a1a;
+  /* Dark background color */
   color: white;
   font-family: 'Roboto', sans-serif;
 }
@@ -1355,11 +1442,12 @@ padding: 3rem;
   font-size: 3rem;
   font-weight: bold;
   line-height: 1.2;
-  color: #f1f1f1; 
+  color: #f1f1f1;
 }
 
 .custom-highlight {
-  color: #f1f1f1; /* Blue color for the highlight */
+  color: #f1f1f1;
+  /* Blue color for the highlight */
 }
 
 .custom-button {
@@ -1414,7 +1502,7 @@ padding: 3rem;
   background-color: #fefefe;
   padding: 20px;
   border-radius: 8px;
-  color:#000;
+  color: #000;
 }
 
 /* Style for the position dropdown */
@@ -1441,7 +1529,7 @@ padding: 3rem;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background:linear-gradient(135deg, #223a6a,rgb(16, 13, 13), #670d0d);
+  background: linear-gradient(135deg, #223a6a, rgb(16, 13, 13), #670d0d);
 }
 
 /* Styling for the attribute select dropdowns */
@@ -1474,13 +1562,18 @@ padding: 3rem;
   transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
   transition: transform 0.3s ease-in-out;
 }
-.dashboard-card
-{
-  background:linear-gradient(135deg, #223a6a,rgb(16, 13, 13), #670d0d);
+
+.dashboard-card {
+  background: linear-gradient(135deg, #223a6a, rgb(16, 13, 13), #670d0d);
 }
 
 
-.standings, .player-section, .progress-graph1, .sticky-notes, .next-games, .my-team {
+.standings,
+.player-section,
+.progress-graph1,
+.sticky-notes,
+.next-games,
+.my-team {
   background: #f4f3f3;
   color: white;
   background: linear-gradient(135deg, #b48e96, rgb(68, 53, 53), #7a4e58);
@@ -1494,7 +1587,9 @@ h4 {
   margin-bottom: 10px;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 8px;
   margin: 5px 0;
@@ -1520,21 +1615,22 @@ input, select, textarea {
 }
 
 
-/* current seasontable in userDashboards*/ 
+/* current seasontable in userDashboards*/
 .table-custom {
-  background:transparent !important;
- 
+  background: transparent !important;
+
 }
 
-.table-custom th, .table-custom td {
-  background:transparent !important;
+.table-custom th,
+.table-custom td {
+  background: transparent !important;
   border-color: rgba(255, 255, 255, 0.2);
 
 }
 
 /* Custom scrollbar styles */
 .custom-scroll {
-  scrollbar-width:thin;
+  scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
 }
 
@@ -1562,14 +1658,13 @@ input, select, textarea {
   align-items: center;
 }
 
-.vs-text 
-  {
-    background: #758ab6;
-    color: white;
-    font-weight: 500;
-    padding: 5px 7px;
-    font-size: 12px;
-    border-radius: 50%;
+.vs-text {
+  background: #758ab6;
+  color: white;
+  font-weight: 500;
+  padding: 5px 7px;
+  font-size: 12px;
+  border-radius: 50%;
 }
 
 
@@ -1587,6 +1682,6 @@ input, select, textarea {
   font-weight: bold;
 }
 
-.upcoming-matches p{
+.upcoming-matches p {
   margin: 0;
 }

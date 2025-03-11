@@ -116,9 +116,9 @@ return (
   <div className="scout-dashboard-container">
     <div className="dashboard-header">
       <h1>Scout Dashboard</h1>
-      <h3 className="lead text-muted">
+      <h5 >
         Advanced player analysis and comparison tools for professional scouting.
-      </h3>
+      </h5>
     </div>
     <Container fluid className="mt-4">
    
