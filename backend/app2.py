@@ -12,7 +12,7 @@ CORS(app2)
 warnings.filterwarnings("ignore")
 
 # Load the trained model & scaler
-model = joblib.load("market_value_model.pkl")
+model = joblib.load("market_value_xgboost.pkl")
 scaler = joblib.load("scaler.pkl")
 
 # Load player data
@@ -74,7 +74,7 @@ def predict():
 
         # Scale and predict
         features_scaled = scaler.transform(features)
-        predicted_value = np.expm1(model.predict(features_scaled)[0])
+        predicted_value = float(np.expm1(model.predict(features_scaled)[0]))  # Convert to Python float
 
         return jsonify({"predicted_value": round(predicted_value, 2)})
 

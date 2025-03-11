@@ -21,7 +21,7 @@ const WhatIfSimulator = () => {
   const [selectedMetrics, setSelectedMetrics] = useState(allMetrics.slice(0, 5));
   const [metrics, setMetrics] = useState({});
   const [performance, setPerformance] = useState(0);
-  
+  const [chatResponse, setChatResponse] = useState(""); // Store AI-generated analysis
 
   const calculatePerformance = useCallback(() => {
     if (!metrics || Object.keys(metrics).length === 0) return 0;
@@ -62,6 +62,32 @@ const WhatIfSimulator = () => {
           ? [...prev, metric]
           : prev
     );
+  };
+  const handleAnalyzeImpact = async () => {
+    if (!selectedPlayer) {
+      alert("Please select a player first!");
+      return;
+    }
+
+    const metricChanges = selectedMetrics.reduce((acc, metric) => {
+      acc[metric] = metrics[metric] - selectedPlayer[metric];
+      return acc;
+    }, {});
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/analyze-impact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ player_name: selectedPlayer.name, metrics }),
+      });
+      
+
+      const data = await response.json();
+      setChatResponse(data.analysis); // Display AI-generated analysis
+    } catch (error) {
+      console.error("Error fetching AI analysis:", error);
+      setChatResponse("⚠️ Error fetching analysis. Please try again.");
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -236,6 +262,20 @@ const WhatIfSimulator = () => {
           </div>
         ))}
       </div>
+      <div className="impact-analysis text-center">
+  <h3>AI Impact Analysis</h3>
+  <button className="football-button mx-auto block" onClick={handleAnalyzeImpact}>
+    🔍 Analyze Impact
+  </button>
+  <div className="ai-response mt-4">
+    {chatResponse
+      ? chatResponse.split("\n").map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
+        ))
+      : <p>No analysis yet.</p>}
+  </div>
+</div>
+
     </div>
   );
 };

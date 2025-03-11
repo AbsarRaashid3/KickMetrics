@@ -730,8 +730,8 @@ input[type="range"] {
 .coach-dashboard {
   padding: 2rem;
   font-family: "Arial", sans-serif;
-  /* background: #f8f9fa; */
-  background: rgb(32, 53, 97) ;
+  background: linear-gradient(135deg, #223a6a,rgb(94, 93, 93), #670d0d);            
+  color: white;
 }
 
 .title-gradient {
@@ -743,25 +743,24 @@ input[type="range"] {
 }
 .search-input {
   width: 100%;
-  max-width: 500px;
-  padding: 1rem;
+  max-width: 400px;
   border: none;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  margin: 2rem auto;
+  margin: 0.5rem auto;
   display: block;
 }
 .stats-card {
-  background: rgb(158, 172, 207) !important;
+  background:none !important;
   border: none;
-  color: #000;
+  color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   margin-bottom: 2rem;
 }
 .coaches-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1.5rem;
   padding: 1rem;
 }
@@ -774,7 +773,6 @@ input[type="range"] {
   transition: transform 0.2s ease-in-out;
   cursor: pointer;
   text-align: center;
-  padding: 1rem;
 }
 
 .coach-card:hover {
@@ -791,7 +789,7 @@ input[type="range"] {
 }
 .coach-modal .modal-content {
   border-radius: 15px;
-  background-color:  rgba(66, 86, 99, 0.8) !important; /* Stronger shadow */
+  background-color:  rgba(219, 233, 243, 0.8) !important; /* Stronger shadow */
   
 }
 
@@ -838,10 +836,13 @@ input[type="range"] {
 }
 
 /* General Styling for Scout Dashboard */
+/* General Styling for Scout Dashboard */
 .scout-dashboard-container {
-  background: linear-gradient(45deg, #2c3e50, #3498db);
   font-family: "Arial", sans-serif;
 padding: 3rem;
+background: linear-gradient(135deg, #223a6a,rgb(94, 93, 93), #670d0d);
+                
+color: white;
 }
 .dashboard-header {
   text-align: center;
@@ -876,12 +877,14 @@ padding: 3rem;
   border-radius: 10px;
 }
 .transfer-card {
+  color:white !important;
+
   transition: transform 0.2s;
   border: none;
   height: 210px !important; 
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   backdrop-filter: blur(5px);
-  background: rgba(204, 215, 223, 0.85) !important; 
+  background: linear-gradient(45deg, #2c3e50, #547d99);
 } 
 .transfer-card:hover {
   transform: translateY(-5px);
@@ -932,19 +935,76 @@ padding: 3rem;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-/* .notes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+.header-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+  border-radius: 12px;
+  margin: 20px 0;
 }
 
-.note-card {
+.gradient-background {
+ 
+  background: linear-gradient(135deg, #223a6a, #1c1a33, #662e2e);
+  animation: gradientShift 3s ease infinite;
+  background-size: 300% 300%;
+  z-index: 1;
+}
+
+.header-content {
   position: relative;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-} */
+  z-index: 3;
+  padding: 20px 30px;
+  text-align: center;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transform: translateZ(0);
+}
+
+.header-text {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+
+.header-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  z-index: 4;
+  animation: borderGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes moveGlow {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(40px, 40px); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes borderGlow {
+  0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+  100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+}
 
 /*------------ Notes---------- */
 .notes-grid {

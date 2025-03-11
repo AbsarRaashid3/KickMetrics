@@ -30,28 +30,27 @@ const Header = () => {
       <Navbar className="custom-navbar" expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-          <Navbar.Brand>
-  <img
-    src={logo}
-    height="30"
-    width="30"
-    className="d-inline-block align-top"
-    alt="Kick Metrics"
-  />
-<span style={{
-    backgroundColor: "rgb(160, 169, 165)",
-     backgroundImage: "linear-gradient(135deg,rgb(88, 101, 110), rgb(86, 30, 35))", // Change to your preferred color
-    color: "#fff", // Text color
-    padding: "35px 20px",
-    borderRadius: "50px 8px",
-    marginLeft: "8px",
-    marginTop: "px",
-   
-  }}>
-    KICK METRICS
-  </span>
-</Navbar.Brand>
-
+            <Navbar.Brand className="d-flex align-items-center">
+              <img
+                src={logo}
+                height="30"
+                width="30"
+                className="d-inline-block align-top"
+                alt="Kick Metrics"
+              />
+              <span
+                className="ms-2 d-inline-block text-nowrap"
+                style={{
+                  backgroundColor: "rgb(160, 169, 165)",
+                  backgroundImage: "linear-gradient(135deg,rgb(88, 101, 110), rgb(86, 30, 35))",
+                  color: "#fff",
+                  padding: "8px 15px",
+                  borderRadius: "20px",
+                }}
+              >
+                KICK METRICS
+              </span>
+            </Navbar.Brand>
           </LinkContainer>
 
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -59,50 +58,31 @@ const Header = () => {
             <Nav className='ms-auto'>
               {userInfo ? (
                 <>
-                  {userInfo && !userInfo.isAdmin && (
+                  {!userInfo.isAdmin && (
                     <>
                       <LinkContainer to='/players'>
-                        <Nav.Link>
-                          <FaFutbol /> Players
-                        </Nav.Link>
+                        <Nav.Link><FaFutbol /> Players</Nav.Link>
                       </LinkContainer>
                       <LinkContainer to='/compare'>
-                        <Nav.Link>
-                          <FaFutbol /> Compare Players
-                        </Nav.Link>
+                        <Nav.Link><FaFutbol /> Compare Players</Nav.Link>
                       </LinkContainer>
-
                       <LinkContainer to='/performance-analysis'>
-                        <Nav.Link>
-                          <FaFutbol /> Performance Analysis
-                        </Nav.Link>
+                        <Nav.Link><FaFutbol /> Performance Analysis</Nav.Link>
                       </LinkContainer>
-
                       <LinkContainer to='/teamC'>
-                        <Nav.Link>
-                          <FaFutbol /> Team Composition
-                        </Nav.Link>
+                        <Nav.Link><FaFutbol /> Team Composition</Nav.Link>
                       </LinkContainer>
-
                       <LinkContainer to='/whatif'>
-                        <Nav.Link>
-                          <FaFutbol /> What-If Simulator
-                        </Nav.Link>
+                        <Nav.Link><FaFutbol /> What-If Simulator</Nav.Link>
                       </LinkContainer>
-
                       <LinkContainer to='/market-value'>
-                        <Nav.Link>
-                          <FaFutbol /> Market Value
-                        </Nav.Link>
+                        <Nav.Link><FaFutbol /> Market Value</Nav.Link>
                       </LinkContainer>
-
                       <LinkContainer to='/dashboard'>
-                        <Nav.Link><FaFutbol />Dashboard</Nav.Link>
+                        <Nav.Link><FaFutbol /> Dashboard</Nav.Link>
                       </LinkContainer>
-
                     </>
                   )}
-
                   <NavDropdown
                     title={
                       <img
@@ -119,10 +99,7 @@ const Header = () => {
                     id='basic-nav-dropdown'
                     align='end'
                   >
-                    <NavDropdown.Item onClick={logoutHandler}>
-                      Logout
-                    </NavDropdown.Item>
-
+                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                     <LinkContainer to='/profile'>
                       <NavDropdown.Item>Edit Profile</NavDropdown.Item>
                     </LinkContainer>
@@ -130,9 +107,7 @@ const Header = () => {
                 </>
               ) : (
                 <LinkContainer to='/login'>
-                  <Nav.Link>
-                    <FaUser /> Sign In
-                  </Nav.Link>
+                  <Nav.Link><FaUser /> Sign In</Nav.Link>
                 </LinkContainer>
               )}
             </Nav>
