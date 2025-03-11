@@ -21,6 +21,7 @@ const WhatIfSimulator = () => {
   const [selectedMetrics, setSelectedMetrics] = useState(allMetrics.slice(0, 5));
   const [metrics, setMetrics] = useState({});
   const [performance, setPerformance] = useState(0);
+  
 
   const calculatePerformance = useCallback(() => {
     if (!metrics || Object.keys(metrics).length === 0) return 0;

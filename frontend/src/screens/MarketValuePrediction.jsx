@@ -106,7 +106,7 @@ const MarketValuePrediction = () => {
   const [loading, setLoading] = useState(true);
   const [predictionError, setPredictionError] = useState(null);
   const [image, setImage] = useState(player?.image || "/images/default.jpg");
-  const [setVisible] = useState(true);
+  const [visible,setVisible] = useState(true);
 
   useEffect(() => {
     const fetchImage = async () => {

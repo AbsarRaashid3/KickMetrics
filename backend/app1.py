@@ -105,3 +105,4 @@ def analyze():
     response_text = response_text.replace("\n", "<br>")
 
     return jsonify({"response": response_text})
+
