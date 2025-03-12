@@ -106,7 +106,7 @@ const MarketValuePrediction = () => {
   const [loading, setLoading] = useState(true);
   const [predictionError, setPredictionError] = useState(null);
   const [image, setImage] = useState(player?.image || "/images/default.jpg");
-  const [visible,setVisible] = useState(true);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -422,41 +422,42 @@ const MarketValuePrediction = () => {
               />
             </div>
             <div className="d-flex flex-column justify-content-center">
-  <div className="mb-4">
-    <h2 className="text-white fw-bold fs-5">
-      MARKET VALUE PREDICTION MODEL
-    </h2>
-    <h1 className="text-4xl fw-bold text-info">
-      Machine Learning Model: Random Forest Regressor
-    </h1>
-    <ul className="list-unstyled mt-4">
-      <li>Predict and analyze player market value with high accuracy</li>
-      <li>Identify key attributes influencing a player's valuation</li>
-      <li>Compare model performance across different techniques</li>
-    </ul>
-    <p className="mt-4">
-      Our <strong>market value prediction model</strong> is powered by a 
-      <strong> Random Forest Regressor</strong>, which outperforms traditional methods like 
-      <strong> Linear Regression</strong> and <strong>XGBoost</strong> when dealing with complex, 
-      non-linear football data.
-    </p>
-    <p className="mt-2">
-      <strong>Feature Importance Analysis</strong> helps us determine the most critical 
-      attributes affecting a player's market value, such as 
-      <strong> age, position, match performance, contract details, and physical stats</strong>.
-    </p>
-    <h3 className="text-info fw-bold mt-3">Why Random Forest?</h3>
-    <p className="mt-2">
-      - <strong>Linear Regression</strong> struggles with non-linear patterns in football data. <br />
-      - <strong>XGBoost</strong> performs well but can overfit when dealing with high-variance player data. <br />
-      - <strong>Random Forest</strong> balances <strong>accuracy and interpretability</strong>, 
-      handling outliers and missing values effectively while providing a clear view of feature importance.
-    </p>
-    <p className="mt-2">
-      Our system ensures <strong>scouts and analysts</strong> get precise player valuation insights, 
-      helping clubs make <strong>data-driven transfer decisions</strong>.
-    </p>
-  </div>
+            <div className="mb-4">
+  <h2 className="text-white fw-bold fs-5">
+    MARKET VALUE PREDICTION MODEL
+  </h2>
+  <h1 className="text-4xl fw-bold text-info">
+    Machine Learning Model: XGBoost Regressor
+  </h1>
+  <ul className="list-unstyled mt-4">
+    <li>Predict and analyze player market value with high accuracy</li>
+    <li>Identify key attributes influencing a player's valuation</li>
+    <li>Compare model performance across different techniques</li>
+  </ul>
+  <p className="mt-4">
+    Our <strong>market value prediction model</strong> is powered by 
+    <strong> XGBoost Regressor</strong>, which outperforms traditional methods like 
+    <strong> Linear Regression</strong> and <strong>Random Forest</strong> when dealing with complex, 
+    non-linear football data.
+  </p>
+  <p className="mt-2">
+    <strong>Feature Importance Analysis</strong> helps us determine the most critical 
+    attributes affecting a player's market value, such as 
+    <strong> age, position, match performance, contract details, and physical stats</strong>.
+  </p>
+  <h3 className="text-info fw-bold mt-3">Why XGBoost?</h3>
+  <p className="mt-2">
+    - <strong>Linear Regression</strong> struggles with non-linear patterns in football data. <br />
+    - <strong>Random Forest</strong> handles outliers well but may lack the fine-tuned optimization of boosting models. <br />
+    - <strong>XGBoost</strong> is <strong>highly efficient, accurate, and interpretable</strong>, 
+    leveraging gradient boosting to enhance prediction reliability and feature importance analysis.
+  </p>
+  <p className="mt-2">
+    Our system ensures <strong>scouts and analysts</strong> get precise player valuation insights, 
+    helping clubs make <strong>data-driven transfer decisions</strong>.
+  </p>
+</div>
+
 </div>
 
           </div>

@@ -665,7 +665,30 @@ input[type="range"] {
 .user-dashboard {
   font-family: "Arial", sans-serif;
   padding: 2rem;
-  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, rgb(16, 46, 107), rgba(134, 24, 24, 0.88), #3c0d67) !important;
+  color: white;
+  animation: gradientShift 3s ease infinite;
+  z-index: 1;
+  background-size: 300% 300%;
+
+}
+.custom-accordion {
+  margin-top: 5px;
+  max-width: 850px; 
+  margin: 0 auto; 
+}
+.custom-accordion .accordion-button {
+  background-color: #2b4c6d !important; 
+  color: white !important;
+  font-weight: bold;
+}
+.custom-accordion .accordion-button:not(.collapsed) {
+  background-color: #18436b !important; 
+  color: #e6eaec !important; 
+}
+.custom-accordion .accordion-button::after {
+  color: white !important;
+  filter: invert(1); 
 }
 
 /* FIFA Card */
@@ -1606,6 +1629,7 @@ input, select, textarea {
   padding: 20px;
   max-width: 450px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
 .team-logo {
