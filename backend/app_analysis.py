@@ -20,7 +20,7 @@ if not groq_api_key:
     raise ValueError("Missing Groq API key! Set GROQ_API_KEY in your .env file.")
 
 # Initialize LLM model
-llm = ChatGroq(temperature=0.7, model_name="mixtral-8x7b-32768", groq_api_key=groq_api_key)
+llm = ChatGroq(temperature=0.7, model_name="mistral-saba-24b", groq_api_key=groq_api_key)
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 prompt = ChatPromptTemplate.from_messages([
     SystemMessagePromptTemplate.from_template(system_prompt),

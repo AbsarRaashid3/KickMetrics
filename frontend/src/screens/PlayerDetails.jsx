@@ -1,10 +1,12 @@
-import React, { useMemo,useState} from "react";
-import { useParams} from "react-router-dom";
-import { Row, Col,  Accordion } from "react-bootstrap";
+import React, { useMemo, useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Row, Col, Accordion, Button } from "react-bootstrap";
 import { Chart } from "react-google-charts";
 import { useGetPlayerDetailsQuery } from "../redux/slices/playersApiSlice";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import {
   BarChart,
   RadarChart,
@@ -38,17 +40,26 @@ export default function PlayerDetails() {
   const [transform, setTransform] = useState('');
   const { id: playerId } = useParams();
   const { data: player, isLoading, error } = useGetPlayerDetailsQuery(playerId);
+  const [activeKeys, setActiveKeys] = useState(["0"]);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  // Set all accordion items to be expanded when generating PDF
+  useEffect(() => {
+    if (isGeneratingPDF) {
+      setActiveKeys(["0", "1", "2", "3", "4", "5"]);
+    }
+  }, [isGeneratingPDF]);
 
   // ensure the array is only recalculated when the player data changes, not on every render.
-  const physicalAttributes = useMemo(() =>player? [
-          { name: "Height (cm)", value: player.height_cm },
-          { name: "Weight (kg)", value: player.weight_kgs },
-          { name: "Stamina", value: player.stamina },
-          { name: "Strength", value: player.strength },
-          { name: "Agility", value: player.agility },
-          { name: "Balance", value: player.balance },
-        ]
-        : [],
+  const physicalAttributes = useMemo(() => player ? [
+    { name: "Height (cm)", value: player.height_cm },
+    { name: "Weight (kg)", value: player.weight_kgs },
+    { name: "Stamina", value: player.stamina },
+    { name: "Strength", value: player.strength },
+    { name: "Agility", value: player.agility },
+    { name: "Balance", value: player.balance },
+  ]
+    : [],
     [player]
   );
 
@@ -135,6 +146,7 @@ export default function PlayerDetails() {
         : {},
     [player]
   );
+
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
     const width = card.clientWidth;
@@ -146,6 +158,54 @@ export default function PlayerDetails() {
     const transformString = `perspective(500px) scale(1.1) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
     setTransform(transformString);
   };
+
+  const pdfRef = useRef();
+
+const generatePDF = async () => {
+  try {
+    setIsGeneratingPDF(true);
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const element = pdfRef.current;
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    const imgProps = pdf.getImageProperties(imgData);
+    const imgWidth = pdfWidth;
+    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    // Add the first page
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    // Add extra pages if needed
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+
+    pdf.save(`${player.name}_report.pdf`);
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+  } finally {
+    setIsGeneratingPDF(false);
+    setActiveKeys(["0"]);
+  }
+};
+
 
   const handleMouseOut = () => {
     setTransform('perspective(500px) scale(1) rotateX(0) rotateY(0)');
@@ -164,226 +224,246 @@ export default function PlayerDetails() {
 
   return (
     <>
-      <div className="container mx-auto p-4">
-        <Row className="my-6">
-        <Col md={6}>
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            maxWidth: "350px",
-            margin: "0 auto",
-            background: "linear-gradient(135deg,rgb(166, 132, 132),rgb(68, 15, 15))",
-            borderRadius: "20px",
-            padding: "20px",
-            textAlign: "center",
-            boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.5)",
-            color: "white",
-            fontFamily: "'Oswald', sans-serif",
-            transition: "transform 0.3s",
-            transform: transform,
-            transition: "transform 0.1s, box-shadow 0.1s",
-            boxShadow: transform ? "0px 0px 30px rgba(0, 0, 0, 0.6)" : "none",
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseOut={handleMouseOut}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-        >
-          <div
-            style={{
-              position: "absolute",
-              top: "-50px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "90px",
-              height: "80px",
-              background: "linear-gradient(135deg,rgb(43, 7, 7),rgb(42, 37, 120))",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
-            }}
-          >
-            <h3 style={{ color: "white", fontSize: "1rem", margin: 0 }}>
-              {player.overall_rating}
-            </h3>
+<div className="text-center my-4">
+  <Button
+    variant="primary"
+    onClick={generatePDF}
+    className="mb-4"
+    style={{
+      padding: '10px 20px',
+      fontSize: '1.1rem',
+      fontWeight: 'bold',
+      borderRadius: '8px',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+      background: 'linear-gradient(135deg, rgb(16, 46, 107), rgba(30, 23, 23, 0.88),rgb(64, 12, 12))',
+      color: '#fff',
+      border: 'none',
+    }}
+    disabled={isGeneratingPDF}
+  >
+    {isGeneratingPDF ? 'Generating PDF...' : 'Generate PDF Report'}
+  </Button>
+</div>
+
+      <div ref={pdfRef}>
+        <div className="container mx-auto p-4">
+          <Row className="my-6">
+            <Col md={6}>
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: "350px",
+                  margin: "0 auto",
+                  background: "linear-gradient(135deg,rgb(166, 132, 132),rgb(68, 15, 15))",
+                  borderRadius: "20px",
+                  padding: "20px",
+                  textAlign: "center",
+                  boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.5)",
+                  color: "white",
+                  fontFamily: "'Oswald', sans-serif",
+                  transition: "transform 0.3s",
+                  transform: transform,
+                  transition: "transform 0.1s, box-shadow 0.1s",
+                  boxShadow: transform ? "0px 0px 30px rgba(0, 0, 0, 0.6)" : "none",
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseOut={handleMouseOut}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-50px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: "90px",
+                    height: "80px",
+                    background: "linear-gradient(135deg,rgb(43, 7, 7),rgb(42, 37, 120))",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
+                  }}
+                >
+                  <h3 style={{ color: "white", fontSize: "1rem", margin: 0 }}>
+                    {player.overall_rating}
+                  </h3>
+                </div>
+                <img
+                  src={player.image_url || "/images/default.jpg"}
+                  onError={(e) => (e.target.src = "/images/default.jpg")}
+                  alt={player.name}
+                  style={{
+                    width: "100%",
+                    maxWidth: "250px",
+                    height: "350px",
+                    objectFit: "cover",
+                    borderRadius: "15px",
+                    margin: "30px auto 10px",
+                    border: "5px solid rgba(255, 255, 255, 0.2)",
+                  }}
+                />
+                <h2
+                  style={{
+                    fontSize: "1.8rem",
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    margin: "10px 0",
+                  }}
+                >
+                  {player.name}
+                </h2>
+                <p
+                  style={{
+                    fontSize: "1rem",
+                    color: "rgba(255, 255, 255, 0.8)",
+                    margin: "5px 0 20px",
+                  }}
+                >
+                  {player.positions} | {player.nationality}
+                </p>
+              </div>
+            </Col>
+
+            <Col md={6}>
+              <div
+                style={{
+                  background: "linear-gradient(135deg, #223a6a,rgb(223, 223, 223), #670d0d)",
+                  borderRadius: "20px",
+                  padding: "20px",
+                  boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.2)",
+                  color: "black",
+                  transform: transform,
+                  transition: "transform 0.1s, box-shadow 0.1s",
+                  boxShadow: transform ? "0px 0px 30px rgba(0,0,0, 0.6)" : "none",
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseOut={handleMouseOut}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+              >
+                <h3
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "600",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Player Details
+                </h3>
+                <dl className="row">
+                  <dt className="col-sm-4">Age</dt>
+                  <dd className="col-sm-8">{player.age}</dd>
+                  <dt className="col-sm-4">Nationality</dt>
+                  <dd className="col-sm-8">{player.nationality}</dd>
+                  <dt className="col-sm-4">Position</dt>
+                  <dd className="col-sm-8">{player.positions}</dd>
+                  <dt className="col-sm-4">Overall Rating</dt>
+                  <dd className="col-sm-8">{player.overall_rating}</dd>
+                </dl>
+              </div>
+            </Col>
+          </Row>
+
+          {/* Added more space before accordion */}
+          <div className="my-5"></div>
+          <div className="my-5"></div>
+
+          {/* Graphs Section */}
+          <div className="my-5"></div>
+          {/* Add space between player card and graphs */}
+          <div className="my-5">
           </div>
-          <img
-              src={player.image_url || "/images/default.jpg"}
-              onError={(e) => (e.target.src = "/images/default.jpg")}
-              alt={player.name}
-            style={{
-              width: "100%",
-              maxWidth: "250px",
-              height: "350px",
-              objectFit: "cover",
-              borderRadius: "15px",
-              margin: "30px auto 10px",
-              border: "5px solid rgba(255, 255, 255, 0.2)",
-            }}
-          />
-          <h2
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: "700",
-              textTransform: "uppercase",
-              margin: "10px 0",
-            }}
-          >
-            {player.name}
-          </h2>
-          <p
-            style={{
-              fontSize: "1rem",
-              color: "rgba(255, 255, 255, 0.8)",
-              margin: "5px 0 20px",
-            }}
-          >
-            {player.positions} | {player.nationality}
-          </p>
+          {/* Graphs Section */}
+          <Accordion activeKey={activeKeys} onSelect={(keys) => setActiveKeys(keys)}>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Physical Attributes</Accordion.Header>
+              <Accordion.Body>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={physicalAttributes} >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="value" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header>Technical Attributes</Accordion.Header>
+              <Accordion.Body>
+                <ResponsiveContainer width="100%" height={300}>
+                  <RadarChart data={technicalAttributes} >
+                    <PolarGrid />
+                    <PolarAngleAxis dataKey="name" />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                    <Radar name={player.name} dataKey="value" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+                    <Tooltip />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="2">
+              <Accordion.Header>Mental Attributes</Accordion.Header>
+              <Accordion.Body>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={mentalAttributes} >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="3">
+              <Accordion.Header>Skill Comparison</Accordion.Header>
+              <Accordion.Body>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={skillComparison} >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="player" fill="#8884d8" />
+                    <Bar dataKey="average" fill="#82ca9d" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="4">
+              <Accordion.Header>Overall Attributes (Radar Chart)</Accordion.Header>
+              <Accordion.Body>
+                <ResponsiveContainer width="100%" height={300}>
+                  <RadarChart data={combinedAttributes} >
+                    <PolarGrid />
+                    <PolarAngleAxis dataKey="name" />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} />
+                    <Radar name={player.name} dataKey="value" stroke="#ff7300" fill="#ff7300" fillOpacity={0.6} />
+                    <Tooltip />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="5">
+              <Accordion.Header>Gauge Charts</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  {[gaugeData.pacData, gaugeData.shoData, gaugeData.pasData, gaugeData.driData, gaugeData.defData, gaugeData.phyData].map((data, index) => (
+                    <Col xs={6} key={index} className="d-flex justify-content-center">
+                      <Chart chartType="Gauge" data={data} options={gaugeOptions} />
+                    </Col>
+                  ))}
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
         </div>
-      </Col>
-
-      <Col md={6}>
-        <div
-          style={{
-            background: "linear-gradient(135deg, #223a6a,rgb(223, 223, 223), #670d0d)",
-            borderRadius: "20px",
-            padding: "20px",
-            boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.2)",
-            color:"black",
-            transform: transform,
-            transition: "transform 0.1s, box-shadow 0.1s",
-            boxShadow: transform ? "0px 0px 30px rgba(0,0,0, 0.6)" : "none",
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseOut={handleMouseOut}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-        >
-          <h3
-            style={{
-              fontSize: "1.5rem",
-              fontWeight: "600",
-              marginBottom: "20px",
-            }}
-          >
-            Player Details
-          </h3>
-          <dl className="row">
-            <dt className="col-sm-4">Age</dt>
-            <dd className="col-sm-8">{player.age}</dd>
-            <dt className="col-sm-4">Nationality</dt>
-            <dd className="col-sm-8">{player.nationality}</dd>
-            <dt className="col-sm-4">Position</dt>
-            <dd className="col-sm-8">{player.positions}</dd>
-            <dt className="col-sm-4">Overall Rating</dt>
-            <dd className="col-sm-8">{player.overall_rating}</dd>
-          </dl>
-        </div>
-      </Col>
-      
-        </Row>
-
-        {/* Added more space before accordion */}
-        <div className="my-5"></div>
-        <div className="my-5"></div>
-
-        {/* Graphs Section */}
-        <div className="my-5"></div>
-        {/* Add space between player card and graphs */}
-        <div class="my-5">
-        </div>
-        {/* Graphs Section */}
-        <Accordion defaultActiveKey="0">
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>Physical Attributes</Accordion.Header>
-            <Accordion.Body>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={physicalAttributes} >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="1">
-            <Accordion.Header>Technical Attributes</Accordion.Header>
-            <Accordion.Body>
-              <ResponsiveContainer width="100%" height={300}>
-                <RadarChart data={technicalAttributes} >
-                  <PolarGrid />
-                  <PolarAngleAxis dataKey="name" />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                  <Radar name={player.name} dataKey="value" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
-                  <Tooltip />
-                </RadarChart>
-              </ResponsiveContainer>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="2">
-            <Accordion.Header>Mental Attributes</Accordion.Header>
-            <Accordion.Body>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={mentalAttributes} >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                </LineChart>
-              </ResponsiveContainer>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="3">
-            <Accordion.Header>Skill Comparison</Accordion.Header>
-            <Accordion.Body>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={skillComparison} >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="player" fill="#8884d8" />
-                  <Bar dataKey="average" fill="#82ca9d" />
-                </BarChart>
-              </ResponsiveContainer>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="4">
-            <Accordion.Header>Overall Attributes (Radar Chart)</Accordion.Header>
-            <Accordion.Body>
-              <ResponsiveContainer width="100%" height={300}>
-                <RadarChart data={combinedAttributes} >
-                  <PolarGrid />
-                  <PolarAngleAxis dataKey="name" />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                  <Radar name={player.name} dataKey="value" stroke="#ff7300" fill="#ff7300" fillOpacity={0.6} />
-                  <Tooltip />
-                </RadarChart>
-              </ResponsiveContainer>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item eventKey="5">
-            <Accordion.Header>Gauge Charts</Accordion.Header>
-            <Accordion.Body>
-              <Row>
-                {[gaugeData.pacData, gaugeData.shoData, gaugeData.pasData, gaugeData.driData, gaugeData.defData, gaugeData.phyData].map((data, index) => (
-                  <Col xs={6} key={index} className="d-flex justify-content-center">
-                    <Chart chartType="Gauge" data={data} options={gaugeOptions} />
-                  </Col>
-                ))}
-              </Row>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
-
-
       </div>
     </>
   );

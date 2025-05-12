@@ -1,6 +1,8 @@
 import React, { useState,useEffect } from "react";
 import { motion } from "framer-motion"
 import { Row, Col, Form, Button, Card } from "react-bootstrap";
+import jsPDF from "jspdf";
+
 import {
   ResponsiveContainer,
  
@@ -18,9 +20,7 @@ import {
   Tooltip,
   PieChart,
   AreaChart,
-  
   Pie,
-
   Cell,
   Line,
 } from "recharts";
@@ -110,6 +110,30 @@ const performanceMetrics = [
 
 
 
+const handleGenerateReport = () => {
+  if (!chatResponse) {
+    alert("⚠️ No analysis to generate a report!");
+    return;
+  }
+
+  const doc = new jsPDF();
+  const formattedText = chatResponse.replace(/<[^>]*>?/gm, ""); // Strip HTML tags if any
+
+  const currentDate = new Date().toLocaleDateString();
+  doc.setFontSize(16);
+  doc.text(`${player.name} Performance Analysis Report`, 10, 20);
+  doc.setFontSize(12);
+  doc.text(`Role: ${userRole}`, 10, 30);
+  doc.text(`Date: ${currentDate}`, 10, 40);
+
+  doc.setFontSize(11);
+  doc.text("AI-Generated Insights:", 10, 55);
+  doc.setFont("times", "normal");
+  doc.setFontSize(10);
+  doc.text(doc.splitTextToSize(formattedText, 180), 10, 65);
+
+  doc.save(`${player.name}_performance_report.pdf`);
+};
 
 
   const handlePlayerChange = (e) => setSelectedPlayerId(parseInt(e.target.value));
@@ -261,6 +285,12 @@ const performanceMetrics = [
               {chatResponse && (
   <p className="mt-3" dangerouslySetInnerHTML={{ __html: chatResponse }} />
 )}
+{chatResponse && (
+  <Button variant="secondary" className="mt-2" onClick={handleGenerateReport}>
+    📄 Generate PDF Report
+  </Button>
+)}
+
 
             </Card>
           </Col>

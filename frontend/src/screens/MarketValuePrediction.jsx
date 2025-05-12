@@ -171,8 +171,8 @@ const MarketValuePrediction = () => {
     fetchPrediction();
   }, [playerId, player]);
 
-  useEffect(() => {
-    if (predictedValue !== null && predictedValueRef.current) {
+useEffect(() => {
+    if (typeof predictedValue === 'number' && !isNaN(predictedValue) && predictedValueRef.current) {
       gsap.to(predictedValueRef.current, {
         innerText: predictedValue.toFixed(2),
         duration: 2,
@@ -185,7 +185,8 @@ const MarketValuePrediction = () => {
         },
       });
     }
-  }, [predictedValue]);
+}, [predictedValue]);
+
 
   if (isLoading) {
     return (

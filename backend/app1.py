@@ -7,6 +7,7 @@ from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTempla
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import LLMChain
 import re
+import markdown 
 
 app1 = Blueprint("app1", __name__)  # Define Blueprint
 CORS(app1)
@@ -62,7 +63,7 @@ class FootballPerformanceAnalyzer:
             f"Here is the player's profile:\n{player_analysis}"
         )
 
-        self.llm = ChatGroq(temperature=0.7, model_name="mixtral-8x7b-32768", groq_api_key="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")
+        self.llm = ChatGroq(temperature=0.7, model_name="mistral-saba-24b", groq_api_key="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")
         self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
         self.prompt = ChatPromptTemplate.from_messages([
             SystemMessagePromptTemplate.from_template(system_prompt),
@@ -102,7 +103,9 @@ def analyze():
     else:
         response_text = analyzer.process(query)
 
-    response_text = response_text.replace("\n", "<br>")
+    # Convert markdown to HTML
+    response_text = markdown.markdown(response_text, extensions=["fenced_code", "tables"])
+
 
     return jsonify({"response": response_text})
 

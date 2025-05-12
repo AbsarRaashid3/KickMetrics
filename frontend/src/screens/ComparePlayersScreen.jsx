@@ -1,17 +1,19 @@
-import React, { useState,useEffect } from "react";
-import { Row, Col, Card, Accordion,Form  } from "react-bootstrap";
+import React, { useState,useEffect , useRef} from "react";
+import { Row, Col, Card, Accordion,Form ,Button } from "react-bootstrap";
 import { Radar } from "react-chartjs-2";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ReTooltip } from "recharts";
 import { ResponsiveBar } from "@nivo/bar";
 import { useGetPlayersQuery } from "../redux/slices/playersApiSlice";
-
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 const ComparePlayersScreen = () => {
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
   const [search1, setSearch1] = useState("");
   const [search2, setSearch2] = useState("");
   const { data: players=[], isLoading, error } = useGetPlayersQuery();
-
+  const [expandedAccordion, setExpandedAccordion] = useState(["0", "1", "2"]);
+  const reportRef = useRef();
   
  // Add data validation logging
  useEffect(() => {
@@ -39,7 +41,51 @@ const ComparePlayersScreen = () => {
     );
   }
   
- 
+   const handleAccordionToggle = (eventKey) => {
+    if (expandedAccordion.includes(eventKey)) {
+      setExpandedAccordion(expandedAccordion.filter(key => key !== eventKey));
+    } else {
+      setExpandedAccordion([...expandedAccordion, eventKey]);
+    }
+  };
+
+const generateReport = () => {
+  if (!player1 || !player2) {
+    alert("Please select both players before generating a report");
+    return;
+  }
+
+  const input = reportRef.current;
+  const pdf = new jsPDF('p', 'mm', 'a4');
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+
+  html2canvas(input, {
+    scale: 2,
+    useCORS: true,
+  }).then((canvas) => {
+    const imgData = canvas.toDataURL('image/png');
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    pdf.save(`player-comparison-${player1.name}-vs-${player2.name}.pdf`);
+  });
+};
+
+
   const handleSelectPlayer = (player, slot) => {
     const selectedPlayer = players.find(p => p._id === parseInt(player));
     if (slot === 1) {
@@ -117,7 +163,32 @@ const ComparePlayersScreen = () => {
   const barData = prepareData();
 
   return (
+
+    
     <div>
+
+            <div className="mb-4 text-center">
+       
+        <Button 
+          variant="danger" 
+              className="mb-4"
+    style={{
+      padding: '10px 20px',
+      fontSize: '1.1rem',
+      fontWeight: 'bold',
+      borderRadius: '8px',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+      background: 'linear-gradient(135deg, rgb(16, 46, 107), rgba(30, 23, 23, 0.88),rgb(64, 12, 12))',
+      color: '#fff',
+      border: 'none',
+    }}
+          onClick={generateReport}
+          disabled={!player1 || !player2}
+        >
+          Generate Report
+        </Button>
+      </div>
+       <div ref={reportRef}>
       <h2 style={{ color: "white" }} className="mb-4 text-center">Compare Players</h2>
 
       {/* Select Players */}
@@ -275,7 +346,7 @@ const ComparePlayersScreen = () => {
       </Row>
 
       {/* Graphs Section */}
-      <Accordion defaultActiveKey="0">
+       <Accordion activeKey={expandedAccordion} onSelect={handleAccordionToggle}>
         <Accordion.Item eventKey="0">
           <Accordion.Header>Radar Chart</Accordion.Header>
           <Accordion.Body>
@@ -353,6 +424,7 @@ const ComparePlayersScreen = () => {
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
+    </div>
     </div>
   );
 };

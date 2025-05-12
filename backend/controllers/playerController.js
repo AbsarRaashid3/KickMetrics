@@ -14,30 +14,30 @@ const fetchWikiImage = async (playerName) => {
     return null;
   }
 };
-//@desc Fetch all players
-//@route GET /api/players
-//@access Public
+
+// @desc    Fetch all players (sorted by _id ascending)
+// @route   GET /api/players
+// @access  Public
 const getPlayers = asyncHandler(async (req, res) => {
-  const players = await Player.find({}); //.limit(100)
+  const players = await Player.find({}).sort({ _id: 1 }); // Sorting by _id ascending
   res.json(players);
 });
 
-//@desc Fetch player by ID
-//@route GET /api/players/:id
-//@access Public
+// @desc    Fetch player by ID
+// @route   GET /api/players/:id
+// @access  Public
 const getPlayerByID = asyncHandler(async (req, res) => {
-    const player = await Player.findById(req.params.id);
-    if(player){
-        return res.json(player);
-    }
-    res.status(404);
-    throw new Error('Player not found');
-    
-  });
+  const player = await Player.findById(req.params.id);
+  if (player) {
+    return res.json(player);
+  }
+  res.status(404);
+  throw new Error('Player not found');
+});
 
-  
-//@desc Update player image
-//@route PUT /api/players/:id/update-image
+// @desc    Update player image
+// @route   PUT /api/players/:id/update-image
+// @access  Public
 const updatePlayerImage = asyncHandler(async (req, res) => {
   const player = await Player.findById(req.params.id);
   if (player) {
@@ -50,4 +50,4 @@ const updatePlayerImage = asyncHandler(async (req, res) => {
   }
 });
 
-export {getPlayers, getPlayerByID, updatePlayerImage};
+export { getPlayers, getPlayerByID, updatePlayerImage };

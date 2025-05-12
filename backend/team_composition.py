@@ -156,7 +156,7 @@ class TeamCompositionAnalyzer:
         )
         self.llm = ChatGroq(
             temperature=0.7,
-            model_name="mixtral-8x7b-32768",
+            model_name="mistral-saba-24b",
             groq_api_key="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"
         )
         self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
@@ -165,8 +165,6 @@ class TeamCompositionAnalyzer:
             HumanMessagePromptTemplate.from_template("{text}")
         ])
         self.conversation = LLMChain(llm=self.llm, prompt=self.prompt, memory=self.memory)
-
-
 
     def analyze_team(self):
         full_prompt = self.prompt.format(text="Provide your detailed analysis.")
@@ -182,9 +180,6 @@ class TeamCompositionAnalyzer:
         formatted_insights = re.sub(r"In conclusion,", "\n\n**Conclusion:**", formatted_insights)
 
         return formatted_insights
-
-
-
 
 # Endpoint to generate team composition.
 @app_team.route("/composeTeam", methods=["POST"])
@@ -237,6 +232,9 @@ def compose_team():
         "basic_summary": team_summary,
         "advanced_insights": advanced_insights
     })
+
+#
+
 
 # New endpoint to update insights for a modified team.
 @app_team.route("/updateInsights", methods=["POST"])

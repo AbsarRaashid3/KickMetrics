@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { GiAmericanFootballPlayer } from "react-icons/gi";
 import pitchImage from '../assets/IMG_0571.JPG';
+import { marked } from "marked";
+
 // Category filtering functions.
 const isGK = (player) => player.positions && player.positions.includes("GK");
 const isDefender = (player) => {
@@ -341,24 +343,10 @@ const TeamCompositionScreen = () => {
 
 <div style={styles.insightsContainer}>
   <h3 style={styles.advancedHeading}>Advanced Insights</h3>
-  <p style={{ ...styles.advancedText, whiteSpace: "pre-wrap" }}>
-    {teamData.advanced_insights.split("\n").map((line, index) => {
-      if (line.startsWith("**")) {
-        return (
-          <strong key={index}>
-            {line.replace(/\*\*/g, "")}
-            <br />
-          </strong>
-        );
-      }
-      return (
-        <React.Fragment key={index}>
-          {line}
-          <br />
-        </React.Fragment>
-      );
-    })}
-  </p>
+  <div
+    style={{ ...styles.advancedText, whiteSpace: "pre-wrap" }}
+    dangerouslySetInnerHTML={{ __html: marked(teamData.advanced_insights) }}
+  />
 </div>
 
 
@@ -501,31 +489,43 @@ const styles = {
     color: "#000",
     cursor: "pointer",
   },
-  insightsContainer: {
-    backgroundColor: "#333",
-    padding: "20px",
-    borderRadius: "8px",
-    margin: "20px auto",
-    maxWidth: "800px",
-  },
-  summary: {
-    whiteSpace: "pre-wrap",
-    fontSize: "14px",
-    lineHeight: "1.5",
-  },
-  advancedHeading: {
-    marginTop: "20px",
-    color: "#FFD700",
-  },
-  advancedText: {
-    fontSize: "14px",
-  },
+ insightsContainer: {
+  backgroundColor: "#333",
+  padding: "20px",
+  borderRadius: "8px",
+  margin: "20px auto",
+  maxWidth: "800px",
+  fontSize: "16px", // Increase font size for readability
+  color: "#fff", // Ensure text is white for contrast
+},
+
+advancedHeading: {
+  fontSize: "24px", // Larger font size for headings
+  fontWeight: "bold",
+  marginBottom: "15px", // Spacing between heading and content
+  color: "#FFD700", // Gold color for headings
+},
+
+advancedText: {
+  fontSize: "18px", // Increase the font size for the text
+  lineHeight: "1.5", // Make text more readable
+  color: "#fff", // Ensure text is white
+  wordWrap: "break-word", // Prevent long words from overflowing
+},
+
+summary: {
+  fontSize: "18px", // Increase font size for summary text
+  lineHeight: "1.5",
+  color: "#fff", // Ensure text is white
+},
+
   subsContainer: {
     backgroundColor: "#333",
     padding: "20px",
     borderRadius: "8px",
     margin: "20px auto",
     maxWidth: "800px",
+     color: "#FFD700", 
   },
   subsList: {
     display: "flex",

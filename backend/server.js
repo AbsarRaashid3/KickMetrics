@@ -9,55 +9,57 @@ import externalRoutes from './routes/externalRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import { fileURLToPath } from 'url';
 import path from 'path';
-
-//Axios is a popular third-party library for making HTTP requests in JavaScript.
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { pollLiveMatches } from './pollMatches.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+// Connect to database
 connectDB();
 
-// Body parser middlewares
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//cookie parser middleware
-app.use(cookieParser());  
+app.use(cookieParser());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-//This line creates a public URL route that maps:URL requests to '/uploads/some-image.jpg'
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Routes
 app.get('/', (req, res) => {
   console.log('i am in server.js at /');
-  res.send('Api is running');
+  res.send('API is running');
 });
-
 app.use('/api/players', playerRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/external', externalRoutes);  // Add this line
+app.use('/api/external', externalRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+
+// Create HTTP + WebSocket server
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000', // frontend URL
+    methods: ['GET', 'POST']
+  }
 });
 
+// Socket.IO connection
+io.on('connection', (socket) => {
+  console.log('🟢 User connected:', socket.id);
+});
 
+// Start polling for live match updates every 60 seconds
+setInterval(() => {
+  pollLiveMatches(io);
+}, 60000);
 
-// When a client (React frontend) makes an API request,
-//  the request flows through different layers in the backend:
-// React Frontend → Sends a request (e.g., fetch or axios).
-// Server (Express.js) → Handles the request and forwards it to the router.
-// Routes → Define API endpoints and link to controllers.
-// Controllers → Process business logic and interact with models.
-// Models (Database) → Handle data retrieval and storage.
-// Middleware → Modify or validate requests before reaching controllers.
-
-
-// Browser shows: http://localhost:3000/player/1
-// ↓
-// Axios request: /api/players/1
-// ↓
-// Actually calls: http://localhost:5000/api/players/1
-// ↓
-// Express backend handles request
+// Start the server
+server.listen(port, () => {
+  console.log(`🚀 Server listening at http://localhost:${port}`);
+});
