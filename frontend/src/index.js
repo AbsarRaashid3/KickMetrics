@@ -152,7 +152,7 @@ const router = createBrowserRouter(
           </ProtectedRoute>
         } />
         
-         {/*edit-user-profile in habiba*/}
+         {/*edit-user-profile*/}
       <Route path='/profile' 
         element={
           <ProtectedRoute>
