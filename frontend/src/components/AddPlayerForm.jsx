@@ -100,4 +100,5 @@ const AddPlayerForm = ({ newPlayer, handleInputChange, addPlayer, errors, previe
     );
 };
 
+// exporting the component
 export default AddPlayerForm;
