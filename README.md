@@ -1,6 +1,6 @@
 # ⚽ Kick Metrics – AI-Powered Football Analytics Platform
 
-![Kick Metrics Banner](https://your-image-link-if-any)
+
 
 Kick Metrics is a full-stack football analytics and talent management platform powered by AI. It enables scouts, coaches, players, and administrators to analyze performance metrics, build optimal lineups, simulate outcomes, and track live data — all in a single intuitive interface.
 
